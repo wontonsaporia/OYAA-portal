@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S01 授業プランシート — 講師用</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sans: 'Noto Sans JP', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --black: #111;
+    --dark:  #333;
+    --mid:   #666;
+    --gray:  #999;
+    --line:  #ccc;
+    --white: #fff;
+  }
+
+  body {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--black);
+    background: #e8e8e4;
+    padding: 20px;
+  }
+
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--white);
+    margin: 0 auto;
+    padding: 12mm 11mm 10mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+
+  /* ── ヘッダー ── */
+  .hdr {
+    border-bottom: 2px solid var(--black);
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+  .hdr-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .hdr-code { font-family: var(--mono); font-size: 9px; color: var(--mid); letter-spacing: 0.1em; }
+  .hdr-meta { font-family: var(--mono); font-size: 9px; color: var(--mid); }
+  .hdr-title { font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+  .hdr-sub { font-size: 10px; color: var(--mid); }
+
+  /* ── セクション ── */
+  .section { margin-bottom: 10px; }
+  .sec-label {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px; margin-bottom: 6px;
+  }
+
+  /* ── 準備物 ── */
+  .checklist {
+    display: flex; flex-direction: column;
+    gap: 4px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; line-height: 1.4;
+  }
+  .chk {
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+  .chk-tag { font-family: var(--mono); font-size: 8.5px; color: var(--mid); min-width: 34px; }
+
+  /* ── タイムライン ── */
+  .tl-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .tl-table thead tr { border-bottom: 1.5px solid var(--black); }
+  .tl-table thead th {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray); padding: 3px 5px; text-align: left;
+  }
+  .tl-table tbody tr { border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tl-table tbody tr:last-child { border-bottom: none; }
+  .tl-table td { padding: 5px 5px; line-height: 1.55; }
+
+  .col-time  { width: 13mm; }
+  .col-dur   { width: 9mm; text-align: right; color: var(--gray); font-family: var(--mono); font-size: 9.5px; }
+  .col-block { width: 22mm; }
+  .col-slide { width: 14mm; text-align: center; }
+  .col-memo  { width: auto; }
+  .col-note  { width: 40mm; font-size: 10px; color: var(--mid); border-left: 1px solid var(--line); padding-left: 7px; }
+
+  .time-val { font-family: var(--mono); font-size: 10.5px; font-weight: 700; }
+  .block-name { font-weight: 700; font-size: 11.5px; }
+  .block-sub  { font-size: 9.5px; color: var(--mid); margin-top: 1px; }
+
+  /* ブロック色分け（左端のアクセントライン） */
+  .row-intro td:first-child  { border-left: 3px solid #555; }
+  .row-lecture td:first-child { border-left: 3px solid #888; }
+  .row-practice td:first-child { border-left: 3px solid #111; }
+  .row-wrap td:first-child   { border-left: 3px solid #555; }
+  .row-practice { background: #fafaf6; }
+
+  .slide-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 8px;
+    background: #f0f0f0; border: 1px solid var(--line);
+    padding: 1px 4px; border-radius: 1px;
+    color: var(--mid);
+    white-space: nowrap;
+  }
+  .hl-mark {
+    display: inline-block; font-size: 8px; font-family: var(--mono);
+    background: var(--black); color: var(--white);
+    padding: 1px 4px; border-radius: 1px; margin-top: 3px;
+  }
+
+  .memo-main { color: var(--dark); }
+  .memo-sub  { font-size: 10px; color: var(--mid); margin-top: 2px; }
+  .note-head { font-size: 8.5px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .note-item { display: flex; gap: 3px; margin-bottom: 2px; font-size: 10px; }
+  .note-item::before { content: "▲"; font-size: 7.5px; color: var(--gray); flex-shrink: 0; margin-top: 2px; }
+
+  /* ── 次回 ── */
+  .next-block { font-size: 11.5px; color: var(--dark); line-height: 1.8; }
+
+  /* ── フッター ── */
+  .footer {
+    margin-top: 10px; padding-top: 5px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 8px; color: var(--gray);
+  }
+
+  /* ── めあて・まとめ ── */
+  .aim-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .aim-block, .sum-block {
+    border: 1px solid var(--line);
+    border-radius: 2px; padding: 6px 9px;
+  }
+  .aim-block .sec-label, .sum-block .sec-label {
+    border-bottom: none; margin-bottom: 4px; padding-bottom: 0;
+  }
+  .aim-item, .sum-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11.5px; line-height: 1.5; margin-bottom: 3px;
+  }
+  .aim-item::before { content: "●"; font-size: 8px; color: var(--gray); flex-shrink: 0; margin-top: 3px; }
+  .sum-item .chk {
+    width: 11px; height: 11px; margin-top: 2px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .sheet { box-shadow: none; padding: 10mm 10mm 8mm; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ヘッダー -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <span class="hdr-code">S01 — Chapter 01 — 講師用プランシート</span>
+      <span class="hdr-meta">2025.4.5（土）　15:00–16:30　90分　想定6名</span>
+    </div>
+    <div class="hdr-title">ドーナツをつくろう</div>
+    <div class="hdr-sub">はじめての 3D スカルプトモデリング　／　Nomad Sculpt（iPad）</div>
+  </div>
+
+  <!-- 準備物 -->
+  <div class="section">
+    <div class="sec-label">準備物チェックリスト</div>
+    <div class="checklist">
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">機材</span>講師用 iPad・充電器・スタイラス</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">配布物</span>生徒人数分のパスポート（S01シート込み）</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">データ</span>S01スライド（10枚）表示確認・提出フォルダ作成済み</div>
+    </div>
+  </div>
+
+  <!-- めあて・まとめ -->
+  <div class="aim-wrap">
+    <div class="aim-block">
+      <div class="sec-label">今日のめあて</div>
+      <div class="aim-item">スカルプトという手法で 3DCG を体験する</div>
+      <div class="aim-item">ドーナツを完成させ、保存・提出まで完了する</div>
+      <div class="aim-item">マスクでメッシュを分離できる</div>
+    </div>
+    <div class="sum-block">
+      <div class="sec-label">今日のまとめ（授業後に確認）</div>
+      <div class="sum-item"><div class="chk"></div>スカルプトという手法で 3DCG を体験した</div>
+      <div class="sum-item"><div class="chk"></div>ドーナツを完成・保存・提出できた</div>
+      <div class="sum-item"><div class="chk"></div>マスク → メッシュ分離ができた</div>
+    </div>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="section">
+    <div class="sec-label">タイムライン　／　導入 → 講義 → 演習 → まとめ</div>
+    <table class="tl-table">
+      <thead>
+        <tr>
+          <th class="col-time">時刻</th>
+          <th class="col-dur">時間</th>
+          <th class="col-block">ブロック</th>
+          <th class="col-slide">スライド</th>
+          <th class="col-memo">講師メモ・説明ポイント</th>
+          <th class="col-note">詰まりポイント対応</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- 導入 -->
+        <tr class="row-intro">
+          <td><span class="time-val">15:00</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">導入</div>
+            <div class="block-sub">挨拶・全体像</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 1</span><br>
+            <span class="slide-tag">Slide 2</span><br>
+            <span class="slide-tag">Slide 3</span>
+          </td>
+          <td>
+            <div class="memo-main">挨拶・自己紹介。ドーナツ実物を見せながら「これをデジタルで作る」と宣言。</div>
+            <div class="memo-sub">Slide 2で8回の全体像を共有（「最終的にオリカを作る」まで見せる）。Slide 3で今日の流れを確認。所要は各1〜2分で手短に。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">iPad 未起動 → この時間に起動してもらう</div>
+            <div class="note-item">遅刻者 → 流れを追わず実習から合流でOK</div>
+          </td>
+        </tr>
+
+        <!-- 講義 -->
+        <tr class="row-lecture">
+          <td><span class="time-val">15:10</span></td>
+          <td class="col-dur">20分</td>
+          <td>
+            <div class="block-name">講義</div>
+            <div class="block-sub">概念説明＋デモ</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 4</span><br>
+            <span class="slide-tag">Slide 5</span><br>
+            <span class="slide-tag">Slide 6</span><br>
+            <span class="slide-tag">Slide 7</span><br>
+            <span class="slide-tag">Slide 8</span>
+          </td>
+          <td>
+            <div class="memo-main">【Slide 4】3Dとは：点→線→面→立体の図解。手を動かさず「見て聞く時間」と伝える。</div>
+            <div class="memo-sub">
+              【Slide 5】ソフト紹介：「プロは色々使う。今日はiPadで使えるNomad Sculpt」で手短に。<br>
+              【Slide 6】モデリング種類：「今日やるのはスカルプト」を強調。他は流す。<br>
+              【Slide 7】スカルプト・ハイポリ・保存の注意。保存は強調して繰り返す。<br>
+              【Slide 8】全員でアプリを開く。Sphere削除→プリミティブ→Torus選択まで実演。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">説明が長くなりがち → Slide 5・6は各1分以内で</div>
+            <div class="note-item">アプリが開かない → 充電・再起動を確認</div>
+            <div class="note-item">Torus が見つからない → プリミティブ一覧をスクロール</div>
+          </td>
+        </tr>
+
+        <!-- 演習① -->
+        <tr class="row-practice">
+          <td><span class="time-val">15:30</span></td>
+          <td class="col-dur">25分</td>
+          <td>
+            <div class="block-name">演習①</div>
+            <div class="block-sub">ドーナツ成形</div>
+            <div class="hl-mark">★ メイン</div>
+          </td>
+          <td class="col-slide">—</td>
+          <td>
+            <div class="memo-main">Clay ブラシで全体シルエットを整える。「大きい形→細部」を口頭で繰り返す。</div>
+            <div class="memo-sub">Inflate で膨らみ、Flatten で平面部。巡回しながらデモ（生徒の手を止めない）。15:50頃に「そろそろマスクに移ります」と予告。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">形が崩れた → 2本指タップで Undo</div>
+            <div class="note-item">やりすぎ → Smooth で均す</div>
+            <div class="note-item">進みが遅い → シルエットだけでOK</div>
+            <div class="note-item">細部に入りすぎ → 「全体から」と声掛け</div>
+          </td>
+        </tr>
+
+        <!-- 演習② -->
+        <tr class="row-practice">
+          <td><span class="time-val">15:55</span></td>
+          <td class="col-dur">25分</td>
+          <td>
+            <div class="block-name">演習②</div>
+            <div class="block-sub">マスク→分離→保存</div>
+            <div class="hl-mark">⚡ 技術HL</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 9</span>
+          </td>
+          <td>
+            <div class="memo-main"><strong>全員手を止めてSlide 9でデモを見せる。</strong></div>
+            <div class="memo-sub">
+              ① Mask ブラシでチョコ部分を塗る　② Extract → New Mesh　③ 元メッシュを非表示で確認　④ 名前をつける（donut_choco）<br>
+              デモ後、各自で実施。終わったら仮マテリアルを適用して保存。<br>
+              命名ルール確認：<strong>「名前_01_donut」</strong>　保存：☰ → Files → 上書き保存
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">マスクがはみ出す → Mask Blur 調整</div>
+            <div class="note-item">分離後に消えた → Scene パネル確認</div>
+            <div class="note-item">Extract が出ない → 選択ツール確認</div>
+            <div class="note-item">全パーツ同じ色 → パーツ選択確認</div>
+          </td>
+        </tr>
+
+        <!-- まとめ -->
+        <tr class="row-wrap">
+          <td><span class="time-val">16:20</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">まとめ</div>
+            <div class="block-sub">提出・振り返り</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 10</span>
+          </td>
+          <td>
+            <div class="memo-main">提出フォルダへコピー → 先生に声掛け。Slide 10でチェックリストを確認。</div>
+            <div class="memo-sub">次回予告30秒：マテリアルで質感をリッチにする。X01（発想シート）を次回配布することを予告。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">提出忘れ → 退室前に全員確認</div>
+            <div class="note-item">時間余り → トッピング追加を自由課題に</div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次回引き継ぎ -->
+  <div class="section">
+    <div class="sec-label">次回（S02 / 4月12日）への引き継ぎ</div>
+    <div class="next-block">
+      次回テーマ：<strong>リッチドーナツ＆質感</strong>　／　X01（ちびキャラ発想シート）を同時配布する<br>
+      未提出者リストを確認して次回冒頭でフォロー　／　マテリアルのデモ用ファイルを事前に準備
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <span>S01 — 第1回 講師プランシート</span>
+    <span>INSTRUCTOR ONLY　／　OYAA 浦添パルコ 3DCG教室　2025.4.5</span>
+  </div>
+
+</div>
+</body>
+</html>

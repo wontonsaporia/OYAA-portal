@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>各回シート S01–S08 全8回</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0ede6;
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+  }
+
+  .nav {
+    background: #e8e4dc;
+    border-bottom: 1px solid #d0ccc4;
+    padding: 12px 16px 0;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid #d0ccc4;
+    border-bottom: none;
+    background: #dedad2;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+  .nav-btn:hover { background: #e4e0d8; color: #444; }
+  .nav-btn.active { background: #f0ede6; color: #111; border-color: #c0bbb2; }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 60px;
+    gap: 40px;
+  }
+
+  .session { display: none; flex-direction: column; align-items: center; gap: 36px; width: 100%; }
+  .session.active { display: flex; }
+
+  .page-label {
+    color: #888;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  /* 95x170mm = 359x643px */
+  .card {
+    width: 359px;
+    min-height: 643px;
+    background: #faf8f2;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+    display: flex;
+    flex-direction: row;
+  }
+
+  /* 表面：穴を右に / 裏面：穴を左に */
+  .card.back  { flex-direction: row-reverse; }
+  .card.front { flex-direction: row; }
+
+  .hole-gutter {
+    width: 22px;
+    flex-shrink: 0;
+    background: #f0ece2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-left: 1px solid #e0dbd0;
+  }
+  .card.back .hole-gutter {
+    border-left: none;
+    border-right: 1px solid #e0dbd0;
+  }
+  .hole {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #d8d4c8;
+    border: 1px solid #c8c4b8;
+  }
+
+  .card-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* HEADER */
+  .header { padding: 13px 14px 11px; }
+  .header .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .mono {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .header h1 { font-size: 20px; font-weight: 900; color: #fff; line-height: 1.2; }
+  .header .tagline { font-size: 10px; margin-top: 3px; }
+
+  /* BODY */
+  .body {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .block {
+    background: #fff;
+    border: 1px solid #e5dfd0;
+    border-radius: 4px;
+    padding: 7px 9px;
+  }
+  .block-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  /* キーワード */
+  .kw-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
+  .kw {
+    background: #fffbe6;
+    border: 1px solid #e8cc50;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6a4e00;
+  }
+
+  /* クエスト */
+  .quest-block { border-radius: 4px; overflow: hidden; border: 1.5px solid; }
+  .quest-header {
+    padding: 6px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .quest-header .block-label { margin: 0; font-size: 10px; }
+  .quest-sub-label { font-size: 9px; font-family: 'Space Mono', monospace; }
+  .quest-steps { padding: 8px 10px; display: flex; flex-direction: column; gap: 7px; background: #fff; }
+  .quest-step {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding-bottom: 7px; border-bottom: 1px dashed #e5ddd0;
+  }
+  .quest-step:last-child { border-bottom: none; padding-bottom: 0; }
+  .quest-icon {
+    width: 24px; height: 24px;
+    background: #f0f4ff; border: 1.5px solid #c8d8f8;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+  .quest-icon.hl { background: #fff3e0; border-color: #f0b840; }
+  .quest-content { flex: 1; }
+  .quest-main { font-size: 12px; font-weight: 700; color: #1a1a1a; line-height: 1.35; }
+  .quest-sub-text { font-size: 10.5px; color: #666; margin-top: 2px; line-height: 1.4; }
+  .quest-badge {
+    display: inline-block; font-size: 9px;
+    background: #fff3e0; border: 1px solid #f0b840;
+    color: #a06000; border-radius: 2px;
+    padding: 1px 5px; margin-top: 3px; font-weight: 700;
+  }
+
+  /* コツ */
+  .tips-row { display: flex; gap: 6px; }
+  .tips-col { flex: 1; border-radius: 4px; padding: 6px 8px; }
+  .tips-col.ok { background: #f4fff4; border: 1px solid #a8dca8; }
+  .tips-col.ng { background: #fff8f0; border: 1px solid #f0c080; }
+  .tips-col .block-label.ok { color: #2a7a2a; }
+  .tips-col .block-label.ng { color: #b05000; }
+  .tip { font-size: 12px; color: #333; line-height: 1.5; padding-left: 9px; position: relative; margin-bottom: 2px; }
+  .tip::before { content: "·"; position: absolute; left: 1px; color: #bbb; }
+
+  /* 成果物 */
+  .result-block {
+    background: #fffbe6; border-color: #e8cc50;
+    display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  }
+  .result-icon { font-size: 22px; flex-shrink: 0; }
+  .result-text { font-size: 13px; font-weight: 700; color: #4a3800; }
+  .result-sub { font-size: 9.5px; color: #8a7040; margin-top: 2px; }
+
+  /* 裏ヘッダー */
+  .back-header {
+    padding: 10px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  /* 核 */
+  .core-block { border-radius: 4px; padding: 10px 12px; border: none; }
+  .core-block .block-label { margin-bottom: 5px; }
+  .core-text { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.65; }
+
+  /* チェック */
+  .check-items { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #333; }
+  .check-circle { width: 15px; height: 15px; border-radius: 50%; flex-shrink: 0; }
+
+  /* スタンプ */
+  .stamp-box {
+    width: 52px; height: 52px;
+    border: 1.5px dashed #ccc; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 4px auto 0;
+  }
+  .stamp-box span { font-size: 8px; color: #ccc; font-family: 'Space Mono', monospace; }
+  .stamp-note { font-size: 8.5px; color: #bbb; text-align: center; margin-top: 3px; font-style: italic; }
+
+  /* メモ */
+  .memo-lines { display: flex; flex-direction: column; gap: 11px; margin-top: 6px; }
+  .memo-line { height: 1px; background: #d5cfc0; }
+
+  /* 次回 */
+  .next-block { border-radius: 4px; padding: 8px 10px; }
+  .next-block .block-label { margin-bottom: 3px; }
+  .next-title { font-size: 13px; font-weight: 700; color: #ffd060; }
+  .next-desc { font-size: 11px; color: #bbb; margin-top: 3px; line-height: 1.55; }
+
+  /* divider */
+  .divider {
+    display: flex; align-items: center; gap: 10px;
+    color: #aaa; font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.1em; width: 359px;
+  }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #ccc; }
+
+  /* 期別カラー P1=紺 */
+  .p1 .header { background: #0d2340; }
+  .p1 .mono { color: #5fa0e0; }
+  .p1 .tagline { color: #7ab0d8; }
+  .p1 .quest-block { border-color: #0d2340; }
+  .p1 .quest-header { background: #0d2340; }
+  .p1 .quest-header .block-label { color: #5fa0e0; }
+  .p1 .quest-header .quest-sub-label { color: #7ab0d8; }
+  .p1 .back-header { background: #1a3a1a; }
+  .p1 .back-header .mono { color: #80c880; }
+  .p1 .core-block { background: #0d2340; }
+  .p1 .core-block .block-label { color: #5fa0e0; }
+  .p1 .check-circle { border: 1.5px solid #0d2340; }
+  .p1 .next-block { background: #0d2340; }
+  .p1 .next-block .block-label { color: #5fa0e0; }
+
+  /* 期別カラー P2=紫 */
+  .p2 .header { background: #1a0d40; }
+  .p2 .mono { color: #a07ae0; }
+  .p2 .tagline { color: #b090d8; }
+  .p2 .quest-block { border-color: #1a0d40; }
+  .p2 .quest-header { background: #1a0d40; }
+  .p2 .quest-header .block-label { color: #a07ae0; }
+  .p2 .quest-header .quest-sub-label { color: #b090d8; }
+  .p2 .back-header { background: #3a1a10; }
+  .p2 .back-header .mono { color: #e09870; }
+  .p2 .core-block { background: #1a0d40; }
+  .p2 .core-block .block-label { color: #a07ae0; }
+  .p2 .check-circle { border: 1.5px solid #1a0d40; }
+  .p2 .next-block { background: #1a0d40; }
+  .p2 .next-block .block-label { color: #a07ae0; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="show(0)">S01 4/5</button>
+  <button class="nav-btn" onclick="show(1)">S02 4/12</button>
+  <button class="nav-btn" onclick="show(2)">S03 5/10</button>
+  <button class="nav-btn" onclick="show(3)">S04 5/17</button>
+  <button class="nav-btn" onclick="show(4)">S05 6/7</button>
+  <button class="nav-btn" onclick="show(5)">S06 6/14</button>
+  <button class="nav-btn" onclick="show(6)">S07 7/5</button>
+  <button class="nav-btn" onclick="show(7)">S08 7/12</button>
+</div>
+
+<div class="main">
+
+<!-- ══════════════ S01 ══════════════ -->
+<div class="session p1 active" id="s0">
+  <div>
+    <div class="page-label">S01 ▲ 表面</div>
+    <div class="card front p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p1">
+        <div class="meta"><span class="mono">Chapter 01</span><span class="mono">4 / 5</span></div>
+        <h1>ドーナツをつくろう</h1>
+        <div class="tagline">はじめての 3D スカルプトモデリング</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">スカルプト</span><span class="kw">メッシュ</span><span class="kw">マスク</span><span class="kw">メッシュ分離</span><span class="kw">保存</span><span class="kw">提出</span></div>
+        </div>
+        <div class="quest-block p1">
+          <div class="quest-header p1"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">🖥️</div><div class="quest-content"><div class="quest-main">起動・画面の確認</div><div class="quest-sub-text">ツールの場所と操作感をつかむ</div></div></div>
+            <div class="quest-step"><div class="quest-icon">🍩</div><div class="quest-content"><div class="quest-main">トーラスを読み込んで形を整える</div><div class="quest-sub-text">スカルプトブラシでシルエットを調整する</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">🎭</div><div class="quest-content"><div class="quest-main">マスクでチョコ部分を分離する</div><div class="quest-sub-text">マスク → メッシュ分離 → 別パーツに</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">💾</div><div class="quest-content"><div class="quest-main">名前をつけて保存・提出</div><div class="quest-sub-text">ファイル名に自分の名前を入れる</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">大きい形から整えていく</div><div class="tip">こまめに保存（Cmd+S）</div><div class="tip">ファイル名に名前を入れる</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">マスクの範囲がずれる</div><div class="tip">分離後にパーツが行方不明</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">ドーナツ 3Dモデル</div><div class="result-sub">本体 ＋ チョコパーツ（分離済み）</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S01 ▼ 裏面</div>
+    <div class="card back p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p1"><span class="mono">Chapter 01 — 記録</span><span class="mono">4 / 5</span></div>
+      <div class="body">
+        <div class="core-block p1"><div class="block-label">💡 今日のまとめ</div><div class="core-text">スカルプトという手法で<br>3DCGを体験した。<br>ドーナツを作れる。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p1"></div>ドーナツが完成した</div>
+          <div class="check-item"><div class="check-circle p1"></div>マスクでメッシュ分離できた</div>
+          <div class="check-item"><div class="check-circle p1"></div>保存・提出ができた</div>
+          <div class="check-item"><div class="check-circle p1"></div>スカルプトが何か説明できる</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div><div class="stamp-note">※ ログページへ移動検討中</div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p1"><div class="block-label">📌 次回予告</div><div class="next-title">第2回（4/12）リッチドーナツ＆質感</div><div class="next-desc">マテリアルを使って質感を変えよう。<br>同じ形が、全く別物に見える。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S02 ══════════════ -->
+<div class="session p1" id="s1">
+  <div>
+    <div class="page-label">S02 ▲ 表面</div>
+    <div class="card front p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p1">
+        <div class="meta"><span class="mono">Chapter 02</span><span class="mono">4 / 12</span></div>
+        <h1>リッチドーナツをつくろう</h1>
+        <div class="tagline">マテリアルで質感を変える</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">マテリアル</span><span class="kw">マスク</span><span class="kw">質感</span><span class="kw">光沢</span><span class="kw">粗さ</span><span class="kw">アルベド</span></div>
+        </div>
+        <div class="quest-block p1">
+          <div class="quest-header p1"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">📂</div><div class="quest-content"><div class="quest-main">前回のドーナツを開く</div><div class="quest-sub-text">保存済みファイルを呼び出す</div></div></div>
+            <div class="quest-step"><div class="quest-icon">🎨</div><div class="quest-content"><div class="quest-main">各パーツにマテリアルを割り当てる</div><div class="quest-sub-text">ドーナツ本体・チョコ・トッピングそれぞれに</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">✨</div><div class="quest-content"><div class="quest-main">光沢・粗さのパラメータを調整する</div><div class="quest-sub-text">数値を動かして見た目の変化を体験する</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">💾</div><div class="quest-content"><div class="quest-main">仕上げて保存・提出</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">数値は小さく動かして確認する</div><div class="tip">パーツごとに別マテリアルを使う</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">全パーツが同じ質感になってしまう</div><div class="tip">数値を変えたのに見た目が変わらない（ライトを確認）</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">リッチドーナツ 3Dモデル</div><div class="result-sub">質感の異なる複数マテリアル適用済み</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S02 ▼ 裏面</div>
+    <div class="card back p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p1"><span class="mono">Chapter 02 — 記録</span><span class="mono">4 / 12</span></div>
+      <div class="body">
+        <div class="core-block p1"><div class="block-label">💡 今日のまとめ</div><div class="core-text">同じ形でも、マテリアルを<br>変えると別物に見える。<br>質感を変えられる。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p1"></div>マテリアルを割り当てられた</div>
+          <div class="check-item"><div class="check-circle p1"></div>光沢・粗さを調整できた</div>
+          <div class="check-item"><div class="check-circle p1"></div>見た目がリッチになった</div>
+          <div class="check-item"><div class="check-circle p1"></div>マテリアルが何か説明できる</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p1"><div class="block-label">📌 次回予告</div><div class="next-title">第3回（5/10）ちびキャラをスカルプト</div><div class="next-desc">発想シートのキャラクターを3Dにしよう。<br>ドーナツより複雑な形に挑む。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S03 ══════════════ -->
+<div class="session p1" id="s2">
+  <div>
+    <div class="page-label">S03 ▲ 表面</div>
+    <div class="card front p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p1">
+        <div class="meta"><span class="mono">Chapter 03</span><span class="mono">5 / 10</span></div>
+        <h1>ちびキャラをつくろう</h1>
+        <div class="tagline">発想シートから立体へ</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">プロポーション</span><span class="kw">頭身</span><span class="kw">対称</span><span class="kw">ミラー</span><span class="kw">マテリアル</span><span class="kw">パーツ分け</span></div>
+        </div>
+        <div class="quest-block p1">
+          <div class="quest-header p1"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">📋</div><div class="quest-content"><div class="quest-main">発想シートを確認する</div><div class="quest-sub-text">頭身・シルエット・色のイメージを確かめる</div></div></div>
+            <div class="quest-step"><div class="quest-icon">🧱</div><div class="quest-content"><div class="quest-main">頭・胴体のベース形状を作る</div><div class="quest-sub-text">球や箱からスタート。まず大きい形を作る</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">🪞</div><div class="quest-content"><div class="quest-main">ミラー対称を使って顔・手足を作る</div><div class="quest-sub-text">片側だけ作れば反対側が自動でできる</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">🎨</div><div class="quest-content"><div class="quest-main">マテリアルで色・素材を整えて保存</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">発想シートをこまめに見返す</div><div class="tip">ミラーをオンにしてから作業する</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">ミラーを忘れて片側だけ作ってしまう</div><div class="tip">細部に入りすぎてシルエットが崩れる</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">ちびキャラ 3Dモデル</div><div class="result-sub">マテリアル適用済み・保存提出完了</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S03 ▼ 裏面</div>
+    <div class="card back p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p1"><span class="mono">Chapter 03 — 記録</span><span class="mono">5 / 10</span></div>
+      <div class="body">
+        <div class="core-block p1"><div class="block-label">💡 今日のまとめ</div><div class="core-text">紙で考えたキャラクターが<br>3Dの立体になった。<br>2Dから立体的に形を創れる。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p1"></div>ちびキャラが完成した</div>
+          <div class="check-item"><div class="check-circle p1"></div>ミラーで対称に作れた</div>
+          <div class="check-item"><div class="check-circle p1"></div>発想シート通りの形にできた</div>
+          <div class="check-item"><div class="check-circle p1"></div>頭身・プロポーションを説明できる</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p1"><div class="block-label">📌 次回予告</div><div class="next-title">第4回（5/17）ライティング＆ポスター</div><div class="next-desc">光を当てて、作品として印刷しよう。<br>これで第1期が完成する。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S04 ══════════════ -->
+<div class="session p1" id="s3">
+  <div>
+    <div class="page-label">S04 ▲ 表面</div>
+    <div class="card front p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p1">
+        <div class="meta"><span class="mono">Chapter 04</span><span class="mono">5 / 17</span></div>
+        <h1>ポスターに仕上げよう</h1>
+        <div class="tagline">ライティング・レンダー・印刷</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">ライト</span><span class="kw">レンダー</span><span class="kw">ポストプロセス</span><span class="kw">構図</span><span class="kw">書き出し</span></div>
+        </div>
+        <div class="quest-block p1">
+          <div class="quest-header p1"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">💡</div><div class="quest-content"><div class="quest-main">ライトを配置する</div><div class="quest-sub-text">メインライト・補助ライトの位置を決める</div></div></div>
+            <div class="quest-step"><div class="quest-icon">📷</div><div class="quest-content"><div class="quest-main">カメラアングルと構図を決める</div><div class="quest-sub-text">見せたいものが映えるポジションを探す</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">🌟</div><div class="quest-content"><div class="quest-main">ポストプロセスで雰囲気を仕上げる</div><div class="quest-sub-text">明度・コントラスト・グロー等を調整する</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">🖨️</div><div class="quest-content"><div class="quest-main">レンダリングして印刷・提出</div><div class="quest-sub-text">タイトルを入れてポスターとして完成させる</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">ライトは少なくシンプルに始める</div><div class="tip">カメラを固定してから調整する</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">ライトが多すぎて影が複雑になる</div><div class="tip">ポストプロセスのかけすぎで色が飛ぶ</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">印刷済みポスター</div><div class="result-sub">タイトル入り・レンダリング完了</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S04 ▼ 裏面</div>
+    <div class="card back p1">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p1"><span class="mono">Chapter 04 — 記録</span><span class="mono">5 / 17</span></div>
+      <div class="body">
+        <div class="core-block p1"><div class="block-label">💡 今日のまとめ</div><div class="core-text">ライティングとレンダーができる。<br>作ったモデルを作品として<br>完成させる。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p1"></div>ライトを配置できた</div>
+          <div class="check-item"><div class="check-circle p1"></div>構図を決めてレンダリングできた</div>
+          <div class="check-item"><div class="check-circle p1"></div>ポスターとして印刷できた</div>
+          <div class="check-item"><div class="check-circle p1"></div>レンダーが何か説明できる</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p1"><div class="block-label">📌 次回予告</div><div class="next-title">第5回（6/7）オリカをデザインしよう</div><div class="next-desc">次回は自分だけのオリカをデザインします。<br>どんなカードにしたいか、少し考えてきてね。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S05 ══════════════ -->
+<div class="session p2" id="s4">
+  <div>
+    <div class="page-label">S05 ▲ 表面</div>
+    <div class="card front p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p2">
+        <div class="meta"><span class="mono">Chapter 05</span><span class="mono">6 / 7</span></div>
+        <h1>オリカをデザインしよう</h1>
+        <div class="tagline">プロダクトデザイン × 仕様書</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">プロダクトデザイン</span><span class="kw">仕様書</span><span class="kw">モチーフ</span><span class="kw">発注</span><span class="kw">コンセプト</span></div>
+        </div>
+        <div class="quest-block p2">
+          <div class="quest-header p2"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">💭</div><div class="quest-content"><div class="quest-main">プロダクトデザインとは何かを知る</div><div class="quest-sub-text">ものを作る前に「設計」をする職能について</div></div></div>
+            <div class="quest-step"><div class="quest-icon">🃏</div><div class="quest-content"><div class="quest-main">自分のオリカのコンセプトを決める</div><div class="quest-sub-text">モチーフ・色・名前・伝えたいことを考える</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">📝</div><div class="quest-content"><div class="quest-main">デザインシート（X02）に記入する</div><div class="quest-sub-text">職人への発注書として丁寧に書く</div><span class="quest-badge">⚡ 今日のハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">📮</div><div class="quest-content"><div class="quest-main">完成したシートを提出する</div><div class="quest-sub-text">これをもとに先生がリアルカードを制作する</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">「伝わるか」を意識して書く</div><div class="tip">わからない言葉は質問してOK</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">コンセプトが広すぎて決まらない</div><div class="tip">絵が得意じゃなくても言葉で書けばOK</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">提出済みデザインシート（X02）</div><div class="result-sub">これが自分のオリカの仕様書になる</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S05 ▼ 裏面</div>
+    <div class="card back p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p2"><span class="mono">Chapter 05 — 記録</span><span class="mono" style="color:#e09870;">6 / 7</span></div>
+      <div class="body">
+        <div class="core-block p2"><div class="block-label">💡 今日のまとめ</div><div class="core-text">オリカのために仕様書を書いた。<br>プロダクトデザインの<br>第一歩を踏んだ。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p2"></div>デザインシートを書き終えた</div>
+          <div class="check-item"><div class="check-circle p2"></div>コンセプトを言葉にできた</div>
+          <div class="check-item"><div class="check-circle p2"></div>提出できた</div>
+          <div class="check-item"><div class="check-circle p2"></div>仕様書が何か説明できる</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p2"><div class="block-label">📌 次回予告</div><div class="next-title">第6回（6/14）リアルカード開封！</div><div class="next-desc">自分がデザインしたカードが届く。<br>3DCGでデジタルカードを作り始めよう。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S06 ══════════════ -->
+<div class="session p2" id="s5">
+  <div>
+    <div class="page-label">S06 ▲ 表面</div>
+    <div class="card front p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p2">
+        <div class="meta"><span class="mono">Chapter 06</span><span class="mono">6 / 14</span></div>
+        <h1>デジタルカードを作ろう</h1>
+        <div class="tagline">リアルの再現・テクスチャ入門</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">カード形状</span><span class="kw">テクスチャ</span><span class="kw">UV</span><span class="kw">平面貼り</span><span class="kw">板ポリ</span></div>
+        </div>
+        <div class="quest-block p2">
+          <div class="quest-header p2"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">🃏</div><div class="quest-content"><div class="quest-main">リアルカードを受け取り・観察する</div><div class="quest-sub-text">サイズ・比率・質感を確かめる。サインを入れよう</div></div></div>
+            <div class="quest-step"><div class="quest-icon">📐</div><div class="quest-content"><div class="quest-main">カードの形状（板ポリ）を3Dで作る</div><div class="quest-sub-text">縦横の比率をリアルカードに合わせる</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">🗺️</div><div class="quest-content"><div class="quest-main">テクスチャ画像をUV貼りする</div><div class="quest-sub-text">板ポリに画像を貼ることで「もの」がカードになる</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">💾</div><div class="quest-content"><div class="quest-main">下地として保存・提出</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">カードのアスペクト比を先に測る</div><div class="tip">画像解像度を確認してから貼る</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">画像が引き伸びて貼られる（UV比率がずれている）</div><div class="tip">テクスチャが反映されない（ノード接続確認）</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">デジタルカード 下地</div><div class="result-sub">テクスチャ貼り付け済み・3Dカード形状</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S06 ▼ 裏面</div>
+    <div class="card back p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p2"><span class="mono">Chapter 06 — 記録</span><span class="mono" style="color:#e09870;">6 / 14</span></div>
+      <div class="body">
+        <div class="core-block p2"><div class="block-label">💡 今日のまとめ</div><div class="core-text">リアルのカードを参考に、<br>3DCGでデジタルカードを<br>作成した。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p2"></div>カード形状を3Dで作れた</div>
+          <div class="check-item"><div class="check-circle p2"></div>テクスチャを貼れた</div>
+          <div class="check-item"><div class="check-circle p2"></div>UVが何か説明できる</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p2"><div class="block-label">📌 次回予告</div><div class="next-title">第7回（7/5）飛び出す3Dトレカ</div><div class="next-desc">カードとモチーフを重ねて奥行きを作ろう。<br>AR風の演出に挑戦する。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S07 ══════════════ -->
+<div class="session p2" id="s6">
+  <div>
+    <div class="page-label">S07 ▲ 表面</div>
+    <div class="card front p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p2">
+        <div class="meta"><span class="mono">Chapter 07</span><span class="mono">7 / 5</span></div>
+        <h1>飛び出す3Dトレカ</h1>
+        <div class="tagline">カード × モチーフで奥行き演出</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">深度</span><span class="kw">レイヤー</span><span class="kw">スケール</span><span class="kw">合成</span><span class="kw">前景・後景</span></div>
+        </div>
+        <div class="quest-block p2">
+          <div class="quest-header p2"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">🃏</div><div class="quest-content"><div class="quest-main">前回のカード本体を配置する</div><div class="quest-sub-text">ベースとなるカードをシーンに設置する</div></div></div>
+            <div class="quest-step"><div class="quest-icon">🍩</div><div class="quest-content"><div class="quest-main">モチーフをカードの前に配置する</div><div class="quest-sub-text">ドーナツ・キャラ・小品のどれかを選ぶ</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">🔭</div><div class="quest-content"><div class="quest-main">スケールと奥行きを調整する</div><div class="quest-sub-text">大きさの差・位置の差で飛び出し感を作る</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">🎬</div><div class="quest-content"><div class="quest-main">見せ方を整えてレンダリング</div><div class="quest-sub-text">アングルとライティングを最終調整する</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">モチーフをカードより少し大きくすると映える</div><div class="tip">カメラをやや下から見上げる角度にする</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">モチーフがカードに埋まってしまう</div><div class="tip">奥行きが出ず平面に見える</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">飛び出し演出カード</div><div class="result-sub">カード＋モチーフの奥行き合成済み</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S07 ▼ 裏面</div>
+    <div class="card back p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p2"><span class="mono">Chapter 07 — 記録</span><span class="mono" style="color:#e09870;">7 / 5</span></div>
+      <div class="body">
+        <div class="core-block p2"><div class="block-label">💡 今日のまとめ</div><div class="core-text">カードとモチーフを重ねて<br>奥行きを作れる。<br>3Dは「見せ方」で印象が変わる。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p2"></div>モチーフをカードの前に配置できた</div>
+          <div class="check-item"><div class="check-circle p2"></div>奥行き感が出た</div>
+          <div class="check-item"><div class="check-circle p2"></div>レンダリングできた</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 MEMO</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div class="next-block p2"><div class="block-label">📌 次回予告</div><div class="next-title">第8回（7/12）仕上げ・発表・修了</div><div class="next-desc">作品を完成させて、みんなに見せよう。<br>修了証を受け取って冒険が終わる。</div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+<!-- ══════════════ S08 ══════════════ -->
+<div class="session p2" id="s7">
+  <div>
+    <div class="page-label">S08 ▲ 表面</div>
+    <div class="card front p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="header p2">
+        <div class="meta"><span class="mono">Chapter 08</span><span class="mono">7 / 12</span></div>
+        <h1>仕上げ・発表・修了</h1>
+        <div class="tagline">作品を完成させ、人に届ける</div>
+      </div>
+      <div class="body">
+        <div class="block"><div class="block-label">🔑 キーワード</div>
+          <div class="kw-wrap"><span class="kw">書き出し</span><span class="kw">解像度</span><span class="kw">展示</span><span class="kw">発表</span><span class="kw">修了</span></div>
+        </div>
+        <div class="quest-block p2">
+          <div class="quest-header p2"><div class="block-label">⚔️ 今日のクエスト</div><span class="quest-sub-label">4 steps</span></div>
+          <div class="quest-steps">
+            <div class="quest-step"><div class="quest-icon">🔧</div><div class="quest-content"><div class="quest-main">作品の最終調整をする</div><div class="quest-sub-text">気になる部分を修正・磨き上げる</div></div></div>
+            <div class="quest-step"><div class="quest-icon hl">📤</div><div class="quest-content"><div class="quest-main">完成データを書き出す</div><div class="quest-sub-text">PNG・解像度を確認して書き出し</div><span class="quest-badge">⚡ 技術ハイライト</span></div></div>
+            <div class="quest-step"><div class="quest-icon">🖼️</div><div class="quest-content"><div class="quest-main">展示レイアウトを考える</div><div class="quest-sub-text">どう見せるか・どう並べるかを工夫する</div></div></div>
+            <div class="quest-step"><div class="quest-icon">🎤</div><div class="quest-content"><div class="quest-main">発表する・作品を人に見せる</div><div class="quest-sub-text">自分の作品について一言話す</div></div></div>
+          </div>
+        </div>
+        <div class="tips-row">
+          <div class="tips-col ok"><div class="block-label ok">✅ コツ</div><div class="tip">書き出し前に解像度を確認する</div><div class="tip">発表は短くていい。一言でOK</div></div>
+          <div class="tips-col ng"><div class="block-label ng">⚠️ 詰まりやすい</div><div class="tip">最終調整に時間をかけすぎる（60分で切る）</div><div class="tip">書き出し先フォルダを確認しておく</div></div>
+        </div>
+        <div class="block result-block"><div class="result-icon">🏆</div><div><div class="result-text">完成デジタルカード ＋ 発表</div><div class="result-sub">書き出し済み・展示・修了証授与</div></div></div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  <div class="divider">flip</div>
+  <div>
+    <div class="page-label">S08 ▼ 裏面</div>
+    <div class="card back p2">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="back-header p2"><span class="mono">Chapter 08 — 記録</span><span class="mono" style="color:#e09870;">7 / 12</span></div>
+      <div class="body">
+        <div class="core-block p2"><div class="block-label">💡 今日のまとめ</div><div class="core-text">3DCGを作り、作品として<br>完成させ、人に見せることが<br>できる。展示・発表を工夫した。</div></div>
+        <div class="block"><div class="block-label">○ 今日できたこと</div><div class="check-items">
+          <div class="check-item"><div class="check-circle p2"></div>作品を書き出せた</div>
+          <div class="check-item"><div class="check-circle p2"></div>展示・発表ができた</div>
+          <div class="check-item"><div class="check-circle p2"></div>修了証を受け取った</div>
+        </div></div>
+        <div class="block" style="padding:6px 8px;"><div class="block-label">🔖 スタンプ</div><div class="stamp-box"><span>STAMP</span></div></div>
+        <div class="block" style="flex:1;"><div class="block-label">📝 この冒険でいちばん好きだったこと</div><div class="memo-lines"><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div><div class="memo-line"></div></div></div>
+        <div style="background:#1a0d40; border-radius:4px; padding:9px 11px; text-align:center;">
+          <div style="font-family:'Space Mono',monospace; font-size:8px; color:#a07ae0; letter-spacing:0.1em; margin-bottom:4px;">✦ QUEST COMPLETE ✦</div>
+          <div style="font-size:10px; font-weight:700; color:#fff; line-height:1.6;">8つのChapterをクリアした。<br>きみは3DCG冒険者だ。</div>
+        </div>
+      </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+  function show(idx) {
+    document.querySelectorAll('.session').forEach((s,i) => {
+      s.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.nav-btn').forEach((b,i) => {
+      b.classList.toggle('active', i === idx);
+    });
+  }
+</script>
+</body>
+</html>

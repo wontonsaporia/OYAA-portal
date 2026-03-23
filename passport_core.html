@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コアシート P01–P04</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0ede6;
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    background: #e8e4dc;
+    border-bottom: 1px solid #d0ccc4;
+    padding: 12px 16px 0;
+    display: flex;
+    gap: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid #d0ccc4;
+    border-bottom: none;
+    background: #dedad2;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+  .nav-btn:hover { background: #e4e0d8; color: #555; }
+  .nav-btn.active { background: #f0ede6; color: #222; border-color: #c0bbb2; }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 16px 80px;
+    gap: 40px;
+  }
+
+  .page { display: none; flex-direction: column; align-items: center; gap: 32px; width: 100%; }
+  .page.active { display: flex; }
+
+  .page-label {
+    color: #444;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  /* 95×170mm = 359×643px */
+  .card {
+    width: 359px;
+    min-height: 643px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* A6×2 見開き */
+  .spread {
+    width: 718px;
+    min-height: 643px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+    display: flex;
+    position: relative;
+  }
+  .spread-left, .spread-right {
+    width: 359px;
+    min-height: 643px;
+    display: flex;
+    flex-direction: column;
+  }
+  .spread-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+
+  .mono { font-family: 'Space Mono', monospace; }
+
+  /* ════════════════════════════
+     P01 表紙
+  ════════════════════════════ */
+  .cover {
+    background: #0a1628;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px 24px 24px;
+    position: relative;
+  }
+
+  /* 背景グリッド装飾 */
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(95,160,224,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(95,160,224,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  .cover-top { position: relative; }
+
+  .cover-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #3a6090;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .cover-title-en {
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .cover-title-ja {
+    font-size: 13px;
+    font-weight: 700;
+    color: #5fa0e0;
+    margin-bottom: 16px;
+  }
+
+  .cover-sub {
+    font-size: 13px;
+    color: #4a7090;
+    line-height: 1.6;
+  }
+
+  /* 章バッジ一覧 */
+  .chapter-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 20px;
+  }
+  .ch-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    border: 1px solid #1e3a5a;
+    color: #3a6090;
+  }
+  .ch-badge.p1 { border-color: #1e4070; color: #4a80c0; }
+  .ch-badge.p2 { border-color: #2a1a50; color: #6a50a0; }
+
+  /* イラストスペース */
+  .cover-illust {
+    width: 100%;
+    height: 100px;
+    border: 1px dashed #1e3a5a;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+  }
+  .cover-illust span {
+    font-size: 12px;
+    color: #2a4a6a;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  .cover-bottom { position: relative; }
+
+  .name-field {
+    border-bottom: 1px solid #2a4a6a;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+  .name-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #3a6090;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .name-line {
+    height: 20px;
+  }
+
+  .cover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #2a4a6a;
+  }
+  .cover-issuer {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    color: #2a4a6a;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ════════════════════════════
+     P02–03 地図見開き
+  ════════════════════════════ */
+  .map-bg {
+    background: #0d1f0d;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 14px;
+    position: relative;
+  }
+  .map-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(80,160,80,0.06) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+
+  .map-header {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .map-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #4a9a4a;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .map-subtitle {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    margin-top: 2px;
+  }
+
+  /* エリア */
+  .map-area {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .area-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .area-label.p1 { background: #0d2340; color: #5fa0e0; }
+  .area-label.p2 { background: #1a0d40; color: #a07ae0; }
+
+  .area-nodes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  /* ノード */
+  .node {
+    width: 138px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+  .node.p1 { border-color: rgba(95,160,224,0.2); }
+  .node.p2 { border-color: rgba(160,122,224,0.2); }
+
+  .node-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .node-num.p1 { color: #5fa0e0; }
+  .node-num.p2 { color: #a07ae0; }
+
+  .node-info { flex: 1; min-width: 0; }
+  .node-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #555;
+    margin-top: 1px;
+  }
+
+  .stamp-frame {
+    width: 28px;
+    height: 28px;
+    border: 1.5px dashed #333;
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stamp-frame span {
+    font-size: 6px;
+    color: #333;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* 矢印コネクター */
+  .connector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    margin: -2px 0;
+  }
+  .connector-line { flex: 1; height: 1px; background: #333; }
+  .connector-arrow { color: #444; font-size: 12px; }
+
+  /* 右ページのイラストスペース */
+  .map-illust {
+    flex: 1;
+    border: 1px dashed #1a3a1a;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    min-height: 80px;
+  }
+  .map-illust span {
+    font-size: 12px;
+    color: #1a3a1a;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* ════════════════════════════
+     P04 Tips・ルール
+  ════════════════════════════ */
+  .tips-bg {
+    background: #faf8f2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tips-header {
+    background: #0d2340;
+    padding: 11px 13px 9px;
+  }
+  .tips-header .mono-sm {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #5fa0e0;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .tips-header h1 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    margin-top: 3px;
+  }
+  .tips-header .tagline {
+    font-size: 12px;
+    color: #7ab0d8;
+    margin-top: 2px;
+  }
+
+  .tips-body {
+    padding: 9px 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+  }
+
+  .t-block {
+    background: #fff;
+    border: 1px solid #e5dfd0;
+    border-radius: 4px;
+    padding: 7px 9px;
+  }
+  .t-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 5px;
+  }
+
+  /* 命名規則 */
+  .naming-rule {
+    background: #f0f5ff;
+    border-color: #c0d4f0;
+  }
+  .naming-rule .t-label { color: #4a72c4; }
+  .rule-formula {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    background: #0d2340;
+    color: #5fa0e0;
+    padding: 4px 8px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+  }
+  .rule-example {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #4a72c4;
+  }
+
+  /* 提出方法 */
+  .submit-steps {
+    display: flex;
+    gap: 4px;
+    margin-top: 3px;
+  }
+  .s-step {
+    flex: 1;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    padding: 4px 5px;
+    text-align: center;
+  }
+  .s-step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    color: #0d2340;
+    font-weight: 700;
+  }
+  .s-step-text {
+    font-size: 11.5px;
+    color: #444;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  /* ショートカット */
+  .shortcut-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 2px;
+  }
+  .sc-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sc-key {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    background: #0d2340;
+    color: #5fa0e0;
+    padding: 2px 6px;
+    border-radius: 2px;
+    min-width: 56px;
+    text-align: center;
+  }
+  .sc-desc {
+    font-size: 10.5px;
+    color: #444;
+  }
+
+  /* 困ったときは */
+  .help-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 2px;
+  }
+  .help-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 10.5px;
+    color: #333;
+    line-height: 1.5;
+  }
+  .help-icon { font-size: 12px; flex-shrink: 0; }
+
+  /* divider */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    color: #333; font-family: 'Space Mono', monospace;
+    font-size: 13px; letter-spacing: 0.1em;
+    width: 359px;
+  }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #222; }
+  .divider.wide { width: 718px; }
+
+  /* ── 穴スペース ── */
+  .card { flex-direction: row; }
+  .card.front { flex-direction: row-reverse; }
+  .card.back  { flex-direction: row; }
+  .hole-gutter {
+    width: 22px;
+    flex-shrink: 0;
+    background: #f0ece2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-left: 1px solid #e0dbd0;
+  }
+  .card.front .hole-gutter { border-left: none; border-right: 1px solid #e0dbd0; }
+  .hole { width: 10px; height: 10px; border-radius: 50%; background: #d8d4c8; border: 1px solid #c8c4b8; }
+  .card-inner { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="show(0)">P01 表紙</button>
+  <button class="nav-btn" onclick="show(1)">P02–03 地図</button>
+  <button class="nav-btn" onclick="show(2)">P04 Tips</button>
+</div>
+
+<div class="main">
+
+  <!-- ══════════ P01 表紙 ══════════ -->
+  <div class="page active" id="p0">
+    <div>
+      <div class="page-label">P01 — 表紙</div>
+      <div class="card front">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="cover">
+
+          <div class="cover-top">
+            <div class="cover-eyebrow">OYAA × 浦添パルコ 3DCG教室</div>
+            <div class="cover-title-en">3DCG<br>PASSPORT</div>
+            <div class="cover-title-ja">スカルプトモデリング × オリカ</div>
+            <div class="cover-sub">全8回の冒険記録 ／ 2025.4 – 2025.7</div>
+
+            <div class="cover-illust">
+              <span>ILLUSTRATION SPACE<br>冒険者・地図モチーフ</span>
+            </div>
+
+            <div class="chapter-badges">
+              <span class="ch-badge p1">Ch.01 ドーナツ</span>
+              <span class="ch-badge p1">Ch.02 質感</span>
+              <span class="ch-badge p1">Ch.03 キャラ</span>
+              <span class="ch-badge p1">Ch.04 ポスター</span>
+              <span class="ch-badge p2">Ch.05 デザイン</span>
+              <span class="ch-badge p2">Ch.06 カード</span>
+              <span class="ch-badge p2">Ch.07 奥行き</span>
+              <span class="ch-badge p2">Ch.08 発表</span>
+            </div>
+          </div>
+
+          <div class="cover-bottom">
+            <div class="name-field">
+              <div class="name-label">Name / なまえ</div>
+              <div class="name-line"></div>
+            </div>
+            <div class="cover-footer">
+              <div class="cover-period mono">2025.4 – 2025.7</div>
+              <div class="cover-issuer">OYAA<br>浦添パルコ 3DCG教室</div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  </div>
+
+  <!-- ══════════ P02–03 地図 ══════════ -->
+  <div class="page" id="p1">
+    <div>
+      <div class="page-label">P02–03 — 地図見開き（A6×2）</div>
+      <div style="box-shadow:0 8px 32px rgba(0,0,0,0.18);border-radius:6px;overflow:hidden;line-height:0;">
+        <svg width="718" height="643" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="paper" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+    <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+    <feBlend in="SourceGraphic" in2="gray" mode="multiply" result="blend"/>
+    <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+  </filter>
+  <!-- 古地図グラデーション背景 -->
+  <radialGradient id="paperL" cx="40%" cy="35%" r="75%">
+    <stop offset="0%"   stop-color="#f2e8d0"/>
+    <stop offset="60%"  stop-color="#e8d8b8"/>
+    <stop offset="100%" stop-color="#d8c8a0"/>
+  </radialGradient>
+  <radialGradient id="paperR" cx="60%" cy="65%" r="75%">
+    <stop offset="0%"   stop-color="#ede0c4"/>
+    <stop offset="60%"  stop-color="#e0cfa8"/>
+    <stop offset="100%" stop-color="#cfc090"/>
+  </radialGradient>
+  <!-- ノイズテクスチャ -->
+  <filter id="noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="nz"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0.6  0 0 0 0 0.45  0 0 0 0 0.2  0 0 0 0.06 0" in="nz"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+  <pattern id="crosshatch" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+    <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(100,70,20,0.04)" stroke-width="0.7"/>
+  </pattern>
+</defs>
+
+<!-- 背景：古地図オフホワイト -->
+<rect width="359" height="643" fill="url(#paperL)"/>
+<rect x="359" width="359" height="643" fill="url(#paperR)"/>
+<!-- クロスハッチ -->
+<rect width="718" height="643" fill="url(#crosshatch)"/>
+<!-- 周囲を少し暗く（ビネット） -->
+<radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+  <stop offset="60%" stop-color="transparent"/>
+  <stop offset="100%" stop-color="rgba(80,50,10,0.18)"/>
+</radialGradient>
+<rect width="718" height="643" fill="url(#vignette)"/>
+
+<!-- 等高線装飾 -->
+<circle cx="130" cy="200" r="80" fill="none" stroke="rgba(100,70,20,0.06)" stroke-width="1.5"/><circle cx="130" cy="200" r="52" fill="none" stroke="rgba(100,70,20,0.04)" stroke-width="1"/><circle cx="200" cy="420" r="60" fill="none" stroke="rgba(100,70,20,0.05)" stroke-width="1.5"/><circle cx="200" cy="420" r="39" fill="none" stroke="rgba(100,70,20,0.03)" stroke-width="1"/><circle cx="90" cy="340" r="50" fill="none" stroke="rgba(100,70,20,0.04)" stroke-width="1.5"/><circle cx="90" cy="340" r="32" fill="none" stroke="rgba(100,70,20,0.03)" stroke-width="1"/><circle cx="500" cy="180" r="90" fill="none" stroke="rgba(100,70,20,0.05)" stroke-width="1.5"/><circle cx="500" cy="180" r="58" fill="none" stroke="rgba(100,70,20,0.03)" stroke-width="1"/><circle cx="580" cy="420" r="70" fill="none" stroke="rgba(100,70,20,0.06)" stroke-width="1.5"/><circle cx="580" cy="420" r="46" fill="none" stroke="rgba(100,70,20,0.04)" stroke-width="1"/><circle cx="440" cy="340" r="55" fill="none" stroke="rgba(100,70,20,0.04)" stroke-width="1.5"/><circle cx="440" cy="340" r="36" fill="none" stroke="rgba(100,70,20,0.03)" stroke-width="1"/><circle cx="340" cy="300" r="100" fill="none" stroke="rgba(100,70,20,0.04)" stroke-width="1.5"/><circle cx="340" cy="300" r="65" fill="none" stroke="rgba(100,70,20,0.03)" stroke-width="1"/>
+
+<!-- ページ境界 -->
+<line x1="359" y1="0" x2="359" y2="643" stroke="rgba(100,70,20,0.25)" stroke-width="1.5" stroke-dasharray="5,7"/>
+
+<!-- エリアラベル -->
+<text x="16" y="26" font-family="Space Mono,monospace" font-size="9"
+  fill="#5a3a10" letter-spacing="1.5" opacity="0.85">第1期 — 基礎の森（仮）</text>
+<text x="373" y="26" font-family="Space Mono,monospace" font-size="9"
+  fill="#3a1a60" letter-spacing="1.5" opacity="0.85">第2期 — カード王国（仮）</text>
+
+<!-- START -->
+<text x="95" y="72" text-anchor="middle"
+  font-family="Space Mono,monospace" font-size="9" fill="#7a4a10" opacity="0.8">▶ START</text>
+
+<!-- 道 -->
+<path d="M95,118 L272,95" stroke="#7a5a28" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/><path d="M272,95 L468,108" stroke="#8a6a30" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/><path d="M468,108 L590,108 L590,295" stroke="#7a5a28" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/><path d="M590,295 L262,310" stroke="#8a6a30" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/><path d="M262,310 L88,310 L88,478" stroke="#5a3a78" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/><path d="M88,478 L278,505" stroke="#5a3a78" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/><path d="M278,505 L490,520" stroke="#5a3a78" stroke-width="2.5" fill="none" stroke-dasharray="9,6" opacity="0.55"/>
+<polygon points="232.3,100.2 221.8,96.5 223.1,106.4" fill="#7a5a28" opacity="0.75"/><polygon points="428.1,105.4 418.4,99.7 417.8,109.7" fill="#8a6a30" opacity="0.75"/><polygon points="590.0,255.0 595.0,245.0 585.0,245.0" fill="#7a5a28" opacity="0.75"/><polygon points="302.0,308.2 312.2,312.7 311.7,302.7" fill="#8a6a30" opacity="0.75"/><polygon points="88.0,438.0 93.0,428.0 83.0,428.0" fill="#5a3a78" opacity="0.75"/><polygon points="238.4,499.4 229.2,493.0 227.8,502.9" fill="#5a3a78" opacity="0.75"/><polygon points="450.1,517.2 440.5,511.5 439.8,521.5" fill="#5a3a78" opacity="0.75"/>
+
+<!-- ノード -->
+<rect x="40" y="91" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="38" y="88" width="114" height="60" rx="8" fill="#3a2a14" stroke="#c8a060" stroke-width="2" /><text x="46" y="102" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#c8a060">01</text><text x="95" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ドーナツをつ</text><text x="95" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">くろう</text><text x="95" y="143" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#c8a060" opacity="0.8">4/5</text><rect x="78" y="154" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#c8a060" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="95" y="168" text-anchor="middle" font-family="monospace" font-size="6" fill="#c8a060" opacity="0.4">STAMP</text><rect x="217" y="68" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="215" y="65" width="114" height="60" rx="8" fill="#3a2a14" stroke="#c8a060" stroke-width="2" /><text x="223" y="79" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#c8a060">02</text><text x="272" y="88" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">リッチドーナ</text><text x="272" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ツ</text><text x="272" y="120" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#c8a060" opacity="0.8">4/12</text><rect x="255" y="131" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#c8a060" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="272" y="145" text-anchor="middle" font-family="monospace" font-size="6" fill="#c8a060" opacity="0.4">STAMP</text><rect x="413" y="81" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="411" y="78" width="114" height="60" rx="8" fill="#2a1a30" stroke="#9a70c0" stroke-width="2" /><text x="419" y="92" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#9a70c0">03</text><text x="468" y="106" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ちびキャラ</text><text x="468" y="133" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#9a70c0" opacity="0.8">5/10</text><rect x="451" y="144" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#9a70c0" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="468" y="158" text-anchor="middle" font-family="monospace" font-size="6" fill="#9a70c0" opacity="0.4">STAMP</text><rect x="535" y="268" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="533" y="265" width="114" height="60" rx="8" fill="#2a1a30" stroke="#9a70c0" stroke-width="2" /><text x="541" y="279" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#9a70c0">04</text><text x="590" y="293" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ポスター完成</text><text x="590" y="320" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#9a70c0" opacity="0.8">5/17</text><rect x="573" y="331" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#9a70c0" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="590" y="345" text-anchor="middle" font-family="monospace" font-size="6" fill="#9a70c0" opacity="0.4">STAMP</text><rect x="207" y="283" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="205" y="280" width="114" height="60" rx="8" fill="#2a1a30" stroke="#9a70c0" stroke-width="2" /><text x="213" y="294" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#9a70c0">05</text><text x="262" y="303" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">オリカデザイ</text><text x="262" y="319" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ン</text><text x="262" y="335" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#9a70c0" opacity="0.8">6/7</text><rect x="245" y="346" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#9a70c0" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="262" y="360" text-anchor="middle" font-family="monospace" font-size="6" fill="#9a70c0" opacity="0.4">STAMP</text><rect x="33" y="451" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="31" y="448" width="114" height="60" rx="8" fill="#2a1a30" stroke="#9a70c0" stroke-width="2" /><text x="39" y="462" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#9a70c0">06</text><text x="88" y="471" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">デジタルカー</text><text x="88" y="487" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ド</text><text x="88" y="503" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#9a70c0" opacity="0.8">6/14</text><rect x="71" y="514" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#9a70c0" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="88" y="528" text-anchor="middle" font-family="monospace" font-size="6" fill="#9a70c0" opacity="0.4">STAMP</text><rect x="223" y="478" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="221" y="475" width="114" height="60" rx="8" fill="#2a1a30" stroke="#9a70c0" stroke-width="2" /><text x="229" y="489" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#9a70c0">07</text><text x="278" y="498" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">飛び出すカー</text><text x="278" y="514" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">ド</text><text x="278" y="530" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#9a70c0" opacity="0.8">7/5</text><rect x="261" y="541" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#9a70c0" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="278" y="555" text-anchor="middle" font-family="monospace" font-size="6" fill="#9a70c0" opacity="0.4">STAMP</text><rect x="428" y="485" width="124" height="70" rx="12" fill="none" stroke="#d4880a" stroke-width="1.5" opacity="0.4" stroke-dasharray="5,4"/><rect x="435" y="493" width="114" height="60" rx="8" fill="rgba(80,50,10,0.18)"/><rect x="433" y="490" width="114" height="60" rx="8" fill="#3a1a08" stroke="#d4880a" stroke-width="2" filter="url(#glow)"/><text x="441" y="504" font-family="Space Mono,monospace" font-size="9" font-weight="700" fill="#d4880a">08</text><text x="490" y="518" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700" fill="#f5ead0">発表・修了</text><text x="490" y="545" text-anchor="middle" font-family="Space Mono,monospace" font-size="8" fill="#d4880a" opacity="0.8">7/12</text><rect x="473" y="556" width="34" height="23" rx="3" fill="rgba(255,255,255,0.04)" stroke="#d4880a" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/><text x="490" y="570" text-anchor="middle" font-family="monospace" font-size="6" fill="#d4880a" opacity="0.4">STAMP</text>
+
+<!-- GOAL -->
+<text x="490" y="584" text-anchor="middle"
+  font-family="Space Mono,monospace" font-size="9" fill="#c47808" opacity="0.9">🏆 GOAL</text>
+
+<!-- 下部タイトル -->
+<text x="359" y="635" text-anchor="middle"
+  font-family="Space Mono,monospace" font-size="7.5" fill="rgba(80,50,10,0.35)" letter-spacing="4">ADVENTURE MAP — 全8回の冒険</text>
+</svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ P04 Tips ══════════ -->
+  <div class="page" id="p2">
+    <div>
+      <div class="page-label">P04 — Tips・ルール</div>
+      <div class="card back">
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="card-inner">
+      <div class="tips-bg">
+
+          <div class="tips-header">
+            <div class="mono-sm">Core Sheet — Tips & Rules</div>
+            <h1>迷子にならないために</h1>
+            <div class="tagline">困ったらこのページを見よう</div>
+          </div>
+
+          <div class="tips-body">
+
+            <!-- 命名規則 -->
+            <div class="t-block naming-rule">
+              <div class="t-label">📁 ファイルの名前のつけ方</div>
+              <div class="rule-formula">名前 _ 回数 _ 内容　例：yamada_01_donut</div>
+              <div class="rule-example">※ スペースは使わない。アンダーバー（_）で区切る</div>
+            </div>
+
+            <!-- 提出方法 -->
+            <div class="t-block">
+              <div class="t-label">📤 提出の手順</div>
+              <div class="submit-steps">
+                <div class="s-step">
+                  <div class="s-step-num">1</div>
+                  <div class="s-step-text">名前をつけて保存</div>
+                </div>
+                <div class="s-step">
+                  <div class="s-step-num">2</div>
+                  <div class="s-step-text">提出フォルダに入れる</div>
+                </div>
+                <div class="s-step">
+                  <div class="s-step-num">3</div>
+                  <div class="s-step-text">先生に声をかける</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ジェスチャー操作 -->
+            <div class="t-block">
+              <div class="t-label">👆 ジェスチャー操作（Nomad Sculpt）</div>
+              <div class="shortcut-grid">
+                <div class="sc-row"><span class="sc-key">1本指ドラッグ</span><span class="sc-desc">スカルプト（ブラシで形を変える）</span></div>
+                <div class="sc-row"><span class="sc-key">2本指ドラッグ</span><span class="sc-desc">画面を回転させる</span></div>
+                <div class="sc-row"><span class="sc-key">2本指ピンチ</span><span class="sc-desc">ズームイン・アウト</span></div>
+                <div class="sc-row"><span class="sc-key">3本指ドラッグ</span><span class="sc-desc">画面を平行移動する</span></div>
+                <div class="sc-row"><span class="sc-key">2本指タップ</span><span class="sc-desc">ひとつ前に戻す（Undo）</span></div>
+                <div class="sc-row"><span class="sc-key">3本指タップ</span><span class="sc-desc">やり直す（Redo）</span></div>
+              </div>
+            </div>
+
+            <!-- 保存 -->
+            <div class="t-block naming-rule">
+              <div class="t-label">💾 保存のしかた・タイミング</div>
+              <div class="rule-formula">画面左上 ☰ → Files → 上書き保存</div>
+              <div class="help-items" style="margin-top:5px;">
+                <div class="help-item"><span class="help-icon">⏱️</span>こまめに保存しよう。目安は10分に1回</div>
+                <div class="help-item"><span class="help-icon">📁</span>ファイル名に自分の名前を入れておく</div>
+              </div>
+            </div>
+
+            <!-- 困ったときは -->
+            <div class="t-block" style="flex:1;">
+              <div class="t-label">🆘 困ったときは</div>
+              <div class="help-items">
+                <div class="help-item"><span class="help-icon">💾</span>まず保存してから試してみる</div>
+                <div class="help-item"><span class="help-icon">↩️</span>Undoで戻れるところまで戻る</div>
+                <div class="help-item"><span class="help-icon">🙋</span>わからなくなったら先生を呼ぶ。いつでもOK</div>
+                <div class="help-item"><span class="help-icon">📖</span>各回シートのコツ欄を見返す</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /card-inner -->
+    </div><!-- /card -->
+  </div>
+  </div>
+
+</div>
+
+<script>
+  function show(idx) {
+    document.querySelectorAll('.page').forEach((p,i) => p.classList.toggle('active', i === idx));
+    document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', i === idx));
+  }
+</script>
+</body>
+</html>

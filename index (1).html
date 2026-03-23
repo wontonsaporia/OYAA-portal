@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OYAA 3DCG教室</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0ede6;--card:#faf8f2;--border:#e0dbd0;--line:#d5cfc0;
+  --p1:#0d2340;--p1a:#5fa0e0;--p1s:#7ab0d8;
+  --p2:#1a0d40;--p2a:#a07ae0;--p2s:#b090d8;
+  --gold:#e8cc50;--golddark:#6a4e00;
+  --body:#1a1a1a;--sub:#777;--label:#aaa;
+  --sans:'Noto Sans JP',sans-serif;--mono:'Space Mono',monospace;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--body);min-height:100vh;}
+
+.hero{background:var(--p1);padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(95,160,224,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(95,160,224,.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--p1a);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;position:relative;}
+.hero-title{font-size:32px;font-weight:900;color:#fff;line-height:1.15;margin-bottom:4px;position:relative;}
+.hero-title span{color:var(--p1a);}
+.hero-sub{font-size:12px;color:var(--p1s);position:relative;margin-bottom:18px;}
+.chapter-badges{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;position:relative;}
+.ch-badge{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:2px;border:1px solid;}
+.ch-badge.p1{border-color:#1e4070;color:#4a80c0;}
+.ch-badge.p2{border-color:#2a1a50;color:#7a5ab0;}
+
+.main{max-width:680px;margin:0 auto;padding:32px 20px 80px;display:flex;flex-direction:column;gap:32px;}
+.sec-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--line);}
+
+.sheet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.sheet-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px 10px;background:var(--card);border:1px solid var(--border);border-radius:5px;text-decoration:none;color:var(--body);transition:all .15s;}
+.sheet-btn:hover{background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.1);transform:translateY(-2px);}
+.sheet-btn.p1{border-top:3px solid var(--p1);}
+.sheet-btn.p2{border-top:3px solid var(--p2a);}
+.sheet-num{font-family:var(--mono);font-size:14px;font-weight:700;}
+.sheet-btn.p1 .sheet-num{color:var(--p1);}
+.sheet-btn.p2 .sheet-num{color:var(--p2a);}
+.sheet-date{font-family:var(--mono);font-size:8.5px;color:var(--label);}
+.sheet-name{font-size:10px;font-weight:700;text-align:center;line-height:1.3;color:#555;}
+
+.link-list{display:flex;flex-direction:column;gap:6px;}
+.link-card{display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--card);border:1px solid var(--border);border-radius:5px;text-decoration:none;color:var(--body);transition:all .15s;}
+.link-card:hover{border-color:var(--p1a);box-shadow:0 2px 10px rgba(13,35,64,.09);transform:translateX(3px);}
+.link-card.acc-p1{border-left:3px solid var(--p1);}
+.link-card.acc-gray{border-left:3px solid #ccc;}
+.link-card.disabled{opacity:.4;pointer-events:none;}
+.lc-icon{font-size:22px;width:34px;text-align:center;flex-shrink:0;}
+.lc-body{flex:1;}
+.lc-title{font-size:13px;font-weight:700;line-height:1.3;}
+.lc-desc{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.5;}
+.lc-tag{font-family:var(--mono);font-size:8.5px;padding:2px 7px;border-radius:2px;flex-shrink:0;}
+.tag-p1{background:#e8f0fa;color:var(--p1);}
+.tag-gray{background:#f0f0f0;color:#999;}
+.tag-future{background:#f5f0ff;color:#7050a0;}
+
+footer{text-align:center;font-family:var(--mono);font-size:9px;color:var(--label);letter-spacing:.1em;padding-bottom:24px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">OYAA × 浦添パルコ</div>
+  <div class="hero-title">3D<span>CG</span>教室</div>
+  <div class="hero-sub">スカルプトモデリング × オリカ ／ 全8回の冒険 2025.4–7</div>
+  <div class="chapter-badges">
+    <span class="ch-badge p1">Ch.01 ドーナツ</span>
+    <span class="ch-badge p1">Ch.02 質感</span>
+    <span class="ch-badge p1">Ch.03 キャラ</span>
+    <span class="ch-badge p1">Ch.04 ポスター</span>
+    <span class="ch-badge p2">Ch.05 デザイン</span>
+    <span class="ch-badge p2">Ch.06 カード</span>
+    <span class="ch-badge p2">Ch.07 奥行き</span>
+    <span class="ch-badge p2">Ch.08 発表</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <section>
+    <div class="sec-label">各回シート — Session Sheets</div>
+    <div class="sheet-grid">
+      <a class="sheet-btn p1" href="passport_sheets.html" target="_blank"><div class="sheet-num">S01</div><div class="sheet-date">4 / 5</div><div class="sheet-name">ドーナツをつくろう</div></a>
+      <a class="sheet-btn p1" href="passport_sheets.html" target="_blank"><div class="sheet-num">S02</div><div class="sheet-date">4 / 12</div><div class="sheet-name">リッチドーナツ</div></a>
+      <a class="sheet-btn p1" href="passport_sheets.html" target="_blank"><div class="sheet-num">S03</div><div class="sheet-date">5 / 10</div><div class="sheet-name">ちびキャラ</div></a>
+      <a class="sheet-btn p1" href="passport_sheets.html" target="_blank"><div class="sheet-num">S04</div><div class="sheet-date">5 / 17</div><div class="sheet-name">ポスター完成</div></a>
+      <a class="sheet-btn p2" href="passport_sheets.html" target="_blank"><div class="sheet-num">S05</div><div class="sheet-date">6 / 7</div><div class="sheet-name">オリカデザイン</div></a>
+      <a class="sheet-btn p2" href="passport_sheets.html" target="_blank"><div class="sheet-num">S06</div><div class="sheet-date">6 / 14</div><div class="sheet-name">デジタルカード</div></a>
+      <a class="sheet-btn p2" href="passport_sheets.html" target="_blank"><div class="sheet-num">S07</div><div class="sheet-date">7 / 5</div><div class="sheet-name">飛び出すカード</div></a>
+      <a class="sheet-btn p2" href="passport_sheets.html" target="_blank"><div class="sheet-num">S08</div><div class="sheet-date">7 / 12</div><div class="sheet-name">発表・修了</div></a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">コアシート — Core</div>
+    <div class="link-list">
+      <a class="link-card acc-p1" href="passport_core.html" target="_blank">
+        <div class="lc-icon">🗺️</div>
+        <div class="lc-body"><div class="lc-title">コアシート</div><div class="lc-desc">表紙・冒険マップ・Tips &amp; ルール（P01–P04）</div></div>
+        <span class="lc-tag tag-p1">第1回配布</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">ワークシート &amp; 今後追加 — Coming Soon</div>
+    <div class="link-list">
+      <div class="link-card acc-gray disabled"><div class="lc-icon">🎨</div><div class="lc-body"><div class="lc-title">X01 ちびキャラデザインシート</div><div class="lc-desc">第2回（4/12）配布予定</div></div><span class="lc-tag tag-gray">制作中</span></div>
+      <div class="link-card acc-gray disabled"><div class="lc-icon">🃏</div><div class="lc-body"><div class="lc-title">X02 オリカデザインシート</div><div class="lc-desc">第5回（6/7）配布予定</div></div><span class="lc-tag tag-gray">制作中</span></div>
+      <div class="link-card acc-gray disabled"><div class="lc-icon">🏆</div><div class="lc-body"><div class="lc-title">C01 修了証</div><div class="lc-desc">第8回（7/12）授与予定</div></div><span class="lc-tag tag-gray">制作中</span></div>
+      <div class="link-card acc-gray disabled"><div class="lc-icon">🔮</div><div class="lc-body"><div class="lc-title">ギャラリー（3D図鑑）</div><div class="lc-desc">みんなの作品をブラウザで3D表示する図鑑。将来追加予定。</div></div><span class="lc-tag tag-future">将来追加</span></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>OYAA 3DCG教室 — 浦添パルコ 2025.4–7</footer>
+</body>
+</html>
