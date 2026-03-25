@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パスポート</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p1:#0d2340;--p1a:#5fa0e0;--p1s:#7ab0d8;
+  --p2:#1a0d40;--p2a:#a07ae0;
+  --bg:#f0ede6;--card:#faf8f2;--border:#e0dbd0;
+  --body:#1a1a1a;--sub:#777;--label:#aaa;
+  --tab-h:44px;
+  --sans:'Noto Sans JP',sans-serif;
+  --mono:'Space Mono',monospace;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--sans);background:var(--bg);display:flex;flex-direction:column;}
+
+/* ── タブバー ── */
+.tabbar{
+  height:var(--tab-h);
+  flex-shrink:0;
+  background:var(--p1);
+  display:flex;
+  align-items:flex-end;
+  padding:0 16px;
+  gap:3px;
+}
+.tab{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.45);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-bottom:none;
+  border-radius:4px 4px 0 0;
+  cursor:pointer;
+  transition:all .15s;
+  letter-spacing:.04em;
+  user-select:none;
+}
+.tab:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.08);}
+.tab.active{
+  background:var(--card);
+  color:var(--p1);
+  border-color:#c8c4bc;
+}
+.tab-icon{font-size:13px;}
+
+/* セッションタブ専用（第1期・第2期カラー） */
+.tab.s-p1.active{color:var(--p1);}
+.tab.s-p2.active{color:var(--p2a);}
+
+/* ── セッションタブ群 ── */
+.session-tabs-wrap{
+  display:none;
+  align-items:flex-end;
+  gap:2px;
+  overflow-x:auto;
+  flex:1;
+  padding-bottom:0;
+  scrollbar-width:none;
+}
+.session-tabs-wrap::-webkit-scrollbar{display:none;}
+.session-tabs-wrap.visible{display:flex;}
+
+.stab{
+  display:flex;flex-direction:column;align-items:center;
+  padding:6px 10px 7px;
+  font-family:var(--mono);
+  color:rgba(255,255,255,.4);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-bottom:none;
+  border-radius:3px 3px 0 0;
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+  flex-shrink:0;
+  user-select:none;
+}
+.stab:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);}
+.stab.active{background:var(--card);border-color:#c8c4bc;}
+.stab.p1.active{color:var(--p1);}
+.stab.p2.active{color:var(--p2a);}
+.stab-num{font-size:11px;font-weight:700;}
+.stab-date{font-size:8px;opacity:.7;margin-top:1px;}
+
+/* 区切り */
+.stab-sep{
+  width:1px;height:20px;
+  background:rgba(255,255,255,.1);
+  align-self:center;
+  flex-shrink:0;
+  margin:0 2px;
+}
+
+/* ── コンテンツ ── */
+.view{flex:1;display:none;}
+.view.active{display:block;}
+.view iframe{width:100%;height:100%;border:none;display:block;}
+</style>
+</head>
+<body>
+
+<!-- タブバー -->
+<div class="tabbar">
+  <!-- メインタブ：コアシート -->
+  <div class="tab active" id="tab-core" onclick="switch_main('core')">
+    <span class="tab-icon">🗺️</span>コアシート
+  </div>
+
+  <!-- メインタブ：各回シート（クリックで展開） -->
+  <div class="tab" id="tab-sessions" onclick="switch_main('sessions')">
+    <span class="tab-icon">📄</span>各回シート
+  </div>
+
+  <!-- セッションタブ群（各回シート選択時に表示） -->
+  <div class="session-tabs-wrap" id="session-tabs">
+    <div class="stab-sep"></div>
+    <div class="stab p1" id="stab-s01" onclick="switch_session('s01')"><div class="stab-num">S01</div><div class="stab-date">4/5</div></div>
+    <div class="stab p1" id="stab-s02" onclick="switch_session('s02')"><div class="stab-num">S02</div><div class="stab-date">4/12</div></div>
+    <div class="stab p1" id="stab-s03" onclick="switch_session('s03')"><div class="stab-num">S03</div><div class="stab-date">5/10</div></div>
+    <div class="stab p1" id="stab-s04" onclick="switch_session('s04')"><div class="stab-num">S04</div><div class="stab-date">5/17</div></div>
+    <div class="stab-sep"></div>
+    <div class="stab p2" id="stab-s05" onclick="switch_session('s05')"><div class="stab-num">S05</div><div class="stab-date">6/7</div></div>
+    <div class="stab p2" id="stab-s06" onclick="switch_session('s06')"><div class="stab-num">S06</div><div class="stab-date">6/14</div></div>
+    <div class="stab p2" id="stab-s07" onclick="switch_session('s07')"><div class="stab-num">S07</div><div class="stab-date">7/5</div></div>
+    <div class="stab p2" id="stab-s08" onclick="switch_session('s08')"><div class="stab-num">S08</div><div class="stab-date">7/12</div></div>
+  </div>
+</div>
+
+<!-- ビューエリア -->
+<div class="view active" id="view-core">
+  <iframe src="passport_core.html" title="コアシート"></iframe>
+</div>
+<div class="view" id="view-sessions">
+  <iframe id="sessions-frame" src="" title="各回シート"></iframe>
+</div>
+
+<script>
+const SESSION_MAP = {
+  s01:'passport_sheets.html',
+  s02:'passport_sheets.html',
+  s03:'passport_sheets.html',
+  s04:'passport_sheets.html',
+  s05:'passport_sheets.html',
+  s06:'passport_sheets.html',
+  s07:'passport_sheets.html',
+  s08:'passport_sheets.html',
+};
+
+let current_session = 's01';
+
+function switch_main(mode){
+  // タブ切替
+  document.getElementById('tab-core').classList.toggle('active', mode==='core');
+  document.getElementById('tab-sessions').classList.toggle('active', mode==='sessions');
+  // セッションタブ表示切替
+  document.getElementById('session-tabs').classList.toggle('visible', mode==='sessions');
+  // ビュー切替
+  document.getElementById('view-core').classList.toggle('active', mode==='core');
+  document.getElementById('view-sessions').classList.toggle('active', mode==='sessions');
+  // 各回シートを開いたとき、前回のセッションを復元
+  if(mode==='sessions'){
+    switch_session(current_session);
+  }
+}
+
+function switch_session(id){
+  current_session = id;
+  // スタブのアクティブ更新
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('stab-'+id).classList.add('active');
+  // iframe更新（将来個別ファイルに分割した時のために SESSION_MAP を使う）
+  const frame = document.getElementById('sessions-frame');
+  if(frame.src !== SESSION_MAP[id]) frame.src = SESSION_MAP[id];
+}
+</script>
+</body>
+</html>
