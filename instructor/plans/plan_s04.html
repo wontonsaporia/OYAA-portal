@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S04 授業プランシート — 講師用</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sans: 'Noto Sans JP', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --black: #111;
+    --dark:  #333;
+    --mid:   #666;
+    --gray:  #999;
+    --line:  #ccc;
+    --white: #fff;
+  }
+
+  body {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--black);
+    background: #e8e8e4;
+    padding: 20px;
+  }
+
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--white);
+    margin: 0 auto;
+    padding: 12mm 11mm 10mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+
+  /* ── ヘッダー ── */
+  .hdr {
+    border-bottom: 2px solid var(--black);
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+  .hdr-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .hdr-code { font-family: var(--mono); font-size: 9px; color: var(--mid); letter-spacing: 0.1em; }
+  .hdr-meta { font-family: var(--mono); font-size: 9px; color: var(--mid); }
+  .hdr-title { font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+  .hdr-sub { font-size: 10px; color: var(--mid); }
+
+  /* ── セクション ── */
+  .section { margin-bottom: 10px; }
+  .sec-label {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px; margin-bottom: 6px;
+  }
+
+  /* ── 準備物 ── */
+  .checklist {
+    display: flex; flex-direction: column;
+    gap: 4px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; line-height: 1.4;
+  }
+  .chk {
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+  .chk-tag { font-family: var(--mono); font-size: 8.5px; color: var(--mid); min-width: 34px; }
+
+  /* ── タイムライン ── */
+  .tl-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .tl-table thead tr { border-bottom: 1.5px solid var(--black); }
+  .tl-table thead th {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray); padding: 3px 5px; text-align: left;
+  }
+  .tl-table tbody tr { border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tl-table tbody tr:last-child { border-bottom: none; }
+  .tl-table td { padding: 5px 5px; line-height: 1.55; }
+
+  .col-time  { width: 13mm; }
+  .col-dur   { width: 9mm; text-align: right; color: var(--gray); font-family: var(--mono); font-size: 9.5px; }
+  .col-block { width: 22mm; }
+  .col-slide { width: 14mm; text-align: center; }
+  .col-memo  { width: auto; }
+  .col-note  { width: 40mm; font-size: 10px; color: var(--mid); border-left: 1px solid var(--line); padding-left: 7px; }
+
+  .time-val { font-family: var(--mono); font-size: 10.5px; font-weight: 700; }
+  .block-name { font-weight: 700; font-size: 11.5px; }
+  .block-sub  { font-size: 9.5px; color: var(--mid); margin-top: 1px; }
+
+  /* ブロック色分け（左端のアクセントライン） */
+  .row-intro td:first-child  { border-left: 3px solid #555; }
+  .row-lecture td:first-child { border-left: 3px solid #888; }
+  .row-practice td:first-child { border-left: 3px solid #111; }
+  .row-wrap td:first-child   { border-left: 3px solid #555; }
+  .row-practice { background: #fafaf6; }
+
+  .slide-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 8px;
+    background: #f0f0f0; border: 1px solid var(--line);
+    padding: 1px 4px; border-radius: 1px;
+    color: var(--mid);
+    white-space: nowrap;
+  }
+  .hl-mark {
+    display: inline-block; font-size: 8px; font-family: var(--mono);
+    background: var(--black); color: var(--white);
+    padding: 1px 4px; border-radius: 1px; margin-top: 3px;
+  }
+
+  .memo-main { color: var(--dark); }
+  .memo-sub  { font-size: 10px; color: var(--mid); margin-top: 2px; }
+  .note-head { font-size: 8.5px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .note-item { display: flex; gap: 3px; margin-bottom: 2px; font-size: 10px; }
+  .note-item::before { content: "▲"; font-size: 7.5px; color: var(--gray); flex-shrink: 0; margin-top: 2px; }
+
+  /* ── 次回 ── */
+  .next-block { font-size: 11.5px; color: var(--dark); line-height: 1.8; }
+
+  /* ── フッター ── */
+  .footer {
+    margin-top: 10px; padding-top: 5px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 8px; color: var(--gray);
+  }
+
+  /* ── めあて・まとめ ── */
+  .aim-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .aim-block, .sum-block {
+    border: 1px solid var(--line);
+    border-radius: 2px; padding: 6px 9px;
+  }
+  .aim-block .sec-label, .sum-block .sec-label {
+    border-bottom: none; margin-bottom: 4px; padding-bottom: 0;
+  }
+  .aim-item, .sum-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11.5px; line-height: 1.5; margin-bottom: 3px;
+  }
+  .aim-item::before { content: "●"; font-size: 8px; color: var(--gray); flex-shrink: 0; margin-top: 3px; }
+  .sum-item .chk {
+    width: 11px; height: 11px; margin-top: 2px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .sheet { box-shadow: none; padding: 10mm 10mm 8mm; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ヘッダー -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <span class="hdr-code">S04 — Chapter 04 — 講師用プランシート</span>
+      <span class="hdr-meta">2025.5.17（土）　15:00–16:30　90分　想定6名</span>
+    </div>
+    <div class="hdr-title">ポスターに仕上げよう</div>
+    <div class="hdr-sub">ライティング・レンダー・印刷　／　Nomad Sculpt（iPad）</div>
+  </div>
+
+  <!-- 準備物 -->
+  <div class="section">
+    <div class="sec-label">準備物チェックリスト</div>
+    <div class="checklist">
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">機材</span>講師用 iPad・充電器・スタイラス</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">配布物</span>生徒人数分のパスポート（S01シート込み）</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">データ</span>S04スライド（6枚）表示確認・提出フォルダ作成済み</div>
+    </div>
+  </div>
+
+  <!-- めあて・まとめ -->
+  <div class="aim-wrap">
+    <div class="aim-block">
+      <div class="sec-label">今日のめあて</div>
+      <div class="aim-item">ライトを配置して、モデルが映える照明を作る</div>
+      <div class="aim-item">カメラアングルと構図を決めてレンダリングする</div>
+      <div class="aim-item">ポスターとして印刷・提出し、第1期を完成させる</div>
+    </div>
+    <div class="sum-block">
+      <div class="sec-label">今日のまとめ（授業後に確認）</div>
+      <div class="sum-item"><div class="chk"></div>ライトを配置してモデルを照らすことができた</div>
+      <div class="sum-item"><div class="chk"></div>構図を決めてレンダリングできた</div>
+      <div class="sum-item"><div class="chk"></div>ポスターとして印刷・提出できた</div>
+    </div>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="section">
+    <div class="sec-label">タイムライン　／　導入 → 講義 → 演習 → まとめ</div>
+    <table class="tl-table">
+      <thead>
+        <tr>
+          <th class="col-time">時刻</th>
+          <th class="col-dur">時間</th>
+          <th class="col-block">ブロック</th>
+          <th class="col-slide">スライド</th>
+          <th class="col-memo">講師メモ・説明ポイント</th>
+          <th class="col-note">詰まりポイント対応</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="row-intro">
+          <td><span class="time-val">15:00</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">導入</div>
+            <div class="block-sub">復習・今日のテーマ</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 1</span><br>
+            <span class="slide-tag">Slide 2</span
+          </td>
+          <td>
+            <div class="memo-main">挨拶・前回の振り返り（ちびキャラ完成）。「今日で第1期が完成する」と伝えてモチベートする。</div>
+            <div class="memo-sub">「作ったモデルをポスターにして印刷して持ち帰れる」と最終成果物を具体的に見せる。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">前回未完成の生徒 → 冒頭10分で続きを作ってもらい合流</div>
+            <div class="note-item">ファイルが見つからない → 提出フォルダから呼び出す</div>
+          </td>
+        </tr>
+
+        <tr class="row-lecture">
+          <td><span class="time-val">15:10</span></td>
+          <td class="col-dur">20分</td>
+          <td>
+            <div class="block-name">講義</div>
+            <div class="block-sub">ライティング・構図・ポストプロセス説明＋デモ</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 3</span><br>
+            <span class="slide-tag">Slide 4</span><br>
+            <span class="slide-tag">Slide 5</span
+          </td>
+          <td>
+            <div class="memo-main">【Slide 3】ライティングとは：メイン・補助・背景の3種を図解。「まずシンプルに1灯から」を強調。</div>
+            <div class="memo-sub">【Slide 4】構図とポストプロセスの説明。「カメラを固定してからライトを調整する」の手順を実演。【Slide 5】全員でアプリを開き、前回のキャラファイルを呼び出す。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">ライトが多すぎて影が複雑 → まず1灯に絞るよう声掛け</div>
+            <div class="note-item">ポストプロセスのかけすぎ → 少しずつ調整と伝える</div>
+          </td>
+        </tr>
+
+        <tr class="row-practice">
+          <td><span class="time-val">15:30</span></td>
+          <td class="col-dur">50分</td>
+          <td>
+            <div class="block-name">演習</div>
+            <div class="block-sub">ライティング・レンダリング・書き出し</div>
+            <div class="hl-mark">★ メイン</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">—</span
+          </td>
+          <td>
+            <div class="memo-main">ライト配置→カメラアングル決定→ポストプロセス調整→レンダリングの順で進める。</div>
+            <div class="memo-sub">「見せたいものが映えるポジション」を各自で探させる。レンダリング完了後、タイトルを入れてポスターとして書き出し。ファイル名：名前_04_poster</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">レンダリングが始まらない → 解像度設定を確認</div>
+            <div class="note-item">書き出し先が見つからない → フォルダ指定を一緒に確認</div>
+            <div class="note-item">時間が足りない → ポストプロセスは省略して書き出し優先</div>
+          </td>
+        </tr>
+
+        <tr class="row-wrap">
+          <td><span class="time-val">16:20</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">まとめ</div>
+            <div class="block-sub">印刷・提出・第1期完了</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 6</span
+          </td>
+          <td>
+            <div class="memo-main">印刷・提出フォルダへコピー → 先生に声掛け。Slide 6でチェックリストを確認。</div>
+            <div class="memo-sub">第1期完了を称える。次回予告：第2期スタート。オリカのデザインを考えてくるよう伝える。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">印刷できない → データをフォルダに入れて次回印刷</div>
+            <div class="note-item">提出忘れ → 退室前に全員確認</div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次回引き継ぎ -->
+  <div class="section">
+    <div class="sec-label">次回（S02 / 4月12日）への引き継ぎ</div>
+    <div class="next-block">
+      次回テーマ：<strong>第5回（6/7）オリカをデザインしよう</strong><br>
+      第2期スタート。自分だけのオリカの仕様書（X02）を書く。どんなカードにしたいか考えてきてね。
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <span>S04 — 第04回 講師プランシート</span>
+    <span>INSTRUCTOR ONLY　／　OYAA 浦添パルコ 3DCG教室　2025.5.17（</span>
+  </div>
+
+</div>
+</body>
+</html>
