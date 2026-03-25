@@ -8,97 +8,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f0ede6;--card:#faf8f2;--border:#e0dbd0;--line:#d5cfc0;
+  --bg:#f0ede6;--card:#faf8f2;--border:#e0dbd0;
   --p1:#0d2340;--p1a:#5fa0e0;--p1s:#7ab0d8;
   --p2:#1a0d40;--p2a:#a07ae0;
-  --gold:#e8cc50;--golddark:#6a4e00;
+  --gold:#e8cc50;
   --body:#1a1a1a;--sub:#777;--label:#aaa;
   --nav-w:240px;
+  --topbar-h:44px;
   --sans:'Noto Sans JP',sans-serif;
   --mono:'Space Mono',monospace;
 }
-
 html,body{height:100%;overflow:hidden;}
-body{font-family:var(--sans);background:var(--bg);color:var(--body);display:flex;}
+body{font-family:var(--sans);background:var(--bg);color:var(--body);}
+
+/* ══ トップバー ══ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--topbar-h);
+  background:var(--p1);
+  display:flex;align-items:center;
+  padding:0 14px;gap:12px;
+  z-index:300;
+  box-shadow:0 1px 8px rgba(0,0,0,0.3);
+}
+.toggle-btn{
+  width:32px;height:32px;
+  background:none;border:none;
+  cursor:pointer;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:5px;padding:6px;
+  border-radius:5px;
+  transition:background .15s;
+  flex-shrink:0;
+}
+.toggle-btn:hover{background:rgba(255,255,255,0.08);}
+.toggle-btn span{
+  display:block;width:18px;height:2px;
+  background:#fff;border-radius:2px;
+  transition:all .25s;
+}
+/* ハンバーガー → × アニメーション */
+body.nav-open .toggle-btn span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+body.nav-open .toggle-btn span:nth-child(2){opacity:0;}
+body.nav-open .toggle-btn span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.topbar-title{
+  font-family:var(--mono);font-size:12px;
+  color:#fff;font-weight:700;letter-spacing:.05em;
+}
+.topbar-title span{color:var(--p1a);}
+.topbar-subtitle{
+  font-family:var(--mono);font-size:9px;
+  color:var(--p1s);letter-spacing:.08em;
+}
+.topbar-current{
+  margin-left:auto;
+  font-family:var(--mono);font-size:10px;
+  color:var(--p1s);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:300px;
+}
+
+/* ══ オーバーレイ ══ */
+.overlay{
+  display:none;
+  position:fixed;inset:0;top:var(--topbar-h);
+  background:rgba(0,0,0,0.35);
+  z-index:199;
+}
+body.nav-open .overlay{display:block;}
 
 /* ══ 左ナビ ══ */
 .nav{
+  position:fixed;
+  top:var(--topbar-h);left:0;bottom:0;
   width:var(--nav-w);
-  flex-shrink:0;
-  height:100vh;
-  overflow-y:auto;
   background:var(--p1);
-  display:flex;
-  flex-direction:column;
+  overflow-y:auto;
+  z-index:200;
+  transform:translateX(-100%);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
 }
+body.nav-open .nav{transform:translateX(0);}
 
-.nav-hero{
-  padding:20px 16px 16px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-  position:relative;
-}
-.nav-hero::before{
-  content:'';position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(95,160,224,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(95,160,224,.05) 1px,transparent 1px);
-  background-size:20px 20px;pointer-events:none;
-}
-.nav-eyebrow{
-  font-family:var(--mono);font-size:8px;color:var(--p1s);
-  letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px;position:relative;
-}
-.nav-title{
-  font-size:18px;font-weight:900;color:#fff;line-height:1.15;position:relative;
-}
-.nav-title span{color:var(--p1a);}
-.nav-sub{font-size:10px;color:var(--p1s);margin-top:3px;position:relative;}
-
-/* ナビセクション */
-.nav-section{padding:12px 0 4px;}
+.nav-section{padding:10px 0 4px;}
 .nav-sec-label{
   font-family:var(--mono);font-size:8px;letter-spacing:.15em;
   text-transform:uppercase;color:rgba(255,255,255,.25);
-  padding:0 14px 6px;
+  padding:0 14px 5px;
 }
-
-/* ナビボタン */
-.nav-btn{
-  display:flex;align-items:center;gap:9px;
-  padding:8px 14px;
-  font-size:12px;font-weight:700;color:rgba(255,255,255,.65);
-  cursor:pointer;border:none;background:none;
-  width:100%;text-align:left;
-  transition:background .12s,color .12s;
-  border-left:2px solid transparent;
-}
-.nav-btn:hover{background:rgba(255,255,255,.06);color:#fff;}
-.nav-btn.active{
-  background:rgba(95,160,224,.12);
-  color:var(--p1a);
-  border-left-color:var(--p1a);
-}
-.nav-btn.p2-btn.active{
-  background:rgba(160,122,224,.12);
-  color:var(--p2a);
-  border-left-color:var(--p2a);
-}
-.nav-btn.disabled{opacity:.35;cursor:default;pointer-events:none;}
-.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
-.nav-info{flex:1;min-width:0;}
-.nav-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.nav-meta{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.3);margin-top:1px;}
-.nav-tag{
-  font-family:var(--mono);font-size:7.5px;
-  padding:1px 5px;border-radius:2px;flex-shrink:0;
-}
-.nav-tag.gray{background:rgba(255,255,255,.08);color:rgba(255,255,255,.3);}
-.nav-tag.gold{background:rgba(232,204,80,.15);color:#e8cc50;}
-
-/* 期ラベル */
 .period-divider{
   display:flex;align-items:center;gap:6px;
-  padding:8px 14px 4px;
+  padding:7px 14px 3px;
 }
 .period-badge{
   font-family:var(--mono);font-size:7.5px;
@@ -108,224 +110,150 @@ body{font-family:var(--sans);background:var(--bg);color:var(--body);display:flex
 .period-badge.p2{background:rgba(26,13,64,.6);color:var(--p2a);border:1px solid rgba(160,122,224,.2);}
 .period-line{flex:1;height:1px;background:rgba(255,255,255,.08);}
 
+.nav-btn{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 14px;
+  font-size:12px;font-weight:700;
+  color:rgba(255,255,255,.65);
+  cursor:pointer;border:none;background:none;
+  width:100%;text-align:left;
+  transition:background .12s,color .12s;
+  border-left:2px solid transparent;
+}
+.nav-btn:hover{background:rgba(255,255,255,.06);color:#fff;}
+.nav-btn.active{background:rgba(95,160,224,.12);color:var(--p1a);border-left-color:var(--p1a);}
+.nav-btn.p2-btn.active{background:rgba(160,122,224,.12);color:var(--p2a);border-left-color:var(--p2a);}
+.nav-btn.disabled{opacity:.35;cursor:default;pointer-events:none;}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+.nav-info{flex:1;min-width:0;}
+.nav-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-meta{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.3);margin-top:1px;}
+.nav-tag{font-family:var(--mono);font-size:7.5px;padding:1px 5px;border-radius:2px;flex-shrink:0;}
+.nav-tag.gray{background:rgba(255,255,255,.08);color:rgba(255,255,255,.3);}
+.nav-tag.gold{background:rgba(232,204,80,.15);color:#e8cc50;}
+
 .nav-footer{
-  margin-top:auto;
-  padding:12px 14px;
+  padding:12px 14px 20px;
   border-top:1px solid rgba(255,255,255,.07);
   font-family:var(--mono);font-size:8px;
-  color:rgba(255,255,255,.2);
-  line-height:1.7;
+  color:rgba(255,255,255,.2);line-height:1.7;
+  margin-top:8px;
 }
 
-/* ══ 右コンテンツエリア ══ */
+/* ══ コンテンツエリア ══ */
 .content{
-  flex:1;
-  height:100vh;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  position:fixed;
+  top:var(--topbar-h);left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;
 }
 
-/* ウェルカム画面（初期表示） */
+/* ウェルカム */
 .welcome{
   flex:1;overflow-y:auto;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:40px 24px;
-  gap:12px;
+  gap:10px;padding:40px 24px;
+  text-align:center;
 }
 .welcome-icon{font-size:48px;}
 .welcome-title{font-size:20px;font-weight:900;color:var(--p1);}
-.welcome-sub{font-size:13px;color:var(--sub);text-align:center;line-height:1.7;}
+.welcome-sub{font-size:13px;color:var(--sub);line-height:1.7;}
 .welcome-hint{
   font-family:var(--mono);font-size:10px;color:var(--label);
   margin-top:8px;letter-spacing:.08em;
 }
 
 /* iframeビュー */
-.frame-view{
-  flex:1;display:none;flex-direction:column;
-}
+.frame-view{display:none;flex:1;flex-direction:column;}
 .frame-view.active{display:flex;}
-.frame-bar{
-  height:38px;flex-shrink:0;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;
-  padding:0 14px;
-  gap:10px;
-}
-.frame-bar-title{
-  font-size:12px;font-weight:700;color:var(--p1);flex:1;
-}
-.frame-bar-open{
-  font-family:var(--mono);font-size:9px;
-  color:var(--p1a);text-decoration:none;
-  padding:3px 9px;border:1px solid rgba(95,160,224,.3);
-  border-radius:2px;transition:background .12s;
-}
-.frame-bar-open:hover{background:rgba(95,160,224,.08);}
-.frame-view iframe{
-  flex:1;border:none;width:100%;
-}
+.frame-view iframe{flex:1;border:none;width:100%;}
 </style>
 </head>
 <body>
 
-<!-- ══ 左ナビ ══ -->
-<nav class="nav">
-  <div class="nav-hero">
-    <div class="nav-eyebrow">OYAA × 浦添パルコ</div>
-    <div class="nav-title">3D<span>CG</span>教室</div>
-    <div class="nav-sub">2025.4–7 &nbsp;全8回</div>
+<!-- トップバー -->
+<div class="topbar">
+  <button class="toggle-btn" onclick="toggleNav()" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+  <div>
+    <div class="topbar-title">3D<span>CG</span>教室</div>
+    <div class="topbar-subtitle">OYAA × 浦添パルコ</div>
   </div>
+  <div class="topbar-current" id="topbar-current"></div>
+</div>
 
-  <!-- 各回シート -->
+<!-- オーバーレイ -->
+<div class="overlay" onclick="closeNav()"></div>
+
+<!-- 左ナビ -->
+<nav class="nav">
+
   <div class="nav-section">
     <div class="nav-sec-label">各回シート</div>
-
-    <div class="period-divider">
-      <span class="period-badge p1">第1期</span>
-      <div class="period-line"></div>
-    </div>
-    <button class="nav-btn" onclick="open_frame('passport_sheets.html', 'S01 ドーナツをつくろう')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S01 ドーナツをつくろう</div><div class="nav-meta">4/5</div></div>
-    </button>
-    <button class="nav-btn" onclick="open_frame('passport_sheets.html', 'S02 リッチドーナツ')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S02 リッチドーナツ</div><div class="nav-meta">4/12</div></div>
-    </button>
-    <button class="nav-btn" onclick="open_frame('passport_sheets.html', 'S03 ちびキャラ')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S03 ちびキャラ</div><div class="nav-meta">5/10</div></div>
-    </button>
-    <button class="nav-btn" onclick="open_frame('passport_sheets.html', 'S04 ポスター完成')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S04 ポスター完成</div><div class="nav-meta">5/17</div></div>
-    </button>
-
-    <div class="period-divider">
-      <span class="period-badge p2">第2期</span>
-      <div class="period-line"></div>
-    </div>
-    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html', 'S05 オリカデザイン')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S05 オリカデザイン</div><div class="nav-meta">6/7</div></div>
-    </button>
-    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html', 'S06 デジタルカード')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S06 デジタルカード</div><div class="nav-meta">6/14</div></div>
-    </button>
-    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html', 'S07 飛び出すカード')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S07 飛び出すカード</div><div class="nav-meta">7/5</div></div>
-    </button>
-    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html', 'S08 発表・修了')">
-      <span class="nav-icon">📄</span>
-      <div class="nav-info"><div class="nav-label">S08 発表・修了</div><div class="nav-meta">7/12</div></div>
-    </button>
+    <div class="period-divider"><span class="period-badge p1">第1期</span><div class="period-line"></div></div>
+    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S01 ドーナツをつくろう')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S01 ドーナツをつくろう</div><div class="nav-meta">4/5</div></div></button>
+    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S02 リッチドーナツ')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S02 リッチドーナツ</div><div class="nav-meta">4/12</div></div></button>
+    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S03 ちびキャラ')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S03 ちびキャラ</div><div class="nav-meta">5/10</div></div></button>
+    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S04 ポスター完成')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S04 ポスター完成</div><div class="nav-meta">5/17</div></div></button>
+    <div class="period-divider"><span class="period-badge p2">第2期</span><div class="period-line"></div></div>
+    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S05 オリカデザイン')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S05 オリカデザイン</div><div class="nav-meta">6/7</div></div></button>
+    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S06 デジタルカード')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S06 デジタルカード</div><div class="nav-meta">6/14</div></div></button>
+    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S07 飛び出すカード')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S07 飛び出すカード</div><div class="nav-meta">7/5</div></div></button>
+    <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S08 発表・修了')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S08 発表・修了</div><div class="nav-meta">7/12</div></div></button>
   </div>
 
-  <!-- コアシート -->
   <div class="nav-section">
     <div class="nav-sec-label">コアシート</div>
-    <button class="nav-btn" onclick="open_frame('passport_core.html', 'コアシート（P01–P04）')">
-      <span class="nav-icon">🗺️</span>
-      <div class="nav-info"><div class="nav-label">コアシート</div><div class="nav-meta">P01–P04 / 第1回配布</div></div>
-    </button>
+    <button class="nav-btn" onclick="open_frame('passport_core.html','コアシート（P01–P04）')"><span class="nav-icon">🗺️</span><div class="nav-info"><div class="nav-label">コアシート</div><div class="nav-meta">P01–P04 / 第1回配布</div></div></button>
   </div>
 
-  <!-- ワークシート -->
   <div class="nav-section">
     <div class="nav-sec-label">ワークシート</div>
-    <button class="nav-btn disabled">
-      <span class="nav-icon">🎨</span>
-      <div class="nav-info"><div class="nav-label">X01 ちびキャラデザインシート</div><div class="nav-meta">4/12配布予定</div></div>
-      <span class="nav-tag gray">制作中</span>
-    </button>
-    <button class="nav-btn disabled">
-      <span class="nav-icon">🃏</span>
-      <div class="nav-info"><div class="nav-label">X02 オリカデザインシート</div><div class="nav-meta">6/7配布予定</div></div>
-      <span class="nav-tag gray">制作中</span>
-    </button>
+    <button class="nav-btn disabled"><span class="nav-icon">🎨</span><div class="nav-info"><div class="nav-label">X01 ちびキャラデザインシート</div><div class="nav-meta">4/12配布予定</div></div><span class="nav-tag gray">制作中</span></button>
+    <button class="nav-btn disabled"><span class="nav-icon">🃏</span><div class="nav-info"><div class="nav-label">X02 オリカデザインシート</div><div class="nav-meta">6/7配布予定</div></div><span class="nav-tag gray">制作中</span></button>
   </div>
 
-  <!-- 講師用 -->
   <div class="nav-section">
     <div class="nav-sec-label">講師用</div>
-    <button class="nav-btn" onclick="open_frame('plan_s01.html', '講師プランシート S01')">
-      <span class="nav-icon">📋</span>
-      <div class="nav-info"><div class="nav-label">プランシート S01</div><div class="nav-meta">4/5</div></div>
-      <span class="nav-tag gold">講師</span>
-    </button>
-    <button class="nav-btn" onclick="open_frame('浦添パルコ.pdf', '浦添パルコ 3DCG教室 全体計画')">
-      <span class="nav-icon">📑</span>
-      <div class="nav-info"><div class="nav-label">全体計画書</div><div class="nav-meta">浦添パルコ PDF</div></div>
-      <span class="nav-tag gold">講師</span>
-    </button>
-    <button class="nav-btn" onclick="open_frame('passport_spec.md', 'パスポート構成仕様書')">
-      <span class="nav-icon">📐</span>
-      <div class="nav-info"><div class="nav-label">パスポート構成仕様書</div><div class="nav-meta">v0.7</div></div>
-      <span class="nav-tag gold">講師</span>
-    </button>
-    <button class="nav-btn" onclick="open_frame('figma_component_spec.md', 'Figma コンポーネント仕様書')">
-      <span class="nav-icon">🧩</span>
-      <div class="nav-info"><div class="nav-label">Figma仕様書</div><div class="nav-meta">v1.2</div></div>
-      <span class="nav-tag gold">講師</span>
-    </button>
+    <button class="nav-btn" onclick="open_frame('plan_s01.html','講師プランシート S01')"><span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">プランシート S01</div><div class="nav-meta">4/5</div></div><span class="nav-tag gold">講師</span></button>
+    <button class="nav-btn" onclick="open_frame('浦添パルコ.pdf','浦添パルコ 3DCG教室 全体計画')"><span class="nav-icon">📑</span><div class="nav-info"><div class="nav-label">全体計画書</div><div class="nav-meta">PDF</div></div><span class="nav-tag gold">講師</span></button>
   </div>
 
-  <!-- 将来追加 -->
   <div class="nav-section">
     <div class="nav-sec-label">将来追加</div>
-    <button class="nav-btn disabled">
-      <span class="nav-icon">🔮</span>
-      <div class="nav-info"><div class="nav-label">ギャラリー（3D図鑑）</div></div>
-      <span class="nav-tag gray">将来</span>
-    </button>
+    <button class="nav-btn disabled"><span class="nav-icon">🔮</span><div class="nav-info"><div class="nav-label">ギャラリー（3D図鑑）</div></div><span class="nav-tag gray">将来</span></button>
   </div>
 
-  <div class="nav-footer">
-    OYAA 3DCG教室<br>
-    浦添パルコ 2025.4–7
-  </div>
+  <div class="nav-footer">OYAA 3DCG教室<br>浦添パルコ 2025.4–7</div>
 </nav>
 
-<!-- ══ 右コンテンツ ══ -->
+<!-- コンテンツ -->
 <div class="content">
-
-  <!-- ウェルカム（初期） -->
   <div class="welcome" id="welcome">
     <div class="welcome-icon">🗺️</div>
     <div class="welcome-title">OYAA 3DCG教室</div>
     <div class="welcome-sub">スカルプトモデリング × オリカ<br>全8回の冒険記録</div>
-    <div class="welcome-hint">← 左のメニューからページを選んでください</div>
+    <div class="welcome-hint">☰ 左上のメニューからページを選んでください</div>
   </div>
-
-  <!-- iframeビュー -->
   <div class="frame-view" id="frame-view">
-    <div class="frame-bar">
-      <div class="frame-bar-title" id="frame-title"></div>
-      <a class="frame-bar-open" id="frame-open" href="#" target="_blank">別タブで開く ↗</a>
-    </div>
     <iframe id="main-frame" src="" title="コンテンツ"></iframe>
   </div>
-
 </div>
 
 <script>
-function open_frame(url, title) {
-  document.getElementById('welcome').style.display = 'none';
-  const fv = document.getElementById('frame-view');
-  fv.classList.add('active');
-  document.getElementById('frame-title').textContent = title;
-  document.getElementById('frame-open').href = url;
-  document.getElementById('main-frame').src = url;
+function toggleNav(){document.body.classList.toggle('nav-open');}
+function closeNav(){document.body.classList.remove('nav-open');}
 
-  // アクティブボタン更新
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+function open_frame(url, title){
+  document.getElementById('welcome').style.display='none';
+  const fv=document.getElementById('frame-view');
+  fv.classList.add('active');
+  document.getElementById('main-frame').src=url;
+  document.getElementById('topbar-current').textContent=title;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   event.currentTarget.classList.add('active');
+  closeNav();
 }
 </script>
 </body>
