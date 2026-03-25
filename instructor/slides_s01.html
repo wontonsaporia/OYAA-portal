@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S01 スライド — ドーナツをつくろう</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0d2340;
+    --navy2:  #1a3a60;
+    --blue:   #5fa0e0;
+    --amber:  #e8cc50;
+    --amber2: #f0b840;
+    --warm:   #faf8f2;
+    --paper:  #f0ede6;
+    --dark:   #1a1a1a;
+    --mid:    #555;
+    --gray:   #999;
+    --white:  #fff;
+    --sans: 'Noto Sans JP', sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #0a1a2e;
+    font-family: var(--sans);
+  }
+
+  /* ── Slide container ── */
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+  }
+  .slide.active { display: flex; }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(13,35,64,0.85);
+    border: 1px solid rgba(95,160,224,0.3);
+    border-radius: 40px;
+    padding: 8px 16px;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+  }
+  .nav-btn {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(95,160,224,0.4);
+    background: transparent;
+    border-radius: 50%;
+    color: var(--blue);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: rgba(95,160,224,0.15); }
+  .nav-counter {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--blue);
+    min-width: 52px;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+  .nav-dots { display: flex; gap: 4px; }
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(95,160,224,0.3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .nav-dot.active { background: var(--blue); }
+
+  /* ══════════════════════════════════════
+     SLIDE 1 — タイトル
+  ══════════════════════════════════════ */
+  .s01 {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .s01 .bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+  }
+  .s01 .bg-c1 {
+    width: 700px; height: 700px;
+    background: var(--blue);
+    top: -200px; right: -150px;
+  }
+  .s01 .bg-c2 {
+    width: 400px; height: 400px;
+    background: var(--amber);
+    bottom: -150px; left: -80px;
+  }
+  .s01 .inner {
+    position: relative; z-index: 1;
+    flex: 1; display: flex; flex-direction: column;
+    align-items: flex-start; justify-content: center;
+    padding: 80px 100px;
+  }
+  .s01 .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--blue);
+    border: 1px solid rgba(95,160,224,0.4);
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.12em;
+    margin-bottom: 28px;
+  }
+  .s01 h1 {
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .s01 h1 span { color: var(--amber); }
+  .s01 .sub {
+    font-size: 18px;
+    color: #7ab0d8;
+    font-weight: 400;
+    margin-bottom: 48px;
+  }
+  .s01 .meta {
+    display: flex; gap: 24px;
+    font-family: var(--mono); font-size: 11px; color: #5a7a9a;
+    letter-spacing: 0.08em;
+  }
+  .s01 .donut-deco {
+    position: absolute;
+    right: 100px; top: 50%; transform: translateY(-50%);
+    font-size: clamp(120px, 16vw, 200px);
+    opacity: 0.15;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 2 — 全体像
+  ══════════════════════════════════════ */
+  .s02 {
+    background: var(--warm);
+  }
+  .s02 .slide-hdr {
+    background: var(--navy);
+    padding: 24px 60px 20px;
+    flex-shrink: 0;
+  }
+  .s02 .slide-hdr .label { font-family: var(--mono); font-size: 11px; color: var(--blue); letter-spacing: 0.1em; margin-bottom: 4px; }
+  .s02 .slide-hdr h2 { font-size: 28px; font-weight: 700; color: var(--white); }
+  .s02 .body {
+    flex: 1; padding: 32px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .session-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--white);
+    border: 1px solid #e0dbd0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .session-card.current {
+    border-color: var(--amber2);
+    background: #fffbe6;
+    box-shadow: 0 0 0 1px var(--amber2);
+  }
+  .session-card.current::before {
+    content: "今日";
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: 9px;
+    background: var(--amber); color: var(--navy);
+    padding: 2px 8px; border-radius: 10px;
+    font-weight: 700;
+  }
+  .s-num {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--gray);
+    flex-shrink: 0; min-width: 28px;
+  }
+  .s-date {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--blue);
+    min-width: 40px; flex-shrink: 0;
+  }
+  .s-title { font-size: 13px; font-weight: 700; color: var(--dark); line-height: 1.3; }
+  .s-sub { font-size: 11px; color: var(--gray); margin-top: 1px; }
+  .period-label {
+    grid-column: 1 / -1;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--blue); letter-spacing: 0.12em;
+    display: flex; align-items: center; gap: 10px;
+    margin: -4px 0 -4px;
+  }
+  .period-label::after { content: ""; flex: 1; height: 1px; background: #d0ccc4; }
+
+  /* ══════════════════════════════════════
+     SLIDE 3 — 今日の流れ
+  ══════════════════════════════════════ */
+  .s03 { background: var(--warm); }
+  .s03 .slide-hdr { background: var(--navy); padding: 24px 60px 20px; flex-shrink: 0; }
+  .s03 .slide-hdr .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 4px; }
+  .s03 .slide-hdr h2 { font-size: 28px; font-weight: 700; color: var(--white); }
+  .s03 .flow {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 32px 60px; gap: 0;
+  }
+  .flow-step {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    position: relative;
+  }
+  .flow-step::after {
+    content: "→";
+    position: absolute; right: -14px; top: 28px;
+    font-size: 20px; color: #ccc;
+    pointer-events: none;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-time {
+    font-family: var(--mono); font-size: 13px;
+    color: var(--blue); font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .flow-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .flow-icon.intro  { background: #e8f4ff; border: 2px solid #b0d4f8; }
+  .flow-icon.lec    { background: #fffbe6; border: 2px solid #e8cc50; }
+  .flow-icon.prac   { background: #e8fff0; border: 2px solid #80c880; }
+  .flow-icon.prac2  { background: #fff3e0; border: 2px solid #f0b840; }
+  .flow-icon.wrap   { background: #f0e8ff; border: 2px solid #c090e8; }
+  .flow-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .flow-dur {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--navy); color: var(--blue);
+    padding: 2px 10px; border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .flow-desc { font-size: 11px; color: var(--gray); line-height: 1.5; max-width: 130px; }
+
+  /* ══════════════════════════════════════
+     SLIDE 4 — 3Dとは？
+  ══════════════════════════════════════ */
+  .s04 { background: var(--navy); }
+  .s04 .inner {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 60px 80px;
+  }
+  .s04 .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 8px; }
+  .s04 h2 { font-size: 36px; font-weight: 700; color: var(--white); margin-bottom: 40px; }
+  .concept-row {
+    display: flex; align-items: center; gap: 0;
+    flex: 1;
+  }
+  .concept-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; text-align: center; gap: 16px;
+    position: relative;
+  }
+  .concept-item::after {
+    content: "→";
+    position: absolute; right: -12px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px; color: rgba(95,160,224,0.4);
+  }
+  .concept-item:last-child::after { display: none; }
+  .concept-visual {
+    width: 100px; height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(95,160,224,0.2);
+  }
+  .concept-visual svg { width: 64px; height: 64px; }
+  .concept-name { font-size: 22px; font-weight: 700; color: var(--white); }
+  .concept-eng { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-top: 2px; }
+  .concept-desc { font-size: 12px; color: #7ab0d8; line-height: 1.5; }
+  .concept-3d .concept-name { color: var(--amber); }
+
+  /* ══════════════════════════════════════
+     SLIDE 5 — ソフト紹介
+  ══════════════════════════════════════ */
+  .s05 { background: var(--warm); }
+  .s05 .slide-hdr { background: var(--navy); padding: 24px 60px 20px; flex-shrink: 0; }
+  .s05 .slide-hdr .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 4px; }
+  .s05 .slide-hdr h2 { font-size: 28px; font-weight: 700; color: var(--white); }
+  .s05 .body {
+    flex: 1; display: flex; align-items: center;
+    padding: 40px 80px; gap: 48px;
+  }
+  .app-hero {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 16px; flex-shrink: 0;
+  }
+  .app-icon {
+    width: 120px; height: 120px;
+    background: linear-gradient(135deg, #1a3a60, #0d2340);
+    border-radius: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 60px;
+    box-shadow: 0 12px 48px rgba(13,35,64,0.4);
+    border: 1px solid rgba(95,160,224,0.2);
+  }
+  .app-name { font-size: 20px; font-weight: 700; color: var(--navy); }
+  .app-platform {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--navy); color: var(--blue);
+    padding: 3px 12px; border-radius: 20px;
+  }
+  .app-feats { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .app-feat {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 16px 18px;
+    background: var(--white);
+    border: 1px solid #e0dbd0;
+    border-radius: 10px;
+  }
+  .feat-icon { font-size: 28px; flex-shrink: 0; }
+  .feat-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .feat-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .note-box {
+    margin-top: 12px; padding: 14px 18px;
+    background: #fffbe6; border: 1px solid var(--amber2);
+    border-radius: 8px; font-size: 13px; color: #4a3800;
+    display: flex; gap: 10px; align-items: center;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 6 — モデリングの種類
+  ══════════════════════════════════════ */
+  .s06 { background: var(--navy); }
+  .s06 .inner {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 50px 80px;
+  }
+  .s06 .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 8px; }
+  .s06 h2 { font-size: 32px; font-weight: 700; color: var(--white); margin-bottom: 36px; }
+  .model-types {
+    display: flex; gap: 24px; flex: 1;
+  }
+  .model-type {
+    flex: 1; display: flex; flex-direction: column; gap: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(95,160,224,0.15);
+    border-radius: 12px;
+    padding: 24px 20px;
+    transition: transform 0.2s;
+  }
+  .model-type.highlight {
+    background: rgba(232,204,80,0.08);
+    border-color: var(--amber);
+    position: relative;
+    transform: scale(1.03);
+  }
+  .model-type.highlight::before {
+    content: "← 今日はコレ！";
+    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 11px;
+    background: var(--amber); color: var(--navy);
+    padding: 3px 14px; border-radius: 20px;
+    font-weight: 700; white-space: nowrap;
+  }
+  .mt-icon { font-size: 36px; }
+  .mt-name { font-size: 18px; font-weight: 700; color: var(--white); }
+  .mt-eng { font-family: var(--mono); font-size: 11px; color: var(--blue); }
+  .mt-desc { font-size: 12px; color: #7ab0d8; line-height: 1.6; }
+  .mt-eg { font-family: var(--mono); font-size: 11px; color: #5a7a9a; }
+
+  /* ══════════════════════════════════════
+     SLIDE 7 — スカルプト基礎
+  ══════════════════════════════════════ */
+  .s07 { background: var(--warm); }
+  .s07 .slide-hdr { background: var(--navy); padding: 24px 60px 20px; flex-shrink: 0; }
+  .s07 .slide-hdr .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 4px; }
+  .s07 .slide-hdr h2 { font-size: 28px; font-weight: 700; color: var(--white); }
+  .s07 .body {
+    flex: 1; display: flex; gap: 28px;
+    padding: 32px 60px;
+  }
+  .concept-card {
+    flex: 1; background: var(--white);
+    border: 1px solid #e0dbd0;
+    border-radius: 10px; padding: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .cc-icon { font-size: 36px; margin-bottom: 4px; }
+  .cc-title { font-size: 18px; font-weight: 700; color: var(--navy); }
+  .cc-body { font-size: 13px; color: var(--mid); line-height: 1.65; }
+  .save-card {
+    background: #fff3e0;
+    border-color: var(--amber2);
+  }
+  .save-card .cc-title { color: #a06000; }
+  .save-rule {
+    margin-top: 8px;
+    background: var(--navy); color: var(--blue);
+    font-family: var(--mono); font-size: 13px;
+    padding: 10px 14px; border-radius: 6px;
+    line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 8 — アプリを開く
+  ══════════════════════════════════════ */
+  .s08 { background: var(--navy); }
+  .s08 .inner {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 50px 80px;
+  }
+  .s08 .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 8px; }
+  .s08 h2 { font-size: 32px; font-weight: 700; color: var(--white); margin-bottom: 36px; }
+  .steps-row {
+    display: flex; gap: 0; align-items: flex-start;
+    flex: 1;
+  }
+  .step-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    padding: 0 12px;
+    position: relative;
+  }
+  .step-item::after {
+    content: "";
+    position: absolute; right: 0; top: 28px;
+    width: 1px; height: 56px;
+    background: linear-gradient(to bottom, rgba(95,160,224,0.3), transparent);
+  }
+  .step-item:last-child::after { display: none; }
+  .step-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--navy2);
+    border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 20px; font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+  .step-icon { font-size: 32px; margin-bottom: 12px; }
+  .step-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .step-desc { font-size: 12px; color: #7ab0d8; line-height: 1.55; }
+  .step-code {
+    margin-top: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(95,160,224,0.2);
+    border-radius: 4px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--amber);
+    padding: 4px 10px;
+  }
+  .all-open-now {
+    margin-top: 28px;
+    background: rgba(232,204,80,0.1);
+    border: 1px solid var(--amber);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 15px; font-weight: 700;
+    color: var(--amber);
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 9 — マスク→分離→保存
+  ══════════════════════════════════════ */
+  .s09 { background: var(--warm); }
+  .s09 .slide-hdr {
+    background: #3a1000; padding: 24px 60px 20px; flex-shrink: 0;
+  }
+  .s09 .slide-hdr .label { font-family: var(--mono); font-size: 11px; color: #f0b840; margin-bottom: 4px; }
+  .s09 .slide-hdr h2 { font-size: 28px; font-weight: 700; color: var(--white); }
+  .s09 .slide-hdr .hl-badge {
+    display: inline-block;
+    background: var(--amber); color: var(--navy);
+    font-family: var(--mono); font-size: 10px;
+    padding: 3px 12px; border-radius: 20px;
+    font-weight: 700; margin-top: 6px;
+  }
+  .s09 .body {
+    flex: 1; display: flex; gap: 20px;
+    padding: 28px 60px;
+  }
+  .mask-step {
+    flex: 1; background: var(--white);
+    border: 1px solid #e0dbd0;
+    border-radius: 10px; padding: 20px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .mask-step.hl { background: #fff8e8; border-color: var(--amber2); }
+  .ms-num {
+    position: absolute; top: -12px; left: 16px;
+    width: 28px; height: 28px;
+    background: var(--navy); color: var(--amber);
+    border-radius: 50%;
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ms-step-label {
+    font-family: var(--mono); font-size: 9px;
+    color: var(--gray); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 2px;
+    padding-top: 4px;
+  }
+  .ms-icon { font-size: 30px; }
+  .ms-title { font-size: 15px; font-weight: 700; color: var(--dark); }
+  .ms-op {
+    background: var(--navy); color: var(--amber);
+    font-family: var(--mono); font-size: 12px;
+    padding: 5px 12px; border-radius: 4px;
+    display: inline-block;
+  }
+  .ms-desc { font-size: 12px; color: var(--mid); line-height: 1.55; }
+  .s09-bottom {
+    padding: 0 60px 20px;
+    display: flex; gap: 16px;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 10 — まとめ
+  ══════════════════════════════════════ */
+  .s10 { background: var(--navy); }
+  .s10 .inner {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 60px 80px;
+    position: relative;
+  }
+  .s10 .label { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-bottom: 8px; }
+  .s10 h2 { font-size: 36px; font-weight: 700; color: var(--white); margin-bottom: 36px; }
+  .check-grid {
+    display: flex; flex-direction: column; gap: 16px;
+    max-width: 600px;
+  }
+  .check-row {
+    display: flex; align-items: center; gap: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(95,160,224,0.15);
+    border-radius: 10px;
+    padding: 18px 22px;
+  }
+  .check-box {
+    width: 28px; height: 28px;
+    border: 2px solid var(--blue);
+    border-radius: 4px; flex-shrink: 0;
+  }
+  .check-text { font-size: 16px; font-weight: 700; color: var(--white); }
+  .next-preview {
+    position: absolute;
+    right: 80px; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(95,160,224,0.2);
+    border-radius: 12px;
+    padding: 28px 28px;
+    width: 280px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .np-label { font-family: var(--mono); font-size: 10px; color: var(--blue); letter-spacing: 0.12em; }
+  .np-title { font-size: 18px; font-weight: 700; color: #7ab0d8; line-height: 1.3; }
+  .np-date { font-family: var(--mono); font-size: 11px; color: #5a7a9a; }
+  .np-tag {
+    display: inline-block;
+    background: rgba(95,160,224,0.15);
+    border: 1px solid rgba(95,160,224,0.3);
+    color: var(--blue);
+    font-family: var(--mono); font-size: 10px;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .submit-reminder {
+    margin-top: 24px;
+    background: rgba(232,204,80,0.1);
+    border: 1px solid var(--amber);
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 15px; color: var(--amber); font-weight: 700;
+    display: flex; gap: 10px; align-items: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ══ SLIDE 1 ══ -->
+<div class="slide s01 active">
+  <div class="bg-circle bg-c1"></div>
+  <div class="bg-circle bg-c2"></div>
+  <div class="inner">
+    <div class="badge">OYAA × 浦添パルコ 3DCG教室　Chapter 01</div>
+    <h1>はじめての<br>3D<span>スカルプト</span>！<br>ドーナツをつくろう</h1>
+    <div class="sub">Sculpt Modeling — Basics &amp; Workflow</div>
+    <div class="meta">
+      <span>2025.4.5 （土）</span>
+      <span>15:00 – 16:30</span>
+      <span>Nomad Sculpt / iPad</span>
+    </div>
+  </div>
+  <div class="donut-deco">🍩</div>
+</div>
+
+<!-- ══ SLIDE 2 ══ -->
+<div class="slide s02">
+  <div class="slide-hdr">
+    <div class="label">OVERVIEW</div>
+    <h2>全8回の流れ</h2>
+  </div>
+  <div class="body">
+    <div class="period-label">第1期　4月〜5月　スカルプトモデリング入門</div>
+    <div class="session-card current">
+      <span class="s-num">01</span><span class="s-date">4/5</span>
+      <div><div class="s-title">ドーナツをつくろう</div><div class="s-sub">スカルプト・保存・提出</div></div>
+    </div>
+    <div class="session-card">
+      <span class="s-num">02</span><span class="s-date">4/12</span>
+      <div><div class="s-title">リッチドーナツ＆質感</div><div class="s-sub">マテリアル・マスク</div></div>
+    </div>
+    <div class="session-card">
+      <span class="s-num">03</span><span class="s-date">5/10</span>
+      <div><div class="s-title">ちびキャラをスカルプト</div><div class="s-sub">発想シートから立体化</div></div>
+    </div>
+    <div class="session-card">
+      <span class="s-num">04</span><span class="s-date">5/17</span>
+      <div><div class="s-title">ライティング＆ポスター印刷</div><div class="s-sub">レンダー・構図・印刷</div></div>
+    </div>
+    <div class="period-label">第2期　6月〜7月　オリジナルカード制作</div>
+    <div class="session-card">
+      <span class="s-num">05</span><span class="s-date">6/7</span>
+      <div><div class="s-title">カードをデザインしよう</div><div class="s-sub">仕様書づくり・提出</div></div>
+    </div>
+    <div class="session-card">
+      <span class="s-num">06</span><span class="s-date">6/14</span>
+      <div><div class="s-title">カード本体3D＋テクスチャ</div><div class="s-sub">リアルカードを開封！</div></div>
+    </div>
+    <div class="session-card">
+      <span class="s-num">07</span><span class="s-date">7/5</span>
+      <div><div class="s-title">飛び出す!? 3Dトレカ</div><div class="s-sub">カード×モチーフ×奥行き</div></div>
+    </div>
+    <div class="session-card">
+      <span class="s-num">08</span><span class="s-date">7/12</span>
+      <div><div class="s-title">仕上げ→発表→修了！</div><div class="s-sub">ミニ展示・修了証授与</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 3 ══ -->
+<div class="slide s03">
+  <div class="slide-hdr">
+    <div class="label">TODAY'S SCHEDULE</div>
+    <h2>今日の流れ　15:00 – 16:30</h2>
+  </div>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-time">15:00</div>
+      <div class="flow-icon intro">🎉</div>
+      <div class="flow-name">導入</div>
+      <div class="flow-dur">10分</div>
+      <div class="flow-desc">挨拶・自己紹介全体像の確認</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-time">15:10</div>
+      <div class="flow-icon lec">📖</div>
+      <div class="flow-name">講義</div>
+      <div class="flow-dur">20分</div>
+      <div class="flow-desc">3DCGとは？スカルプト概念デモ</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-time">15:30</div>
+      <div class="flow-icon prac">🍩</div>
+      <div class="flow-name">演習①</div>
+      <div class="flow-dur">25分</div>
+      <div class="flow-desc">ドーナツをスカルプト！形を整える</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-time">15:55</div>
+      <div class="flow-icon prac2">🎭</div>
+      <div class="flow-name">演習②</div>
+      <div class="flow-dur">25分</div>
+      <div class="flow-desc">マスク→分離→保存⚡ 技術ハイライト</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-time">16:20</div>
+      <div class="flow-icon wrap">✅</div>
+      <div class="flow-name">まとめ</div>
+      <div class="flow-dur">10分</div>
+      <div class="flow-desc">提出・振り返り次回予告</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 4 ══ -->
+<div class="slide s04">
+  <div class="inner">
+    <div class="label">CONCEPT — SLIDE 4</div>
+    <h2>3D ってなんだろう？</h2>
+    <div class="concept-row">
+      <div class="concept-item">
+        <div class="concept-visual">
+          <svg viewBox="0 0 64 64"><circle cx="20" cy="32" r="4" fill="#5fa0e0"/><circle cx="44" cy="20" r="4" fill="#5fa0e0"/><circle cx="44" cy="44" r="4" fill="#5fa0e0"/></svg>
+        </div>
+        <div class="concept-name">点</div>
+        <div class="concept-eng">VERTEX</div>
+        <div class="concept-desc">空間上の位置を表す点</div>
+      </div>
+      <div class="concept-item">
+        <div class="concept-visual">
+          <svg viewBox="0 0 64 64"><line x1="12" y1="48" x2="52" y2="16" stroke="#5fa0e0" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="concept-name">線</div>
+        <div class="concept-eng">EDGE</div>
+        <div class="concept-desc">点と点をつなぐエッジ</div>
+      </div>
+      <div class="concept-item">
+        <div class="concept-visual">
+          <svg viewBox="0 0 64 64"><polygon points="10,52 54,52 32,12" fill="rgba(95,160,224,0.3)" stroke="#5fa0e0" stroke-width="2"/></svg>
+        </div>
+        <div class="concept-name">面</div>
+        <div class="concept-eng">FACE / POLYGON</div>
+        <div class="concept-desc">線で囲まれた平面。メッシュの基本単位</div>
+      </div>
+      <div class="concept-item concept-3d">
+        <div class="concept-visual">
+          <svg viewBox="0 0 64 64">
+            <polygon points="32,8 56,48 8,48" fill="rgba(232,204,80,0.15)" stroke="#e8cc50" stroke-width="1.5"/>
+            <polygon points="32,8 56,48 44,56" fill="rgba(232,204,80,0.1)" stroke="#e8cc50" stroke-width="1.5"/>
+            <polygon points="8,48 56,48 44,56 20,56" fill="rgba(232,204,80,0.2)" stroke="#e8cc50" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="concept-name">立体</div>
+        <div class="concept-eng">3D MESH</div>
+        <div class="concept-desc">面が集まって立体のカタチになる！</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 5 ══ -->
+<div class="slide s05">
+  <div class="slide-hdr">
+    <div class="label">TOOL — SLIDE 5</div>
+    <h2>今日使うソフト</h2>
+  </div>
+  <div class="body">
+    <div class="app-hero">
+      <div class="app-icon">🗿</div>
+      <div class="app-name">Nomad Sculpt</div>
+      <div class="app-platform">iPad アプリ</div>
+    </div>
+    <div class="app-feats">
+      <div class="app-feat">
+        <div class="feat-icon">📱</div>
+        <div>
+          <div class="feat-title">iPad だけで本格3DCG</div>
+          <div class="feat-desc">Apple Pencil で直感的に粘土をこねるように形を作れる。PCは不要。</div>
+        </div>
+      </div>
+      <div class="app-feat">
+        <div class="feat-icon">🎨</div>
+        <div>
+          <div class="feat-title">スカルプト専用</div>
+          <div class="feat-desc">プロのCGアーティストも愛用。スマホゲームのキャラやフィギュアの原型に使われる。</div>
+        </div>
+      </div>
+      <div class="note-box">
+        💡 プロは他にも Blender・ZBrush・Maya などを使う。でも今日は <strong>Nomad Sculpt</strong> 一本で OK！
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 6 ══ -->
+<div class="slide s06">
+  <div class="inner">
+    <div class="label">CONCEPT — SLIDE 6</div>
+    <h2>モデリングの種類</h2>
+    <div class="model-types">
+      <div class="model-type highlight">
+        <div class="mt-icon">🫧</div>
+        <div class="mt-name">スカルプト</div>
+        <div class="mt-eng">SCULPT</div>
+        <div class="mt-desc">粘土をこねるように自由に形を作る。有機的なキャラ・生物に強い。</div>
+        <div class="mt-eg">例：キャラ・モンスター・ドーナツ</div>
+      </div>
+      <div class="model-type">
+        <div class="mt-icon">📐</div>
+        <div class="mt-name">ポリゴン<br>モデリング</div>
+        <div class="mt-eng">POLYGON</div>
+        <div class="mt-desc">面を一枚ずつ編集して形を作る。建物・メカ・ハードサーフェスに強い。</div>
+        <div class="mt-eg">例：建物・車・ロボット</div>
+      </div>
+      <div class="model-type">
+        <div class="mt-icon">📏</div>
+        <div class="mt-name">NURBS<br>モデリング</div>
+        <div class="mt-eng">NURBS</div>
+        <div class="mt-desc">数式で滑らかな曲面を表現。工業製品・プロダクトデザインに使われる。</div>
+        <div class="mt-eg">例：車ボディ・家電・カーブ形状</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 7 ══ -->
+<div class="slide s07">
+  <div class="slide-hdr">
+    <div class="label">BASICS — SLIDE 7</div>
+    <h2>スカルプトの3つのキーワード</h2>
+  </div>
+  <div class="body">
+    <div class="concept-card">
+      <div class="cc-icon">🫧</div>
+      <div class="cc-title">スカルプト</div>
+      <div class="cc-body">ブラシで形を自由に変形する手法。<br>Clay・Inflate・Flatten など<br>用途別のブラシを使い分ける。</div>
+    </div>
+    <div class="concept-card">
+      <div class="cc-icon">🔷</div>
+      <div class="cc-title">ハイポリ（メッシュ）</div>
+      <div class="cc-body">スカルプトは面の数（ポリゴン数）がとても多い。<br>「ハイポリ」＝細かく表現できる反面、<br>重くなることもある。</div>
+    </div>
+    <div class="concept-card save-card">
+      <div class="cc-icon">💾</div>
+      <div class="cc-title">保存 ← 大事！</div>
+      <div class="cc-body">アプリが落ちると作業が消える。<br>こまめに保存する習慣をつけよう。</div>
+      <div class="save-rule">
+        ☰ メニュー → Files → 保存<br>
+        ファイル名：<strong>名前_01_donut</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 8 ══ -->
+<div class="slide s08">
+  <div class="inner">
+    <div class="label">DEMO — SLIDE 8　いっしょにやってみよう</div>
+    <h2>アプリを開いてドーナツを読み込む</h2>
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-icon">📱</div>
+        <div class="step-title">Nomad Sculpt を開く</div>
+        <div class="step-desc">iPad のホーム画面からアプリを起動する</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-icon">🗑️</div>
+        <div class="step-title">Sphere を削除</div>
+        <div class="step-desc">最初にある球体を長押し → Delete で消す</div>
+        <div class="step-code">長押し → Delete</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-icon">➕</div>
+        <div class="step-title">プリミティブを追加</div>
+        <div class="step-desc">左上「＋」→ Primitive から選択</div>
+        <div class="step-code">+ → Primitive</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-icon">🍩</div>
+        <div class="step-title">Torus を選ぶ</div>
+        <div class="step-desc">一覧をスクロールして「Torus（ドーナツ形）」を選択</div>
+        <div class="step-code">Torus</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-icon">🔥</div>
+        <div class="step-title">Validate！</div>
+        <div class="step-desc">「Validate」をタップしてスカルプト開始！</div>
+        <div class="step-code">Validate</div>
+      </div>
+    </div>
+    <div class="all-open-now">🖊️ ではみんなで一緒に開いてみよう！</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 9 ══ -->
+<div class="slide s09">
+  <div class="slide-hdr">
+    <div class="label">⚡ 技術ハイライト — SLIDE 9</div>
+    <h2>マスク → 分離 → 保存</h2>
+    <div class="hl-badge">全員手を止めて見てね！</div>
+  </div>
+  <div class="body">
+    <div class="mask-step">
+      <div class="ms-num">1</div>
+      <div class="ms-step-label">STEP 01</div>
+      <div class="ms-icon">🎭</div>
+      <div class="ms-title">Mask ブラシで塗る</div>
+      <div class="ms-op">ブラシ → Mask</div>
+      <div class="ms-desc">チョコにしたい部分を指でなぞる。<br>Mask Blur で境界を調整できる。</div>
+    </div>
+    <div class="mask-step hl">
+      <div class="ms-num">2</div>
+      <div class="ms-step-label">STEP 02</div>
+      <div class="ms-icon">✂️</div>
+      <div class="ms-title">Extract → New Mesh</div>
+      <div class="ms-op">Extract → New Mesh</div>
+      <div class="ms-desc">マスクした部分が<br>別のパーツとして分離される！</div>
+    </div>
+    <div class="mask-step">
+      <div class="ms-num">3</div>
+      <div class="ms-step-label">STEP 03</div>
+      <div class="ms-icon">👁️</div>
+      <div class="ms-title">元メッシュを非表示で確認</div>
+      <div class="ms-op">Scene → 目のアイコン</div>
+      <div class="ms-desc">元のドーナツを隠して<br>分離されたか確認する。</div>
+    </div>
+    <div class="mask-step">
+      <div class="ms-num">4</div>
+      <div class="ms-step-label">STEP 04</div>
+      <div class="ms-icon">💾</div>
+      <div class="ms-title">名前をつけて保存</div>
+      <div class="ms-op">donut_choco</div>
+      <div class="ms-desc">Scene パネルでパーツ名を変更。<br>仮マテリアルを適用して保存。</div>
+    </div>
+  </div>
+  <div class="s09-bottom">
+    <div style="background:#0d2340;border-radius:8px;padding:14px 20px;display:flex;align-items:center;gap:16px;flex:1;">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--blue);letter-spacing:0.1em;">ファイル命名ルール</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--amber);margin-top:4px;">名前_01_donut</div>
+      </div>
+      <div style="font-size:12px;color:#7ab0d8;line-height:1.6;">☰ → Files → 上書き保存<br>先生に声をかけてから提出フォルダへ</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 10 ══ -->
+<div class="slide s10">
+  <div class="inner">
+    <div class="label">WRAP-UP — SLIDE 10</div>
+    <h2>今日のまとめ ✅</h2>
+    <div class="check-grid">
+      <div class="check-row">
+        <div class="check-box"></div>
+        <div class="check-text">スカルプトという手法で 3DCG を体験した</div>
+      </div>
+      <div class="check-row">
+        <div class="check-box"></div>
+        <div class="check-text">ドーナツを完成・保存・提出できた</div>
+      </div>
+      <div class="check-row">
+        <div class="check-box"></div>
+        <div class="check-text">マスク → メッシュ分離ができた</div>
+      </div>
+    </div>
+    <div class="submit-reminder" style="max-width:600px;margin-top:28px;">
+      📂　提出フォルダにファイルをコピーして先生に声をかけよう！
+    </div>
+
+    <div class="next-preview">
+      <div class="np-label">NEXT SESSION</div>
+      <div class="np-date">4月12日（土）</div>
+      <div class="np-title">もっとおいしそうに！<br>マテリアルで<br>リッチドーナツ</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+        <span class="np-tag">マテリアル</span>
+        <span class="np-tag">質感</span>
+        <span class="np-tag">X01 配布</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prev" onclick="go(-1)">‹</button>
+  <div class="nav-dots" id="dots"></div>
+  <span class="nav-counter" id="counter">1 / 10</span>
+  <button class="nav-btn" id="next" onclick="go(1)">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goto(i);
+    dotsEl.appendChild(d);
+  });
+
+  function update() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+    document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+    document.getElementById('counter').textContent = `${cur + 1} / ${slides.length}`;
+  }
+
+  function go(dir) {
+    cur = Math.max(0, Math.min(slides.length - 1, cur + dir));
+    update();
+  }
+  function goto(i) { cur = i; update(); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+  });
+</script>
+</body>
+</html>
