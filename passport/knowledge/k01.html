@@ -241,7 +241,7 @@ body {
 </div>
 
 <!-- ════ K01-A▲ 3DCGとは ════ -->
-<div class="page active">
+<div class="page">
   <div class="page-label">K01-A ▲</div>
   <div class="card front">
     <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
@@ -271,7 +271,7 @@ body {
               <div class="di-label">点</div>
               <div class="di-sub">位置のみ</div>
             </div>
-           <span class="dim-arr">→</span>
+            <span class="dim-arr">→</span>
             <div class="dim-item">
               <span class="di-icon">╱</span>
               <div class="di-num">1D（1次元）</div>
@@ -311,7 +311,7 @@ body {
 <div class="divider">flip</div>
 
 <!-- ════ K01-A▼ 制作の流れ ════ -->
-<div class="page active">
+<div class="page">
   <div class="page-label">K01-A ▼</div>
   <div class="card back">
     <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
@@ -381,4 +381,433 @@ body {
 
           <!-- 移動してきた文章 -->
           <div style="margin-top:8px; font-size:9.5px; color:#666; line-height:1.65; padding:8px 10px; background:#f5f3ee; border-left:2px solid #ccc; border-radius:0 3px 3px 0;">
-            3DCG
+            3DCGでは、この3D空間にポリゴン（三角・四角形の面）を組み合わせてモノの形を作ります。その形に色・質感・光をあててレンダリングすることで、1枚の画像として出力されます。<span style="color:#aaa;">※ 詳しくはB▼参照</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">next sheet</div>
+
+
+
+<!-- ════ K01-B▲ モデリングの手法 ════ -->
+<div class="page">
+  <div class="page-label">K01-B ▲</div>
+  <div class="card front">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="card-inner">
+      <div class="kh kh-b">
+        <div class="kh-meta">
+          <span class="kh-badge">K 01 — 2/4</span>
+          <span class="kh-session">Ch.01 / 4.5</span>
+        </div>
+        <div class="kh-title">モデリングの手法</div>
+      </div>
+      <div class="kb">
+        <div class="ks">
+          <div class="intro">
+            3DCGにおいて、ものや形はすべて<strong>データ（数値）</strong>で表されます。<strong>モデリング</strong>とは、そのデータを作ったり、データの中身を動かすことで形を変えることです。制作の出発点となる<strong>最重要工程</strong>です。
+          </div>
+        </div>
+        <div class="ks grow" style="padding:10px 13px;">
+
+          <span class="ml-group-label manual">形を自分の手で操作する</span>
+          <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:9px;">
+            <div class="ml-item">
+              <div class="ml-icon-box"></div>
+              <div class="ml-body">
+                <div class="ml-name">ボックスモデリング（ポリゴンモデリング）</div>
+                <div class="ml-desc">頂点・辺・面をひとつひとつ手動で操作します。ゲーム・映像制作の主流です。</div>
+                <div class="ml-eg">例：Blenderのエディットモード</div>
+              </div>
+            </div>
+            <div class="ml-item" style="background:#1a3a5a; border-color:#2a5080;">
+              <div class="ml-icon-box"></div>
+              <div class="ml-body">
+                <div class="ml-name" style="color:#fff;">スカルプト<span class="ml-star">本講座</span></div>
+                <div class="ml-desc" style="color:#90c0e0;">ブラシで複数の頂点を一括操作します。直感的に形を作ることができます。</div>
+                <div class="ml-eg" style="color:#5a90b8;">例：Nomad Sculpt・ZBrush</div>
+              </div>
+            </div>
+            <div class="ml-item">
+              <div class="ml-icon-box"></div>
+              <div class="ml-body">
+                <div class="ml-name">NURBS編集</div>
+                <div class="ml-desc">制御点（コントロールポイント）を操作して曲面を定義します。</div>
+                <div class="ml-eg">例：Rhinocerosのカーブ編集</div>
+              </div>
+            </div>
+          </div>
+
+          <span class="ml-group-label auto">プログラムやAIが形をつくる</span>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div class="ml-item">
+              <div class="ml-icon-box"></div>
+              <div class="ml-body">
+                <div class="ml-name">プロシージャル</div>
+                <div class="ml-desc">コード・数式・ノードで形を自動生成します。出力はポリゴンメッシュのことが多いです。</div>
+                <div class="ml-eg">例：Processing・Houdini・Blenderのジオメトリノード</div>
+              </div>
+            </div>
+            <div class="ml-item">
+              <div class="ml-icon-box"></div>
+              <div class="ml-body">
+                <div class="ml-name">AIモデリング</div>
+                <div class="ml-desc">テキスト・画像・スケッチから形を推論・生成します。出力形式はさまざまです。</div>
+                <div class="ml-eg">例：Point-E・Shap-E・TripoSR</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">flip</div>
+
+<!-- ════ K01-B▼ 3Dデータのカタチ ════ -->
+<div class="page">
+  <div class="page-label">K01-B ▼</div>
+  <div class="card back">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="card-inner">
+      <div class="kh kh-br">
+        <div class="kh-meta">
+          <span class="kh-badge">K 01 — 裏 2/4</span>
+          <span class="kh-session">Ch.01 / 4.5</span>
+        </div>
+        <div class="kh-title">3Dデータのカタチ</div>
+      </div>
+      <div class="kb">
+        <div class="ks">
+          <div class="intro">
+            各手法が扱うデータの種類はさまざまです。<br>
+            形をどう<strong>記録・表現するか</strong>の違いが、用途や得意なことの違いにもつながります。
+          </div>
+        </div>
+        <div class="ks grow" style="padding:10px 13px;">
+          <div class="sl" style="margin-bottom:8px;">📦 データ構造の種類</div>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+
+            <div class="ds-item">
+              <div class="ds-num">1</div>
+              <div class="ds-body">
+                <div class="ds-name">ポリゴンメッシュ</div>
+                <div class="ds-link">← ポリゴンモデリング・スカルプト</div>
+                <div class="ds-desc">頂点・辺・面の集合体です。面を組み合わせて形を表現します。3DCGの主流形式です。</div>
+                <div class="ds-use">映像・ゲーム・キャラクター全般</div>
+              </div>
+            </div>
+
+            <div class="ds-item">
+              <div class="ds-num">2</div>
+              <div class="ds-body">
+                <div class="ds-name">NURBS</div>
+                <div class="ds-link">← NURBS編集</div>
+                <div class="ds-desc">数式（制御点＋重み）で曲面を定義します。拡大しても真に滑らかな曲面を保ちます。</div>
+                <div class="ds-use">工業設計・自動車・建築・CAD</div>
+              </div>
+            </div>
+
+            <div class="ds-item">
+              <div class="ds-num">3</div>
+              <div class="ds-body">
+                <div class="ds-name">ボクセル</div>
+                <div class="ds-desc">3D空間をグリッドに分割し、各セルのON/OFFで形を表現します。内部構造を持てます。</div>
+                <div class="ds-use">医療CT・地形破壊・AI学習</div>
+                <div class="ds-use" style="color:#5fa0e0;">※ 流体シミュレーション・リメッシュにも使われます</div>
+              </div>
+            </div>
+
+            <div class="ds-item">
+              <div class="ds-num">4</div>
+              <div class="ds-body">
+                <div class="ds-name">点群（Point Cloud）</div>
+                <div class="ds-desc">座標と色を持つ点の集合です。面・辺の概念がなく、3Dスキャナーの生データ形式です。</div>
+                <div class="ds-use">測量・建築・自動運転・LiDAR</div>
+              </div>
+            </div>
+
+            <div class="ds-item">
+              <div class="ds-num">5</div>
+              <div class="ds-body">
+                <div class="ds-name">SDF（符号付き距離関数）</div>
+                <div class="ds-desc">空間の各点が表面からどれだけ離れているかを関数で表現します。形の合体・くり抜きが得意です。</div>
+                <div class="ds-use">AIによる3D生成・リアルタイムCG</div>
+              </div>
+            </div>
+
+            <div class="ds-item">
+              <div class="ds-num">6</div>
+              <div class="ds-body">
+                <div class="ds-name">3D Gaussian Splatting</div>
+                <div class="ds-desc">点群を発展させ、各点に楕円体の広がりと透明度を付加したものです。写真・動画から高速に3Dシーンを再構成できます。</div>
+                <div class="ds-use">写真・動画からの3D再構成・AI</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">next sheet</div>
+
+<!-- ════ K01-C▲ スカルプトの仕組み ════ -->
+<div class="page">
+  <div class="page-label">K01-C ▲</div>
+  <div class="card front">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="card-inner">
+      <div class="kh kh-c">
+        <div class="kh-meta">
+          <span class="kh-badge">K 01 — 3/4</span>
+          <span class="kh-session">Ch.01 / 4.5</span>
+        </div>
+        <div class="kh-title">スカルプトの仕組み</div>
+      </div>
+      <div class="kb">
+        <div class="ks">
+          <div class="intro" style="margin-bottom:0;">
+            今回の講座で使うスカルプトモデリングについて詳しく見ていきましょう。スカルプト（彫刻）というその名の通り、すでにあるメッシュに対して、押し出したり盛り上げたりすることで造形するモデリング手法です。
+          </div>
+        </div>
+        <div class="ks">
+          <div class="sl">🔬 なぜ形が変えられるのか</div>
+          <div class="dim-row" style="margin-bottom:10px;">
+            <div class="dim-item">
+              <span class="di-icon">·</span>
+              <div class="di-num">頂点</div>
+              <div class="di-label">Vertex</div>
+              <div class="di-sub">x・y・z の<br>座標をもつ点</div>
+            </div>
+            <span class="dim-arr">→</span>
+            <div class="dim-item">
+              <span class="di-icon">╱</span>
+              <div class="di-num">辺</div>
+              <div class="di-label">Edge</div>
+              <div class="di-sub">頂点と頂点を<br>つないだ線</div>
+            </div>
+            <span class="dim-arr">→</span>
+            <div class="dim-item">
+              <span class="di-icon">▭</span>
+              <div class="di-num">ポリゴン</div>
+              <div class="di-label">Face</div>
+              <div class="di-sub">辺で囲まれた<br>三角・四角形</div>
+            </div>
+            <span class="dim-arr">→</span>
+            <div class="dim-item hi">
+              <span class="di-icon">🎲</span>
+              <div class="di-num">メッシュ</div>
+              <div class="di-label">Mesh</div>
+              <div class="di-sub">ポリゴンが<br>集まった形</div>
+            </div>
+          </div>
+          <div class="prin-item">
+            <div class="prin-title">🖌️ ブラシ ＝ 頂点の座標を動かす道具</div>
+            <div class="prin-body">ブラシを当てると、円の範囲内にある<strong>頂点の座標（x・y・z）</strong>が一斉に指定方向へ移動します。粘土と違うのは、動いているのが「物質」ではなく<strong>「数値」</strong>であることです。</div>
+          </div>
+        </div>
+        <div class="ks">
+          <div class="sl">📊 ハイポリとローポリ</div>
+          <div class="hipoly-grid">
+            <div class="hp-item hi-border">
+              <div class="hp-label">ハイポリ</div>
+              <div class="hp-body">頂点が<strong>多い</strong> → 細かく変形できる → <strong>滑らか</strong>だが処理が重くなります</div>
+            </div>
+            <div class="hp-item lo-border">
+              <div class="hp-label">ローポリ</div>
+              <div class="hp-body">頂点が<strong>少ない</strong> → 大まかにしか変形できない → <strong>軽い</strong>が荒くなります</div>
+            </div>
+          </div>
+        </div>
+        <div class="ks grow" style="display:flex; align-items:center;">
+          <div style="width:100%; display:flex; gap:9px; align-items:flex-start; background:#fffbe6; border:1px solid #e8cc50; border-radius:5px; padding:11px 13px;">
+            <span style="font-size:18px; flex-shrink:0; margin-top:1px;">💡</span>
+            <div>
+              <div style="font-size:10.5px; font-weight:700; color:#4a3800; margin-bottom:4px;">リメッシュ</div>
+              <div style="font-size:10px; color:#4a3800; line-height:1.7;">スカルプト中に頂点の密度・構造が崩れたとき、均一に整え直す機能です。Nomad Sculptでは頻繁に使う操作です。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">flip</div>
+
+<!-- ════ K01-C▼ 3DCGソフトいろいろ ════ -->
+<div class="page">
+  <div class="page-label">K01-C ▼</div>
+  <div class="card back">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="card-inner">
+      <div class="kh kh-cr">
+        <div class="kh-meta">
+          <span class="kh-badge">K 01 — 裏 3/4</span>
+          <span class="kh-session">Ch.01 / 4.5</span>
+        </div>
+        <div class="kh-title">3DCGソフトいろいろ</div>
+      </div>
+      <div class="kb">
+        <div class="ks grow" style="padding:11px 13px;">
+          <div class="sl" style="margin-bottom:9px;">🛠️ どんなソフトが使われているか</div>
+          <div class="soft-grid">
+            <div class="soft-item" style="background:#edf3fa; border-color:#c0d8f0;">
+              <span class="soft-tag" style="background:#5fa0e0;color:#fff;">汎用 3DCG</span>
+              <img src="../assets/logos/logo_blender.png" class="soft-logo" alt="Blender">
+              <span class="soft-name">Blender</span>
+              <span class="soft-desc">無料・何でもできます</span>
+              <img src="../assets/logos/logo_maya.png" class="soft-logo" style="margin-top:5px;" alt="Maya">
+              <span class="soft-name">Maya</span>
+              <span class="soft-desc">映画・アニメの定番です</span>
+            </div>
+            <div class="soft-item" style="background:#edfaed; border-color:#90c890;">
+              <span class="soft-tag" style="background:#1a3a1a;color:#80c880;">VFX</span>
+              <img src="../assets/logos/logo_houdini.png" class="soft-logo" alt="Houdini">
+              <span class="soft-name">Houdini</span>
+              <span class="soft-desc">特殊効果・プロシージャル生成</span>
+            </div>
+            <div class="soft-item" style="background:#faedf0; border-color:#d09090;">
+              <span class="soft-tag" style="background:#3a1010;color:#e09080;">スカルプト</span>
+              <img src="../assets/logos/logo_zbrush_dark.png" class="soft-logo" alt="ZBrush">
+              <span class="soft-name">ZBrush</span>
+              <span class="soft-desc">プロ用スカルプトの定番です</span>
+            </div>
+            <div class="soft-item" style="background:#f5f0fa; border-color:#b090d0;">
+              <span class="soft-tag" style="background:#3a1a60;color:#c0a0f0;">ゲームエンジン</span>
+              <img src="../assets/logos/logo_unity_dark.png" class="soft-logo" alt="Unity">
+              <span class="soft-name">Unity</span>
+              <span class="soft-desc">ゲーム・XR開発の定番です</span>
+              <img src="../assets/logos/logo_unreal_dark.png" class="soft-logo" style="margin-top:5px;" alt="Unreal Engine">
+              <span class="soft-name">Unreal Engine</span>
+              <span class="soft-desc">高品質グラフィックスに強いです</span>
+            </div>
+            <div class="soft-item" style="grid-column:span 2; background:#faf5ed; border-color:#d0b870;">
+              <span class="soft-tag" style="background:#2a1a10;color:#c8a060;">設計・建築</span>
+              <div style="display:flex; gap:4px; margin-top:4px;">
+                <img src="../assets/logos/logo_autocad.png" class="soft-logo-sm" alt="AutoCAD">
+                <img src="../assets/logos/logo_rhinoceros.png" class="soft-logo-sm" alt="Rhinoceros">
+                <img src="../assets/logos/logo_fusion360.png" class="soft-logo-sm" alt="Fusion 360">
+              </div>
+              <span class="soft-name" style="font-size:8.5px; margin-top:3px;">AutoCAD / Rhinoceros / Fusion 360 など</span>
+              <span class="soft-desc">数値・図面から正確に設計します。建築・機械・プロダクトデザインに使われます。</span>
+            </div>
+            <div class="soft-item nomad">
+              <span class="nomad-badge">今回<br>使う</span>
+              <div>
+                <img src="../assets/logos/logo_nomad_color.png" class="soft-logo-nomad" alt="Nomad Sculpt">
+                <span class="soft-name">Nomad Sculpt</span>
+                <span class="soft-desc">iPadで使えるスカルプトツールです。指とApple Pencilで直感的に操作できます。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="kf">
+        <span class="kf-icon">⚠️</span>
+        <div>
+          <div class="kf-label">こまめに保存しよう</div>
+          <div class="kf-body">Nomad Sculptは<strong>自動保存しません</strong>。<strong>10分に1回</strong>、☰ → Files → 上書き保存しましょう。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">next sheet</div>
+
+<!-- ════ K01-D▲ 用語集＋プリミティブ ════ -->
+<div class="page">
+  <div class="page-label">K01-D ▲</div>
+  <div class="card front">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="card-inner">
+      <div class="kh kh-d">
+        <div class="kh-meta">
+          <span class="kh-badge">K 01 — 4/4</span>
+          <span class="kh-session">Ch.01 / 4.5</span>
+        </div>
+        <div class="kh-title">用語集 vol.01</div>
+      </div>
+      <div class="kb">
+        <div class="ks">
+          <div class="gl-sec" style="margin-bottom:7px;">
+            <div class="gl-sec-label">メッシュの基礎</div>
+            <div class="gl-item"><span class="gl-term">ポリゴン</span><span class="gl-def">三角・四角形の面です。3D形状の最小単位です。</span></div>
+            <div class="gl-item"><span class="gl-term">メッシュ</span><span class="gl-def">ポリゴンの集合体です。スカルプトの対象です。</span></div>
+            <div class="gl-item"><span class="gl-term">ハイポリ</span><span class="gl-def">ポリゴンが密な状態です。滑らかですが処理が重くなります。</span></div>
+            <div class="gl-item"><span class="gl-term">ローポリ</span><span class="gl-def">ポリゴンが粗な状態です。軽いですが荒くなります。</span></div>
+            <div class="gl-item"><span class="gl-term">リメッシュ</span><span class="gl-def">メッシュの密度・構造を整え直すことです。</span></div>
+          </div>
+          <div class="gl-sec">
+            <div class="gl-sec-label">スカルプト操作</div>
+            <div class="gl-item"><span class="gl-term">スカルプト</span><span class="gl-def">ブラシで粘土のように形を作る手法です。</span></div>
+            <div class="gl-item"><span class="gl-term">ブラシ</span><span class="gl-def">メッシュを変形させる道具です。</span></div>
+            <div class="gl-item"><span class="gl-term">マスク</span><span class="gl-def">操作したくない部分を保護する機能です。</span></div>
+          </div>
+        </div>
+        <div class="ks grow" style="padding:9px 13px;">
+          <div class="sl" style="margin-bottom:8px;">📦 プリミティブ（基本形状）— Nomad Sculpt</div>
+          <div class="prim-grid">
+            <div class="prim-item">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">スフィア</div>
+              <div class="prim-en">Sphere</div>
+            </div>
+            <div class="prim-item">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">ボックス</div>
+              <div class="prim-en">Box / Cube</div>
+            </div>
+            <div class="prim-item">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">シリンダー</div>
+              <div class="prim-en">Cylinder</div>
+            </div>
+            <div class="prim-item">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">コーン</div>
+              <div class="prim-en">Cone</div>
+            </div>
+            <div class="prim-item today">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">トーラス ★</div>
+              <div class="prim-en">Torus</div>
+            </div>
+            <div class="prim-item">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">チューブ</div>
+              <div class="prim-en">Tube</div>
+            </div>
+            <div class="prim-item">
+              <div class="prim-fig"><span>図</span></div>
+              <div class="prim-ja">プレーン</div>
+              <div class="prim-en">Plane</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  const btns  = document.querySelectorAll('.nav-btn');
+  function show(idx) {
+    pages.forEach((p,i) => p.classList.toggle('active', i === idx));
+    btns.forEach((b,i)  => b.classList.toggle('active', i === idx));
+  }
+  show(0);
+</script>
+</body>
+</html>
