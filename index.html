@@ -189,40 +189,46 @@ body.nav-open .nav{transform:translateX(0);}
 <!-- 左ナビ -->
 <nav class="nav">
 
+  <!-- ホーム -->
   <div class="nav-section">
-    <div class="nav-sec-label">各回シート</div>
-    <div class="period-divider"><span class="period-badge p1">第1期</span><div class="period-line"></div></div>
-    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S01 ドーナツをつくろう')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S01 ドーナツをつくろう</div><div class="nav-meta">4/5</div></div></button>
-    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S02 リッチドーナツ')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S02 リッチドーナツ</div><div class="nav-meta">4/12</div></div></button>
-    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S03 ちびキャラ')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S03 ちびキャラ</div><div class="nav-meta">5/10</div></div></button>
-    <button class="nav-btn"     onclick="open_frame('passport_sheets.html','S04 ポスター完成')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S04 ポスター完成</div><div class="nav-meta">5/17</div></div></button>
-    <div class="period-divider"><span class="period-badge p2">第2期</span><div class="period-line"></div></div>
+    <button class="nav-btn" id="btn-home" onclick="show_welcome()"><span class="nav-icon">🏠</span><div class="nav-info"><div class="nav-label">ホーム</div></div></button>
+  </div>
+
+  <!-- 生徒用資料 -->
+  <div class="nav-section">
+    <div class="nav-sec-label">👨‍🎓 生徒用資料</div>
+
+    <button class="nav-btn" onclick="open_frame('passport_core.html','コアシート（P01–P04）')"><span class="nav-icon">🗺️</span><div class="nav-info"><div class="nav-label">コアシート</div><div class="nav-meta">P01–P04 / 第1回配布</div></div></button>
+
+    <div class="period-divider"><span class="period-badge p1">各回シート 第1期</span><div class="period-line"></div></div>
+    <button class="nav-btn"    onclick="open_frame('passport_sheets.html','S01 ドーナツをつくろう')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S01 ドーナツをつくろう</div><div class="nav-meta">4/5</div></div></button>
+    <button class="nav-btn"    onclick="open_frame('passport_sheets.html','S02 リッチドーナツ')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S02 リッチドーナツ</div><div class="nav-meta">4/12</div></div></button>
+    <button class="nav-btn"    onclick="open_frame('passport_sheets.html','S03 ちびキャラ')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S03 ちびキャラ</div><div class="nav-meta">5/10</div></div></button>
+    <button class="nav-btn"    onclick="open_frame('passport_sheets.html','S04 ポスター完成')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S04 ポスター完成</div><div class="nav-meta">5/17</div></div></button>
+    <div class="period-divider"><span class="period-badge p2">各回シート 第2期</span><div class="period-line"></div></div>
     <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S05 オリカデザイン')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S05 オリカデザイン</div><div class="nav-meta">6/7</div></div></button>
     <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S06 デジタルカード')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S06 デジタルカード</div><div class="nav-meta">6/14</div></div></button>
     <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S07 飛び出すカード')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S07 飛び出すカード</div><div class="nav-meta">7/5</div></div></button>
     <button class="nav-btn p2-btn" onclick="open_frame('passport_sheets.html','S08 発表・修了')"><span class="nav-icon">📄</span><div class="nav-info"><div class="nav-label">S08 発表・修了</div><div class="nav-meta">7/12</div></div></button>
-  </div>
 
-  <div class="nav-section">
-    <div class="nav-sec-label">コアシート</div>
-    <button class="nav-btn" onclick="open_frame('passport_core.html','コアシート（P01–P04）')"><span class="nav-icon">🗺️</span><div class="nav-info"><div class="nav-label">コアシート</div><div class="nav-meta">P01–P04 / 第1回配布</div></div></button>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-sec-label">ワークシート</div>
+    <div class="period-divider"><div class="period-line"></div></div>
+    <button class="nav-btn disabled"><span class="nav-icon">📘</span><div class="nav-info"><div class="nav-label">K01 ナレッジシート</div><div class="nav-meta">制作中</div></div><span class="nav-tag gray">制作中</span></button>
     <button class="nav-btn disabled"><span class="nav-icon">🎨</span><div class="nav-info"><div class="nav-label">X01 ちびキャラデザインシート</div><div class="nav-meta">4/12配布予定</div></div><span class="nav-tag gray">制作中</span></button>
     <button class="nav-btn disabled"><span class="nav-icon">🃏</span><div class="nav-info"><div class="nav-label">X02 オリカデザインシート</div><div class="nav-meta">6/7配布予定</div></div><span class="nav-tag gray">制作中</span></button>
   </div>
 
+  <!-- 講師用資料 -->
   <div class="nav-section">
-    <div class="nav-sec-label">講師用</div>
+    <div class="nav-sec-label">👨‍🏫 講師用資料</div>
     <button class="nav-btn" onclick="open_frame('plan_s01.html','講師プランシート S01')"><span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">プランシート S01</div><div class="nav-meta">4/5</div></div><span class="nav-tag gold">講師</span></button>
+    <button class="nav-btn disabled"><span class="nav-icon">🖥️</span><div class="nav-info"><div class="nav-label">スライド S01</div><div class="nav-meta">制作中</div></div><span class="nav-tag gray">制作中</span></button>
     <button class="nav-btn" onclick="open_frame('浦添パルコ.pdf','浦添パルコ 3DCG教室 全体計画')"><span class="nav-icon">📑</span><div class="nav-info"><div class="nav-label">全体計画書</div><div class="nav-meta">PDF</div></div><span class="nav-tag gold">講師</span></button>
   </div>
 
+  <!-- ギャラリー -->
   <div class="nav-section">
-    <div class="nav-sec-label">将来追加</div>
-    <button class="nav-btn disabled"><span class="nav-icon">🔮</span><div class="nav-info"><div class="nav-label">ギャラリー（3D図鑑）</div></div><span class="nav-tag gray">将来</span></button>
+    <div class="nav-sec-label">🔮 ギャラリー</div>
+    <button class="nav-btn disabled"><span class="nav-icon">🔮</span><div class="nav-info"><div class="nav-label">3D図鑑</div><div class="nav-meta">将来追加</div></div><span class="nav-tag gray">将来</span></button>
   </div>
 
   <div class="nav-footer">OYAA 3DCG教室<br>浦添パルコ 2025.4–7</div>
@@ -244,6 +250,15 @@ body.nav-open .nav{transform:translateX(0);}
 <script>
 function toggleNav(){document.body.classList.toggle('nav-open');}
 function closeNav(){document.body.classList.remove('nav-open');}
+
+function show_welcome(){
+  document.getElementById('welcome').style.display='';
+  document.getElementById('frame-view').classList.remove('active');
+  document.getElementById('topbar-current').textContent='';
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-home').classList.add('active');
+  closeNav();
+}
 
 function open_frame(url, title){
   document.getElementById('welcome').style.display='none';
