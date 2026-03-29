@@ -76,15 +76,17 @@ body.nav-open .nav{transform:translateX(0);}
 
 /* コンテンツ */
 .content{position:fixed;top:var(--topbar-h);left:0;right:0;bottom:0;display:flex;flex-direction:column;}
-.welcome{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 24px;text-align:center;}
+.welcome{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;}
 .welcome-icon{width:160px;}
 .welcome-title{font-size:400%;font-weight:900;color:var(--p1);}
 .welcome-sub{font-size:13px;color:var(--sub);line-height:1.7;}
 .welcome-hint{font-family:var(--mono);font-size:10px;color:var(--label);margin-top:8px;letter-spacing:.08em;}
+.welcome-bg-model{position:absolute;inset:0;width:100%;height:100%;opacity:0.15;pointer-events:none;}
 .frame-view{display:none;flex:1;flex-direction:column;}
 .frame-view.active{display:flex;}
 .frame-view iframe{flex:1;border:none;width:100%;}
 </style>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -228,6 +230,12 @@ body.nav-open .nav{transform:translateX(0);}
 <!-- コンテンツ -->
 <div class="content">
   <div class="welcome" id="welcome">
+  <model-viewer
+  class="welcome-bg-model"
+  src="assets/models/Donut_01.glb"
+  auto-rotate
+  rotation-per-second="20deg">
+　</model-viewer>
     <img class="welcome-icon" src="assets/images/" alt="">
     <div class="welcome-title">OYAA 3DCG教室</div>
     <div class="welcome-sub">スカルプトモデリング × オリカ<br>全8回の冒険記録</div>
