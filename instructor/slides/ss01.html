@@ -18,7 +18,7 @@
     --acc:   #c8392b;
     --sans: 'Noto Sans JP', sans-serif;
     --mono: 'Space Mono', monospace;
-    --body: 16px;
+    --body: 20px;
   }
 
   html, body { width:100%; height:100%; overflow:hidden; background:#2a2a2a; font-family:var(--sans); }
@@ -40,7 +40,7 @@
   .th-w .tag, .th-o .tag { color:var(--g2); }
   .th-k .tag { color:rgba(255,255,255,0.35); }
   .th-a .tag { color:rgba(255,255,255,0.65); }
-  .H h2 { font-size:40px; font-weight:900; line-height:1.15; }
+  .H h2 { font-size:44px; font-weight:900; line-height:1.15; }
   .H .rule { height:2px; margin:18px 0 0; }
   .th-w .rule, .th-o .rule { background:var(--black); }
   .th-k .rule { background:rgba(255,255,255,0.12); }
@@ -65,7 +65,7 @@
 
   /* def block */
   .def { background:var(--off); border-left:3px solid var(--acc); padding:16px 20px; border-radius:0 4px 4px 0; display:flex; flex-direction:column; gap:6px; }
-  .def-t { font-size:20px; font-weight:900; color:var(--black); }
+  .def-t { font-size:22px; font-weight:900; color:var(--black); }
   .def-b { font-size:var(--body); line-height:1.8; color:var(--g3); }
 
   /* enum list */
@@ -80,11 +80,11 @@
   .cg4 { grid-template-columns:repeat(4,1fr); }
   .cc { background:var(--off); border:1px solid var(--g1); border-radius:6px; padding:16px 18px; display:flex; flex-direction:column; gap:7px; }
   .cc.hl { background:var(--black); border-color:var(--black); }
-  .cc-n { font-size:17px; font-weight:900; color:var(--black); line-height:1.2; }
+  .cc-n { font-size:19px; font-weight:900; color:var(--black); line-height:1.2; }
   .cc.hl .cc-n { color:var(--white); }
   .cc-e { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.07em; }
   .cc.hl .cc-e { color:rgba(255,255,255,0.35); }
-  .cc-d { font-size:14px; color:var(--g3); line-height:1.6; }
+  .cc-d { font-size:15px; color:var(--g3); line-height:1.6; }
   .cc.hl .cc-d { color:rgba(255,255,255,0.6); }
   .cc-b { align-self:flex-start; font-family:var(--mono); font-size:9px; background:var(--acc); color:var(--white); padding:2px 8px; border-radius:2px; margin-top:auto; }
 
@@ -99,8 +99,8 @@
   .fn:last-child::after { display:none; }
   .fn-n { width:38px; height:38px; border-radius:50%; background:var(--black); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:13px; font-weight:700; color:var(--white); flex-shrink:0; }
   .fn-n.hl { background:var(--acc); }
-  .fn-t { font-size:15px; font-weight:900; color:var(--black); }
-  .fn-d { font-size:13px; color:var(--g2); line-height:1.5; }
+  .fn-t { font-size:17px; font-weight:900; color:var(--black); }
+  .fn-d { font-size:16px; color:var(--g2); line-height:1.5; }
 
   /* demo steps */
   .dsteps { display:flex; flex-direction:column; gap:0; flex:1; }
@@ -109,7 +109,7 @@
   .ds-n { width:36px; height:36px; border-radius:50%; background:var(--black); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:15px; font-weight:700; color:var(--white); flex-shrink:0; margin-top:1px; }
   .ds-n.hl { background:var(--acc); }
   .ds-b { flex:1; display:flex; flex-direction:column; gap:4px; }
-  .ds-t { font-size:19px; font-weight:900; color:var(--black); }
+  .ds-t { font-size:21px; font-weight:900; color:var(--black); }
   .ds-s { font-size:var(--body); color:var(--g3); line-height:1.7; }
   .ds-c { font-family:var(--mono); font-size:13px; background:var(--black); color:#e8e050; padding:4px 12px; border-radius:3px; display:inline-block; margin-top:4px; }
 
@@ -119,13 +119,13 @@
   /* warn box */
   .wb { background:var(--off); border:2px solid var(--black); border-radius:4px; padding:18px 22px; display:flex; gap:18px; align-items:flex-start; }
   .wb-ic { font-size:30px; flex-shrink:0; }
-  .wb-t { font-size:20px; font-weight:900; color:var(--black); margin-bottom:7px; }
+  .wb-t { font-size:22px; font-weight:900; color:var(--black); margin-bottom:7px; }
   .wb-b { font-size:var(--body); color:var(--g3); line-height:1.8; }
   .code { background:var(--black); color:#e8e050; font-family:var(--mono); font-size:15px; padding:10px 16px; border-radius:4px; margin-top:9px; line-height:1.8; }
 
   /* check list */
   .cl { list-style:none; display:flex; flex-direction:column; gap:11px; max-width:700px; }
-  .cl li { display:flex; align-items:center; gap:16px; padding:15px 20px; border:1.5px solid var(--g1); border-radius:4px; font-size:18px; font-weight:700; color:var(--black); }
+  .cl li { display:flex; align-items:center; gap:16px; padding:15px 20px; border:1.5px solid var(--g1); border-radius:4px; font-size:20px; font-weight:700; color:var(--black); }
   .cb { width:24px; height:24px; border:2px solid var(--g2); border-radius:3px; flex-shrink:0; }
   .nx { margin-top:14px; padding:15px 20px; background:var(--white); border-left:3px solid var(--acc); font-size:var(--body); color:var(--g3); line-height:1.8; }
   .nx strong { color:var(--black); }
@@ -148,7 +148,7 @@
   .sr.now::after { content:"← 今日"; font-family:var(--mono); font-size:9px; color:var(--acc); position:absolute; right:0; top:50%; transform:translateY(-50%); }
   .sr-n { font-family:var(--mono); font-size:11px; color:var(--g2); min-width:30px; }
   .sr-d { font-family:var(--mono); font-size:11px; color:var(--g3); font-weight:700; min-width:42px; }
-  .sr-t { font-size:14px; font-weight:700; color:var(--black); }
+  .sr-t { font-size:16px; font-weight:700; color:var(--black); }
 
   /* S03 intro */
   .s03 { background:var(--black); }
@@ -165,9 +165,26 @@
   .fi:last-child { border-bottom:none; }
   .fi-n { width:58px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:26px; font-weight:700; color:var(--g1); }
   .fi-b { flex:1; display:flex; flex-direction:column; justify-content:center; gap:3px; }
-  .fi-t { font-size:22px; font-weight:900; color:var(--black); }
+  .fi-t { font-size:24px; font-weight:900; color:var(--black); }
   .fi-s { font-size:var(--body); color:var(--g2); }
   .fi-d { flex-shrink:0; display:flex; align-items:center; font-family:var(--mono); font-size:13px; font-weight:700; color:var(--g2); min-width:58px; justify-content:flex-end; padding-right:6px; }
+
+  /* image placeholder */
+  .img-ph {
+    border:1.5px dashed var(--g2); border-radius:4px;
+    background:var(--off); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px;
+    padding:10px; flex-shrink:0; min-height:80px;
+  }
+  .img-ph .ph-path {
+    font-family:var(--mono); font-size:11px; color:var(--g2);
+    letter-spacing:0.04em; text-align:center; word-break:break-all;
+  }
+  .img-ph .ph-label { font-size:12px; color:var(--g2); }
+
+  /* img placeholder */
+  .img-ph { display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px; background:var(--g1); border:1.5px dashed var(--g2); border-radius:4px; padding:12px; color:var(--g2); font-family:var(--mono); font-size:11px; letter-spacing:0.08em; }
+  .img-ph span { font-size:10px; opacity:0.7; }
 
   /* Nav */
   .nav { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:8px; background:rgba(17,17,17,0.9); border:1px solid rgba(255,255,255,0.12); border-radius:40px; padding:7px 14px; z-index:1000; backdrop-filter:blur(8px); }
@@ -221,7 +238,7 @@
 <!-- 03 自己紹介 -->
 <div class="sl s03">
   <div class="inner">
-    <div class="ph-box">🙂</div>
+    <div class="ph-box"><!-- IMG: assets/images/instructor_photo.jpg --><span style="font-size:14px;font-family:var(--mono);color:rgba(255,255,255,0.3);">assets/images/<br>instructor_photo.jpg</span></div>
     <div class="info">
       <div>
         <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:rgba(255,255,255,0.28);margin-bottom:10px;">INSTRUCTOR</div>
@@ -256,6 +273,8 @@
       <p class="bt">映画・ゲーム・建築・医療・デジタルアートなど、幅広い分野で使われている。</p>
     </div>
     <div class="col" style="justify-content:center;gap:12px;">
+      <!-- IMG: assets/images/sl05_cg_examples.jpg (CG作例集) -->
+      <div class="img-ph" style="height:180px;"><div class="ph-label">📷 作例画像</div><div class="ph-path">../../assets/images/sl05_3dcg_examples.png</div></div>
       <ul class="el">
         <li><span class="elm">→</span><div><strong>映像・映画</strong>：VFX、フルCGアニメーション</div></li>
         <li><span class="elm">→</span><div><strong>ゲーム</strong>：リアルタイム3Dグラフィックス</div></li>
@@ -275,8 +294,10 @@
     <div class="col" style="gap:16px;">
       <p class="bt">コンピュータの中の3D空間は <strong>XYZ 座標</strong>で定義される。現実の「たて・よこ・おくゆき」がそのまま数値になったもの。</p>
       <div class="def"><div class="def-t">ポリゴンメッシュ</div><div class="def-b">最も広く使われる立体の表現方法。<strong>頂点（Vertex）</strong>を辺（Edge）でつなぎ、<strong>面（Face / Polygon）</strong>で空間を囲んで形を作る。面の数（ポリゴン数）が多いほど、なめらかな形を表現できる。</div></div>
+      <div class="img-ph"><div class="ph-label">📷 ポリゴンメッシュ図解</div><div class="ph-path">../../assets/images/sl06_polygon_mesh.png</div></div>
     </div>
     <div class="col" style="gap:10px;justify-content:center;">
+      <!-- IMG: assets/images/sl06_vertex_mesh.png (点・辺・面の図解) -->
       <div style="display:flex;align-items:center;gap:16px;padding:12px 16px;border:1px solid var(--g1);border-radius:4px;">
         <svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="7" fill="#111"/></svg>
         <div><div style="font-size:18px;font-weight:900;">点　Vertex</div><div style="font-size:var(--body);color:var(--g3);">XYZ 座標をもつ空間上の点</div></div>
@@ -314,12 +335,12 @@
   <div class="H th-w"><span class="tag">LECTURE 04</span><h2>ソフトウェアのいろいろ</h2><div class="rule"></div></div>
   <div class="body" style="padding-top:16px;">
     <div class="cg cg3" style="flex:1;">
-      <div class="cc"><img src="../../assets/logos/logo_maya.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-e">AUTODESK</div><div class="cc-d">映画・アニメ・ゲーム制作の業界標準。アニメーション・リギングに強い。</div></div>
-      <div class="cc"><img src="../../assets/logos/logo_blender.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-e">OPEN SOURCE / FREE</div><div class="cc-d">無料で使えるオールインワンツール。モデリング・レンダリング・アニメーションすべて対応。</div></div>
-      <div class="cc"><img src="../../assets/logos/logo_zbrush_dark.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-e">MAXON</div><div class="cc-d">スカルプト専用のプロツール。フィギュア原型やゲームキャラクター制作に多用される。</div></div>
-      <div class="cc"><img src="../../assets/logos/logo_houdini.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-e">SIDEFX</div><div class="cc-d">プロシージャルモデリングとVFXに特化。映画の煙・爆発・波などのシミュレーションを生成する。</div></div>
-      <div class="cc"><img src="../../assets/logos/logo_unreal_dark.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-e">EPIC GAMES</div><div class="cc-d">ゲームエンジン兼映像制作ツール。リアルタイムでフォトリアルな3D映像を出力できる。</div></div>
-      <div class="cc hl"><img src="../../assets/logos/logo_nomad_light.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-e">iPadアプリ</div><div class="cc-d" style="color:rgba(255,255,255,0.6);">iPadだけで動くスカルプトツール。Apple Pencil で直感的に使えるプロ品質のアプリ。</div><div class="cc-b">今日はコレ</div></div>
+      <div class="cc"><img src="../../assets/logos/logo_maya.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">Maya</div><div class="cc-e">AUTODESK</div><div class="cc-d">映画・アニメ・ゲーム制作の業界標準。アニメーション・リギングに強い。</div></div>
+      <div class="cc"><img src="../../assets/logos/logo_blender.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">Blender</div><div class="cc-e">OPEN SOURCE / FREE</div><div class="cc-d">無料で使えるオールインワンツール。モデリング・レンダリング・アニメーションすべて対応。</div></div>
+      <div class="cc"><img src="../../assets/logos/logo_zbrush_dark.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">ZBrush</div><div class="cc-e">MAXON</div><div class="cc-d">スカルプト専用のプロツール。フィギュア原型やゲームキャラクター制作に多用される。</div></div>
+      <div class="cc"><img src="../../assets/logos/logo_houdini.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">Houdini</div><div class="cc-e">SIDEFX</div><div class="cc-d">プロシージャルモデリングとVFXに特化。映画の煙・爆発・波などのシミュレーションを生成する。</div></div>
+      <div class="cc"><img src="../../assets/logos/logo_unreal_dark.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">Unreal Engine</div><div class="cc-e">EPIC GAMES</div><div class="cc-d">ゲームエンジン兼映像制作ツール。リアルタイムでフォトリアルな3D映像を出力できる。</div></div>
+      <div class="cc hl"><img src="../../assets/logos/logo_nomad_light.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">Nomad Sculpt</div><div class="cc-e">iPadアプリ</div><div class="cc-d" style="color:rgba(255,255,255,0.6);">iPadだけで動くスカルプトツール。Apple Pencil で直感的に使えるプロ品質のアプリ。</div><div class="cc-b">今日はコレ</div></div>
     </div>
   </div>
   <div class="ft th-w"><span>08 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
@@ -329,6 +350,7 @@
 <div class="sl th-o">
   <div class="H th-o"><span class="tag">LECTURE 05</span><h2>3DCGの制作の流れ</h2><div class="rule"></div></div>
   <div class="body" style="justify-content:center;gap:22px;padding-top:22px;">
+    <!-- IMG: assets/images/sl09_pipeline.png (制作パイプライン図) -->
     <div class="flow-r">
       <div class="fn"><div class="fn-n hl">1</div><div class="fn-t">モデリング</div><div class="fn-d">形を作る</div></div>
       <div class="fn"><div class="fn-n">2</div><div class="fn-t">リギング</div><div class="fn-d">骨組みを入れる</div></div>
@@ -339,6 +361,7 @@
       <div class="fn"><div class="fn-n">7</div><div class="fn-t">コンポジット</div><div class="fn-d">仕上げ・合成</div></div>
     </div>
     <p class="bt" style="text-align:center;">赤い番号が<strong>今日の授業で体験するステップ</strong>。まずは「形を作る」と「色をつける」ところから始める。</p>
+    <div class="img-ph" style="width:100%;flex-shrink:0;"><div class="ph-label">📷 制作フロー図解</div><div class="ph-path">../../assets/images/sl09_pipeline.png</div></div>
   </div>
   <div class="ft th-o"><span>09 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
@@ -374,6 +397,7 @@
     </div>
     <div class="col" style="gap:14px;">
       <div class="def" style="border-color:#111;"><div class="def-t">ハイポリ（高ポリゴン数）</div><div class="def-b">スカルプトは面の数が非常に多い状態で作業する。細かいしわや凹凸まで表現できる反面、データが重くなる。</div></div>
+      <div class="img-ph"><div class="ph-label">📷 ハイポリ vs ローポリ比較</div><div class="ph-path">../../assets/images/sl11_highpoly.png</div></div>
       <div class="wb" style="border-color:var(--acc);">
         <div class="wb-ic">⚠️</div>
         <div>
@@ -390,12 +414,14 @@
 <div class="sl th-o">
   <div class="H th-o"><span class="tag">PRACTICE 01</span><h2>アプリを開いてみよう</h2><div class="rule"></div></div>
   <div class="body" style="padding-top:16px;">
+    <!-- IMG: assets/images/sl12_nomad_ui.png (Nomad Sculpt UI スクリーンショット) -->
     <div class="dsteps">
       <div class="ds"><div class="ds-n">1</div><div class="ds-b"><div class="ds-t">Nomad Sculpt を起動する</div><div class="ds-s">iPad のホーム画面からアプリを開く。最初に球（Sphere）が表示される。</div></div></div>
       <div class="ds"><div class="ds-n">2</div><div class="ds-b"><div class="ds-t">Sphere を削除する</div><div class="ds-s">Scene パネルで Sphere を選んでゴミ箱アイコンをタップ。</div></div></div>
       <div class="ds"><div class="ds-n">3</div><div class="ds-b"><div class="ds-t">Torus（トーラス）を追加する</div><div class="ds-s">「＋」→「Primitive」→「Torus」を選択。ドーナツ形の基本形状が読み込まれる。</div><div class="ds-c">+ → Primitive → Torus → Validate</div></div></div>
       <div class="ds"><div class="ds-n">4</div><div class="ds-b"><div class="ds-t">ブラシで形を整える</div><div class="ds-s">Clay・Inflate・Flatten ブラシを使い、ドーナツらしいシルエットに仕上げる。「大きい形から、細部へ」の順で。</div></div></div>
     </div>
+    <div class="img-ph" style="flex-shrink:0;"><div class="ph-label">📷 Nomad Sculpt スクリーンショット</div><div class="ph-path">../../assets/images/sl12_nomad_torus.png</div></div>
   </div>
   <div class="ft th-o"><span>12 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
@@ -404,11 +430,13 @@
 <div class="sl th-w">
   <div class="H th-w"><span class="tag">PRACTICE 02</span><h2>マスク処理でチョコソースを再現しよう</h2><div class="rule"></div></div>
   <div class="body" style="padding-top:14px;">
+    <!-- IMG: assets/images/sl13_mask_extract.png (マスク→Extract の手順スクリーンショット) -->
     <div class="hlb">⚡ 技術ハイライト — 今日のメインテクニック</div>
     <div class="tcol" style="flex:1;align-items:flex-start;">
       <div class="col" style="gap:12px;">
         <div class="def"><div class="def-t">マスクとは？</div><div class="def-b">メッシュの「一部だけ」を選択して保護・操作する機能。今回はマスクを<strong>切り出し範囲の指定</strong>として使う。</div></div>
         <p class="bt">マスクした領域を <strong>Extract</strong> することで、選択部分を<strong>別パーツ（新しいメッシュ）</strong>として独立させられる。</p>
+        <div class="img-ph"><div class="ph-label">📷 マスク操作スクリーンショット</div><div class="ph-path">../../assets/images/sl13_mask_extract.png</div></div>
       </div>
       <div class="col" style="gap:0;">
         <div class="dsteps">
@@ -426,6 +454,7 @@
 <div class="sl th-w">
   <div class="H th-w"><span class="tag">PRACTICE 03</span><h2>保存しよう</h2><div class="rule"></div></div>
   <div class="body" style="justify-content:center;gap:22px;padding-top:22px;">
+    <!-- IMG: assets/images/sl14_save_menu.png (Nomad Sculpt 保存メニュー) -->
     <div class="wb">
       <div class="wb-ic">💾</div>
       <div style="flex:1;">
@@ -459,6 +488,7 @@
       </ul>
     </div>
     <div class="col" style="gap:0;">
+        <!-- IMG: assets/images/sl15_material_panel.png (Nomad Sculpt マテリアルパネル) -->
       <div class="dsteps">
         <div class="ds"><div class="ds-n">1</div><div class="ds-b"><div class="ds-t">パーツを選択する</div><div class="ds-s">Scene パネルで色をつけたいパーツを選ぶ。</div></div></div>
         <div class="ds"><div class="ds-n">2</div><div class="ds-b"><div class="ds-t">マテリアルパネルを開く</div><div class="ds-s">右メニューのブラシアイコン → Material タブを開く。</div></div></div>
