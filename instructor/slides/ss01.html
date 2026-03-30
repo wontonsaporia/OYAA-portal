@@ -3,300 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>S01 — ドーナツをつくろう</title>
+<title>SS01 — ドーナツをつくろう</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --black:  #111111;
-    --white:  #ffffff;
-    --off:    #f5f5f3;
-    --gray1:  #e8e8e6;
-    --gray2:  #aaaaaa;
-    --gray3:  #666666;
-    --acc:    #d94f04;   /* accent: vermilion */
-    --acc2:   #f07030;   /* lighter accent */
+    --black: #111;
+    --white: #fff;
+    --off:   #f7f7f5;
+    --g1:    #e8e8e6;
+    --g2:    #b0b0ae;
+    --g3:    #666;
+    --acc:   #d94f04;
+    --acc2:  #f07030;
     --sans: 'Noto Sans JP', sans-serif;
     --mono: 'Space Mono', monospace;
+    --body: 15px;    /* 本文最小 ≥ 12pt */
+    --sub:  14px;
   }
 
-  html, body { width:100%; height:100%; overflow:hidden; background:#222; font-family:var(--sans); }
+  html, body { width:100%; height:100%; overflow:hidden; background:#1a1a1a; font-family:var(--sans); }
 
-  /* ── Scaler ── */
   .wrap { width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; }
   .canvas { width:1280px; height:720px; position:relative; overflow:hidden; flex-shrink:0; transform-origin:top left; background:var(--white); }
 
-  /* ── Slide ── */
-  .sl { position:absolute; inset:0; width:1280px; height:720px; display:none; }
-  .sl.on { display:flex; flex-direction:column; }
+  .sl { position:absolute; inset:0; display:none; flex-direction:column; background:var(--white); }
+  .sl.on { display:flex; }
 
   /* ── Nav ── */
-  .nav { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:8px; background:rgba(17,17,17,0.88); border:1px solid rgba(255,255,255,0.12); border-radius:40px; padding:6px 14px; z-index:9999; backdrop-filter:blur(8px); }
-  .nb { width:28px; height:28px; border-radius:50%; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#ccc; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.12s; }
-  .nb:hover { background:rgba(255,255,255,0.1); }
+  .nav { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:8px; background:rgba(17,17,17,0.9); border:1px solid rgba(255,255,255,0.1); border-radius:40px; padding:6px 14px; z-index:9999; backdrop-filter:blur(10px); }
+  .nb { width:28px; height:28px; border-radius:50%; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#aaa; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .nb:hover { background:rgba(255,255,255,0.08); }
   .nds { display:flex; gap:4px; }
-  .nd { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.25); cursor:pointer; transition:background 0.12s; }
+  .nd { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.2); cursor:pointer; transition:background 0.12s; }
   .nd.on { background:var(--acc); }
-  .nc { font-family:var(--mono); font-size:10px; color:rgba(255,255,255,0.45); min-width:46px; text-align:center; letter-spacing:0.1em; }
+  .nc { font-family:var(--mono); font-size:10px; color:rgba(255,255,255,0.35); min-width:46px; text-align:center; }
 
-  /* ════════════════════════════
+  /* ────────────────────────
      共通パーツ
-  ════════════════════════════ */
-
+  ──────────────────────── */
   /* 上帯 */
-  .band { flex-shrink:0; display:flex; align-items:flex-end; justify-content:space-between; padding:32px 64px 20px; border-bottom:1.5px solid var(--black); }
-  .band .tag { font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gray3); }
-  .band h2 { font-size:34px; font-weight:900; color:var(--black); line-height:1.1; }
-  .band .pg { font-family:var(--mono); font-size:10px; color:var(--gray2); }
-  .band.inv { background:var(--black); border-bottom-color:var(--black); }
-  .band.inv .tag { color:var(--gray2); }
+  .band { flex-shrink:0; padding:28px 64px 18px; border-bottom:2px solid var(--black); display:flex; align-items:flex-end; justify-content:space-between; }
+  .band h2 { font-size:32px; font-weight:900; color:var(--black); line-height:1.1; }
+  .band .tag { font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--g2); margin-bottom:5px; }
+  .band .pg  { font-family:var(--mono); font-size:10px; color:var(--g2); align-self:flex-start; margin-top:4px; }
+  .band.inv  { background:var(--black); border-bottom-color:var(--black); }
   .band.inv h2 { color:var(--white); }
-  .band.inv .pg { color:var(--gray3); }
-  .band.acc { background:var(--acc); border-bottom-color:var(--acc); }
-  .band.acc .tag { color:rgba(255,255,255,0.65); }
-  .band.acc h2 { color:var(--white); }
-  .band.acc .pg { color:rgba(255,255,255,0.55); }
+  .band.inv .tag { color:#555; }
+  .band.inv .pg  { color:#444; }
+  .band.acc-bg { background:var(--acc); border-bottom-color:var(--acc); }
+  .band.acc-bg h2 { color:var(--white); }
+  .band.acc-bg .tag { color:rgba(255,255,255,0.55); }
 
-  /* リード文 */
-  .lead { flex-shrink:0; padding:14px 64px 0; font-size:14px; color:var(--gray3); line-height:1.7; }
+  /* リード */
+  .lead { flex-shrink:0; padding:14px 64px 0; font-size:var(--sub); color:var(--g3); line-height:1.8; }
 
-  /* コンテンツ */
-  .body { flex:1; padding:20px 64px 20px; display:flex; flex-direction:column; min-height:0; }
+  /* ボディ */
+  .body { flex:1; padding:18px 64px 18px; display:flex; flex-direction:column; min-height:0; }
 
   /* フッター */
-  .ft { height:32px; flex-shrink:0; border-top:1px solid var(--gray1); display:flex; align-items:center; padding:0 64px; justify-content:space-between; }
-  .ft span { font-family:var(--mono); font-size:9px; color:var(--gray2); letter-spacing:0.07em; }
-  .ft.inv { border-top-color:rgba(255,255,255,0.1); background:var(--black); }
-  .ft.inv span { color:rgba(255,255,255,0.28); }
+  .ft { height:30px; flex-shrink:0; border-top:1px solid var(--g1); display:flex; align-items:center; justify-content:space-between; padding:0 64px; }
+  .ft span { font-family:var(--mono); font-size:9px; color:var(--g2); letter-spacing:0.06em; }
+  .ft.inv { background:var(--black); border-top-color:#222; }
+  .ft.inv span { color:#444; }
 
   /* バッジ */
-  .badge { display:inline-block; font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.1em; border-radius:2px; padding:3px 8px; }
-  .badge.acc { background:var(--acc); color:var(--white); }
-  .badge.outline { border:1px solid var(--black); color:var(--black); }
-  .badge.gray  { background:var(--gray1); color:var(--gray3); }
+  .bdg { display:inline-block; font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.1em; padding:3px 9px; border-radius:2px; }
+  .bdg.acc { background:var(--acc); color:var(--white); }
+  .bdg.out { border:1.5px solid var(--black); color:var(--black); }
+  .bdg.gray { background:var(--g1); color:var(--g3); }
 
-  /* ════════════════════════════
-     S1 — タイトル
-  ════════════════════════════ */
-  .s1 { background:var(--black); }
-  .s1 .inner { flex:1; display:flex; flex-direction:column; justify-content:center; padding:60px 80px; gap:20px; position:relative; }
-  .s1 .ch-tag { font-family:var(--mono); font-size:11px; letter-spacing:0.18em; color:var(--gray3); margin-bottom:4px; }
-  .s1 h1 { font-size:68px; font-weight:900; color:var(--white); line-height:1.05; letter-spacing:-0.01em; }
+  /* ────────────────────────
+     S1 タイトル
+  ──────────────────────── */
+  .s1 { background:var(--white); }
+  .s1 .inner { flex:1; display:flex; flex-direction:column; justify-content:center; padding:60px 80px; position:relative; gap:18px; }
+  .s1 .ch { font-family:var(--mono); font-size:11px; color:var(--g2); letter-spacing:0.16em; }
+  .s1 h1 { font-size:72px; font-weight:900; color:var(--black); line-height:1.0; letter-spacing:-0.02em; }
   .s1 h1 em { color:var(--acc); font-style:normal; }
-  .s1 .sub { font-size:17px; color:var(--gray3); font-weight:400; letter-spacing:0.04em; }
-  .s1 .date { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,0.2); letter-spacing:0.1em; margin-top:24px; }
-  .s1 .deco { position:absolute; right:80px; top:50%; transform:translateY(-50%); font-size:180px; opacity:0.07; pointer-events:none; line-height:1; }
+  .s1 .sub { font-size:18px; color:var(--g3); font-weight:400; }
+  .s1 .date { font-family:var(--mono); font-size:12px; color:var(--g2); margin-top:16px; }
+  .s1 .deco { position:absolute; right:80px; top:50%; transform:translateY(-50%); font-size:200px; opacity:0.06; line-height:1; pointer-events:none; }
 
-  /* ════════════════════════════
-     S2 — 講座紹介 / 全8回
-  ════════════════════════════ */
-  .s2 .body { flex-direction:row; gap:32px; padding-top:18px; }
-  .s2 .intro-col { width:320px; flex-shrink:0; display:flex; flex-direction:column; gap:12px; }
-  .s2 .intro-text { font-size:13px; color:var(--black); line-height:1.85; }
-  .s2 .intro-text strong { color:var(--acc); }
-  .s2 .divider { width:1px; background:var(--gray1); flex-shrink:0; }
-  .s2 .sessions-col { flex:1; display:flex; gap:20px; }
-  .period { flex:1; display:flex; flex-direction:column; gap:0; }
-  .period-h { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.12em; color:var(--gray3); border-bottom:1.5px solid var(--black); padding-bottom:6px; margin-bottom:0; }
-  .sr { display:flex; align-items:baseline; gap:0; padding:7px 0; border-bottom:1px solid var(--gray1); position:relative; }
-  .sr.now { background:var(--acc); margin:0 -8px; padding:7px 8px; border-bottom-color:var(--acc); border-radius:2px; }
-  .sr.now::after { content:"今日"; position:absolute; right:8px; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:8px; color:rgba(255,255,255,0.7); }
-  .sr-n { font-family:var(--mono); font-size:10px; color:var(--gray2); min-width:30px; }
-  .sr.now .sr-n { color:rgba(255,255,255,0.6); }
-  .sr-d { font-family:var(--mono); font-size:10px; color:var(--gray3); min-width:44px; }
-  .sr.now .sr-d { color:rgba(255,255,255,0.8); }
-  .sr-t { font-size:12px; font-weight:700; color:var(--black); }
+  /* ────────────────────────
+     S2 講座紹介 / 全8回
+  ──────────────────────── */
+  .s2 .body { flex-direction:row; gap:32px; }
+  .intro-col { width:310px; flex-shrink:0; display:flex; flex-direction:column; gap:14px; padding-right:32px; border-right:2px solid var(--black); }
+  .intro-text { font-size:var(--body); color:var(--black); line-height:1.9; }
+  .intro-text strong { color:var(--acc); }
+  .intro-note { font-size:var(--sub); color:var(--g3); border-left:3px solid var(--acc); padding-left:12px; line-height:1.8; }
+  .sessions-wrap { flex:1; display:flex; gap:20px; }
+  .period { flex:1; display:flex; flex-direction:column; }
+  .p-head { font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; color:var(--g3); border-bottom:2px solid var(--black); padding-bottom:6px; margin-bottom:2px; }
+  .sr { display:flex; align-items:baseline; gap:0; padding:7px 0 7px; border-bottom:1px solid var(--g1); position:relative; }
+  .sr.now { background:var(--black); margin:0 -8px; padding:8px 8px; border-radius:2px; }
+  .sr.now::after { content:"今日"; position:absolute; right:10px; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:8px; color:var(--acc); }
+  .sr-n { font-family:var(--mono); font-size:11px; color:var(--g2); min-width:30px; }
+  .sr.now .sr-n { color:#555; }
+  .sr-d { font-family:var(--mono); font-size:11px; color:var(--g3); min-width:44px; font-weight:700; }
+  .sr.now .sr-d { color:#888; }
+  .sr-t { font-size:var(--sub); font-weight:700; color:var(--black); }
   .sr.now .sr-t { color:var(--white); }
 
-  /* ════════════════════════════
-     S3 — 自己紹介
-  ════════════════════════════ */
-  .s3 .body { flex-direction:row; gap:48px; align-items:flex-start; padding-top:28px; }
-  .s3 .photo-col { width:220px; flex-shrink:0; display:flex; flex-direction:column; gap:12px; }
-  .s3 .photo-box { width:220px; height:220px; background:var(--gray1); border:1px solid var(--gray1); display:flex; align-items:center; justify-content:center; font-size:72px; }
-  .s3 .name-block { display:flex; flex-direction:column; gap:4px; }
-  .s3 .name { font-size:22px; font-weight:900; color:var(--black); }
-  .s3 .name-ruby { font-family:var(--mono); font-size:10px; color:var(--gray2); letter-spacing:0.1em; }
-  .s3 .info-col { flex:1; display:flex; flex-direction:column; gap:16px; }
-  .s3 .info-row { display:flex; flex-direction:column; gap:5px; border-bottom:1px solid var(--gray1); padding-bottom:14px; }
-  .s3 .info-label { font-family:var(--mono); font-size:9px; color:var(--gray2); letter-spacing:0.12em; text-transform:uppercase; }
-  .s3 .info-val { font-size:14px; color:var(--black); line-height:1.7; }
-  .s3 .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
-  .s3 .tag-item { font-family:var(--mono); font-size:10px; border:1px solid var(--black); color:var(--black); padding:3px 10px; border-radius:2px; }
-  .s3 .message { font-size:15px; font-weight:700; color:var(--black); line-height:1.8; border-left:3px solid var(--acc); padding-left:16px; margin-top:4px; }
+  /* ────────────────────────
+     S3 自己紹介
+  ──────────────────────── */
+  .s3 .body { flex-direction:row; gap:48px; align-items:flex-start; padding-top:24px; }
+  .photo-col { width:200px; flex-shrink:0; display:flex; flex-direction:column; gap:12px; }
+  .photo-box { width:200px; height:200px; background:var(--g1); display:flex; align-items:center; justify-content:center; font-size:64px; }
+  .pname { font-size:22px; font-weight:900; color:var(--black); }
+  .pruby { font-family:var(--mono); font-size:10px; color:var(--g2); }
+  .info-col { flex:1; display:flex; flex-direction:column; gap:16px; }
+  .info-row { border-bottom:1px solid var(--g1); padding-bottom:14px; display:flex; flex-direction:column; gap:6px; }
+  .i-lbl { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.12em; text-transform:uppercase; }
+  .i-val { font-size:var(--body); color:var(--black); line-height:1.8; }
+  .i-tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .i-tag { font-family:var(--mono); font-size:11px; border:1.5px solid var(--black); color:var(--black); padding:3px 10px; border-radius:2px; }
+  .i-msg { font-size:16px; font-weight:700; color:var(--black); line-height:1.8; border-left:3px solid var(--acc); padding-left:14px; }
 
-  /* ════════════════════════════
-     S4 — 今日の流れ
-  ════════════════════════════ */
+  /* ────────────────────────
+     S4 今日の流れ
+  ──────────────────────── */
   .s4 .body { justify-content:center; }
-  .fi { display:flex; align-items:stretch; border-bottom:1px solid var(--gray1); padding:14px 0; gap:0; }
+  .fi { display:flex; align-items:stretch; border-bottom:1px solid var(--g1); padding:15px 0; }
   .fi:last-child { border-bottom:none; }
-  .fi-n { width:52px; flex-shrink:0; font-family:var(--mono); font-size:28px; font-weight:700; color:var(--gray1); display:flex; align-items:center; }
-  .fi-b { flex:1; display:flex; flex-direction:column; justify-content:center; gap:2px; }
+  .fi-n { width:52px; font-family:var(--mono); font-size:32px; font-weight:700; color:var(--g1); display:flex; align-items:center; flex-shrink:0; }
+  .fi-b { flex:1; display:flex; flex-direction:column; justify-content:center; gap:4px; }
   .fi-t { font-size:22px; font-weight:900; color:var(--black); }
-  .fi-s { font-size:13px; color:var(--gray3); }
-  .fi-d { flex-shrink:0; display:flex; align-items:center; font-family:var(--mono); font-size:13px; font-weight:700; color:var(--black); min-width:56px; justify-content:flex-end; }
+  .fi-s { font-size:var(--sub); color:var(--g3); }
+  .fi-d { flex-shrink:0; display:flex; align-items:center; font-family:var(--mono); font-size:15px; font-weight:700; color:var(--black); min-width:60px; justify-content:flex-end; }
 
-  /* ════════════════════════════
-     S5 — 3DCGってなんだ？
-  ════════════════════════════ */
+  /* ────────────────────────
+     S5 3DCGってなんだ？
+  ──────────────────────── */
   .s5 .body { flex-direction:row; gap:0; padding-top:20px; }
-  .def-col { flex:1; display:flex; flex-direction:column; gap:14px; padding-right:32px; border-right:1px solid var(--gray1); }
-  .def-term { display:flex; align-items:baseline; gap:12px; }
-  .dt-abbr { font-family:var(--mono); font-size:32px; font-weight:700; color:var(--black); line-height:1; min-width:48px; }
-  .dt-body { display:flex; flex-direction:column; gap:2px; }
-  .dt-full { font-size:13px; font-weight:700; color:var(--black); }
-  .dt-desc { font-size:12px; color:var(--gray3); line-height:1.6; }
-  .dim-col { flex:1; padding-left:32px; display:flex; flex-direction:column; justify-content:center; gap:0; }
-  .dim-label { font-family:var(--mono); font-size:9px; color:var(--gray2); letter-spacing:0.12em; margin-bottom:10px; }
-  .dim-row { display:flex; align-items:stretch; gap:6px; }
-  .dim-item { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; background:var(--off); padding:14px 6px 12px; gap:6px; position:relative; }
+  .def-col { flex:1; display:flex; flex-direction:column; gap:16px; padding-right:36px; border-right:1px solid var(--g1); justify-content:center; }
+  .def-term { display:flex; align-items:flex-start; gap:16px; }
+  .dt-abbr { font-family:var(--mono); font-size:36px; font-weight:700; color:var(--black); line-height:1; min-width:52px; flex-shrink:0; }
+  .dt-full { font-size:var(--body); font-weight:700; color:var(--black); margin-bottom:3px; }
+  .dt-desc { font-size:var(--sub); color:var(--g3); line-height:1.75; }
+  .s5-note { font-size:var(--sub); color:var(--black); line-height:1.8; border-left:3px solid var(--acc); padding-left:14px; }
+  .dim-col { flex:1; padding-left:36px; display:flex; flex-direction:column; justify-content:center; gap:14px; }
+  .dim-lbl { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.12em; }
+  .dim-row { display:flex; gap:8px; align-items:stretch; }
+  .dim-item { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; background:var(--off); padding:16px 8px 14px; gap:7px; position:relative; }
   .dim-item.hi { background:var(--black); }
-  .dim-item + .dim-item::before { content:"→"; position:absolute; left:-11px; top:50%; transform:translateY(-50%); font-size:11px; color:var(--gray2); }
-  .di-icon { font-size:22px; line-height:1; }
-  .di-dim { font-family:var(--mono); font-size:8px; font-weight:700; color:var(--acc); }
-  .dim-item.hi .di-dim { color:var(--acc2); }
-  .di-name { font-size:11px; font-weight:700; color:var(--black); }
-  .dim-item.hi .di-name { color:var(--white); }
-  .di-sub { font-size:9px; color:var(--gray3); line-height:1.4; }
-  .dim-item.hi .di-sub { color:var(--gray2); }
-  .s5 .note { margin-top:16px; font-size:12px; color:var(--gray3); line-height:1.75; border-left:2px solid var(--acc); padding-left:12px; }
+  .dim-item+.dim-item::before { content:"→"; position:absolute; left:-13px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--g2); }
+  .di-ico { font-size:24px; line-height:1; }
+  .di-d { font-family:var(--mono); font-size:9px; font-weight:700; color:var(--acc); }
+  .dim-item.hi .di-d { color:var(--acc2); }
+  .di-n { font-size:15px; font-weight:700; color:var(--black); }
+  .dim-item.hi .di-n { color:var(--white); }
+  .di-s { font-size:12px; color:var(--g3); }
+  .dim-item.hi .di-s { color:var(--g2); }
 
-  /* ════════════════════════════
-     S6 — データになる立体空間
-  ════════════════════════════ */
-  .s6 .body { flex-direction:row; gap:0; padding-top:20px; align-items:stretch; }
-  .analogy-col { flex:1; display:flex; flex-direction:column; gap:16px; padding-right:32px; border-right:1px solid var(--gray1); }
-  .a-scene { background:var(--off); border:1px solid var(--gray1); padding:20px; display:flex; flex-direction:column; gap:10px; flex:1; }
-  .a-title { font-family:var(--mono); font-size:9px; color:var(--gray2); letter-spacing:0.12em; margin-bottom:4px; }
-  .a-main { font-size:14px; font-weight:700; color:var(--black); line-height:1.6; }
-  .a-sub { font-size:12px; color:var(--gray3); line-height:1.7; }
-  .coord-col { flex:1; padding-left:32px; display:flex; flex-direction:column; justify-content:center; gap:16px; }
-  .coord-def { display:flex; flex-direction:column; gap:10px; }
-  .coord-label { font-family:var(--mono); font-size:9px; color:var(--gray2); letter-spacing:0.12em; }
+  /* ────────────────────────
+     S6 データになる立体空間
+  ──────────────────────── */
+  .s6 .body { flex-direction:row; gap:0; padding-top:20px; }
+  .analogy-col { flex:1; padding-right:36px; border-right:1px solid var(--g1); display:flex; flex-direction:column; gap:14px; }
+  .a-box { background:var(--off); border-left:3px solid var(--black); padding:18px 20px; }
+  .a-head { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.12em; margin-bottom:8px; }
+  .a-main { font-size:var(--body); font-weight:700; color:var(--black); margin-bottom:8px; line-height:1.6; }
+  .a-desc { font-size:var(--sub); color:var(--g3); line-height:1.85; }
+  .coord-col { flex:1; padding-left:36px; display:flex; flex-direction:column; justify-content:center; gap:16px; }
+  .coord-lbl { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.12em; }
   .coord-row { display:flex; gap:10px; }
-  .coord-item { flex:1; border:1.5px solid var(--gray1); padding:12px 10px; display:flex; flex-direction:column; gap:4px; }
-  .ci-axis { font-family:var(--mono); font-size:22px; font-weight:700; color:var(--black); line-height:1; }
-  .ci-label { font-size:11px; color:var(--gray3); }
-  .coord-note { font-size:13px; color:var(--black); line-height:1.75; border-left:2px solid var(--acc); padding-left:12px; }
-  .s6 .svg-wrap { display:flex; justify-content:center; }
+  .ci { flex:1; border:2px solid var(--black); padding:14px 12px; display:flex; flex-direction:column; gap:4px; }
+  .ci-axis { font-family:var(--mono); font-size:28px; font-weight:700; line-height:1; }
+  .ci-lbl { font-size:var(--sub); color:var(--g3); }
+  .coord-note { font-size:var(--body); color:var(--black); line-height:1.85; border-left:3px solid var(--acc); padding-left:14px; }
+  .coord-code { font-family:var(--mono); font-size:13px; color:var(--g3); background:var(--off); padding:12px 16px; line-height:1.9; }
 
-  /* ════════════════════════════
-     S7 — 空間の表現の仕方
-  ════════════════════════════ */
-  .s7 .body { flex-direction:column; gap:0; padding-top:18px; }
-  .rep-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; flex:1; }
-  .rep-card { border:1px solid var(--gray1); padding:16px 16px 14px; display:flex; flex-direction:column; gap:6px; }
-  .rep-card.hi { border-color:var(--black); border-width:1.5px; }
-  .rc-name { font-size:14px; font-weight:900; color:var(--black); }
-  .rc-eng { font-family:var(--mono); font-size:9px; color:var(--gray2); letter-spacing:0.08em; }
-  .rc-rule { height:1px; background:var(--gray1); margin:4px 0; }
-  .rc-desc { font-size:11.5px; color:var(--gray3); line-height:1.65; flex:1; }
-  .rc-eg { font-family:var(--mono); font-size:9px; color:var(--gray2); margin-top:4px; }
-  .rc-badge-row { display:flex; gap:4px; margin-top:4px; }
+  /* ────────────────────────
+     S7 空間の表現の仕方
+  ──────────────────────── */
+  .s7 .body { padding-top:16px; }
+  .rep-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; flex:1; }
+  .rc { border:1.5px solid var(--g1); padding:16px 18px; display:flex; flex-direction:column; gap:5px; }
+  .rc.hi { border-color:var(--black); border-width:2px; }
+  .rc-name { font-size:16px; font-weight:900; color:var(--black); }
+  .rc-eng { font-family:var(--mono); font-size:9px; color:var(--g2); letter-spacing:0.08em; }
+  .rc-rule { height:1px; background:var(--g1); margin:4px 0; }
+  .rc.hi .rc-rule { background:var(--black); }
+  .rc-desc { font-size:var(--sub); color:var(--g3); line-height:1.7; flex:1; }
+  .rc-eg { font-size:12px; color:var(--g2); }
 
-  /* ════════════════════════════
-     S8 — ソフトのいろいろ
-  ════════════════════════════ */
-  .s8 .body { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); gap:10px; padding-top:18px; }
-  .tc { border:1px solid var(--gray1); padding:14px 16px; display:flex; flex-direction:column; gap:4px; }
-  .tc.hi { border-color:var(--black); border-width:1.5px; background:var(--black); }
-  .tc-cat { font-family:var(--mono); font-size:8px; color:var(--gray2); letter-spacing:0.1em; }
-  .tc.hi .tc-cat { color:rgba(255,255,255,0.4); }
-  .tc-name { font-size:16px; font-weight:900; color:var(--black); line-height:1.1; }
-  .tc.hi .tc-name { color:var(--white); }
-  .tc-desc { font-size:11px; color:var(--gray3); line-height:1.5; }
-  .tc.hi .tc-desc { color:rgba(255,255,255,0.6); }
-  .tc-note { font-family:var(--mono); font-size:9px; color:var(--acc); margin-top:2px; }
+  /* ────────────────────────
+     S8 ソフトのいろいろ（4象限）
+  ──────────────────────── */
+  .s8 .body { padding-top:10px; flex-direction:row; gap:16px; align-items:stretch; }
+  .quad-wrap { flex:1; position:relative; }
+  /* 軸 */
+  .quad-wrap .ax-h { position:absolute; top:50%; left:0; right:0; height:1.5px; background:var(--black); transform:translateY(-50%); }
+  .quad-wrap .ax-v { position:absolute; left:50%; top:0; bottom:0; width:1.5px; background:var(--black); transform:translateX(-50%); }
+  /* 軸ラベル */
+  .ax-lbl { position:absolute; font-family:var(--mono); font-size:10px; color:var(--g3); letter-spacing:0.1em; white-space:nowrap; }
+  .ax-lbl.top    { top:4px; left:50%; transform:translateX(-50%); }
+  .ax-lbl.bottom { bottom:4px; left:50%; transform:translateX(-50%); }
+  .ax-lbl.left   { left:4px; top:50%; transform:translateY(-50%); }
+  .ax-lbl.right  { right:4px; top:50%; transform:translateY(-50%); }
+  /* 象限ラベル */
+  .qlbl { position:absolute; font-family:var(--mono); font-size:9px; color:var(--g1); letter-spacing:0.08em; }
+  .qlbl.tl { top:10px; left:10px; }
+  .qlbl.tr { top:10px; right:10px; text-align:right; }
+  .qlbl.bl { bottom:10px; left:10px; }
+  .qlbl.br { bottom:10px; right:10px; text-align:right; }
+  /* ソフトドット */
+  .sw { position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:default; }
+  .sw .dot { width:10px; height:10px; border-radius:50%; background:var(--black); flex-shrink:0; }
+  .sw.star .dot { background:var(--acc); width:12px; height:12px; }
+  .sw .lbl { font-size:12px; font-weight:700; color:var(--black); white-space:nowrap; line-height:1; }
+  .sw.star .lbl { color:var(--acc); }
+  .sw .sub { font-size:10px; color:var(--g3); white-space:nowrap; }
+  /* 凡例 */
+  .quad-legend { width:180px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; justify-content:center; border-left:1px solid var(--g1); padding-left:16px; }
+  .ql-head { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.1em; margin-bottom:4px; }
+  .ql-item { display:flex; align-items:center; gap:8px; }
+  .ql-dot { width:10px; height:10px; border-radius:50%; background:var(--black); flex-shrink:0; }
+  .ql-dot.star { background:var(--acc); width:12px; height:12px; }
+  .ql-text { font-size:13px; color:var(--black); }
 
-  /* ════════════════════════════
-     S9 — 制作の流れ
-  ════════════════════════════ */
-  .s9 .body { flex-direction:row; gap:0; padding-top:18px; align-items:flex-start; }
-  .flow-list { flex:1; display:flex; flex-direction:column; gap:0; }
-  .flow-item { display:flex; align-items:center; gap:0; padding:9px 0; border-bottom:1px solid var(--gray1); }
+  /* ────────────────────────
+     S9 制作の流れ
+  ──────────────────────── */
+  .s9 .body { flex-direction:row; gap:0; padding-top:18px; }
+  .flow-list { flex:1; display:flex; flex-direction:column; gap:0; padding-right:28px; border-right:1px solid var(--g1); }
+  .flow-item { display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--g1); }
   .flow-item:last-child { border-bottom:none; }
-  .flow-item.on { background:var(--black); margin:0 -8px; padding:10px 8px; border-bottom-color:var(--black); }
-  .flow-item.partial { background:var(--off); margin:0 -8px; padding:9px 8px; }
-  .f-num { font-family:var(--mono); font-size:11px; min-width:22px; color:var(--gray2); }
-  .flow-item.on .f-num { color:var(--acc2); }
-  .flow-item.partial .f-num { color:var(--gray3); }
-  .f-body { flex:1; display:flex; flex-direction:column; gap:1px; }
-  .f-title { font-size:13px; font-weight:700; color:var(--black); }
+  .flow-item.on { background:var(--black); margin:0 -8px; padding:10px 8px; }
+  .flow-item.part { background:var(--off); margin:0 -8px; padding:9px 8px; }
+  .f-num { font-family:var(--mono); font-size:11px; min-width:20px; color:var(--g2); flex-shrink:0; }
+  .flow-item.on .f-num { color:#555; }
+  .f-body { flex:1; }
+  .f-title { font-size:var(--body); font-weight:700; color:var(--black); }
   .flow-item.on .f-title { color:var(--white); }
-  .flow-item.partial .f-title { color:var(--black); }
-  .f-sub { font-size:10px; color:var(--gray3); }
-  .flow-item.on .f-sub { color:rgba(255,255,255,0.5); }
-  .f-tag { font-family:var(--mono); font-size:8px; padding:2px 6px; border-radius:2px; }
+  .f-sub { font-size:12px; color:var(--g3); margin-top:1px; }
+  .flow-item.on .f-sub { color:#666; }
+  .f-tag { font-family:var(--mono); font-size:9px; padding:2px 7px; border-radius:2px; flex-shrink:0; }
   .flow-item.on .f-tag { background:rgba(217,79,4,0.25); color:var(--acc2); }
-  .flow-item.partial .f-tag { background:var(--gray1); color:var(--gray3); }
-  .flow-item.off .f-tag { color:var(--gray2); }
-  .flow-legend { flex-shrink:0; padding-left:32px; border-left:1px solid var(--gray1); display:flex; flex-direction:column; gap:10px; justify-content:center; }
-  .legend-item { display:flex; align-items:center; gap:10px; }
-  .lg-dot { width:10px; height:10px; border-radius:1px; flex-shrink:0; }
-  .lg-text { font-size:12px; color:var(--gray3); }
+  .flow-item.part .f-tag { background:var(--g1); color:var(--g3); }
+  .flow-item.off .f-tag { color:var(--g2); }
+  .flow-legend { width:200px; flex-shrink:0; padding-left:28px; display:flex; flex-direction:column; gap:10px; justify-content:center; }
+  .lg-item { display:flex; align-items:center; gap:10px; }
+  .lg-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  .lg-text { font-size:var(--sub); color:var(--black); }
 
-  /* ════════════════════════════
-     S10 — モデリング
-  ════════════════════════════ */
+  /* ────────────────────────
+     S10 モデリング
+  ──────────────────────── */
   .s10 .body { flex-direction:row; gap:0; padding-top:18px; }
-  .mod-list { flex:1; display:flex; flex-direction:column; gap:0; padding-right:28px; border-right:1px solid var(--gray1); }
-  .mod-group-label { font-family:var(--mono); font-size:8px; color:var(--gray2); letter-spacing:0.12em; margin:10px 0 5px; }
-  .mod-group-label:first-child { margin-top:0; }
-  .mod-item { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--gray1); align-items:flex-start; }
-  .mod-item:last-child { border-bottom:none; }
-  .mod-item.hi { background:var(--black); margin:0 -8px; padding:10px 8px; }
-  .mi-name { font-size:13px; font-weight:700; color:var(--black); min-width:130px; flex-shrink:0; }
-  .mod-item.hi .mi-name { color:var(--white); }
-  .mi-desc { font-size:12px; color:var(--gray3); line-height:1.6; flex:1; }
-  .mod-item.hi .mi-desc { color:rgba(255,255,255,0.6); }
-  .mi-eg { font-family:var(--mono); font-size:9px; color:var(--gray2); white-space:nowrap; }
-  .mod-item.hi .mi-eg { color:var(--acc2); }
-  .mod-note-col { width:280px; flex-shrink:0; padding-left:28px; display:flex; flex-direction:column; justify-content:center; gap:14px; }
-  .mod-def { font-size:13px; color:var(--black); line-height:1.8; }
+  .mod-list { flex:1; display:flex; flex-direction:column; gap:0; padding-right:28px; border-right:1px solid var(--g1); }
+  .mg-lbl { font-family:var(--mono); font-size:10px; color:var(--g2); letter-spacing:0.12em; margin:10px 0 5px; }
+  .mg-lbl:first-child { margin-top:0; }
+  .mi { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--g1); align-items:flex-start; }
+  .mi:last-child { border-bottom:none; }
+  .mi.hi { background:var(--black); margin:0 -8px; padding:11px 8px; }
+  .mi-name { font-size:var(--body); font-weight:700; color:var(--black); min-width:140px; flex-shrink:0; line-height:1.4; }
+  .mi.hi .mi-name { color:var(--white); }
+  .mi-desc { font-size:var(--sub); color:var(--g3); line-height:1.7; flex:1; }
+  .mi.hi .mi-desc { color:rgba(255,255,255,0.6); }
+  .mi-eg { font-family:var(--mono); font-size:10px; color:var(--g2); white-space:nowrap; flex-shrink:0; }
+  .mi.hi .mi-eg { color:var(--acc2); }
+  .mod-note { width:260px; flex-shrink:0; padding-left:28px; display:flex; flex-direction:column; gap:14px; justify-content:center; }
+  .mod-def { font-size:var(--body); color:var(--black); line-height:1.85; }
   .mod-def strong { color:var(--acc); }
-  .mod-point { border-left:2px solid var(--acc); padding-left:12px; font-size:12px; color:var(--gray3); line-height:1.75; }
+  .mod-pt { border-left:3px solid var(--acc); padding-left:12px; font-size:var(--sub); color:var(--g3); line-height:1.8; }
 
-  /* ════════════════════════════
-     S11 — スカルプト
-  ════════════════════════════ */
+  /* ────────────────────────
+     S11 スカルプト
+  ──────────────────────── */
   .s11 .body { flex-direction:row; gap:0; padding-top:18px; }
-  .sculpt-left { flex:1; display:flex; flex-direction:column; gap:14px; padding-right:28px; border-right:1px solid var(--gray1); }
-  .sculpt-def { font-size:13px; color:var(--black); line-height:1.8; }
-  .sculpt-def strong { color:var(--acc); }
-  .vertex-flow { display:flex; gap:6px; align-items:stretch; }
-  .vf-item { flex:1; background:var(--off); padding:10px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center; position:relative; }
+  .sc-left { flex:1; display:flex; flex-direction:column; gap:14px; padding-right:28px; border-right:1px solid var(--g1); }
+  .sc-def { font-size:var(--body); color:var(--black); line-height:1.85; }
+  .sc-def strong { color:var(--acc); }
+  .vf { display:flex; gap:6px; }
+  .vf-item { flex:1; background:var(--off); padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:5px; text-align:center; position:relative; }
   .vf-item.hi { background:var(--black); }
-  .vf-item+.vf-item::before { content:"→"; position:absolute; left:-10px; top:50%; transform:translateY(-50%); font-size:10px; color:var(--gray2); }
-  .vf-en { font-family:var(--mono); font-size:8px; color:var(--gray2); }
-  .vf-item.hi .vf-en { color:rgba(255,255,255,0.4); }
-  .vf-jp { font-size:11px; font-weight:700; color:var(--black); }
+  .vf-item+.vf-item::before { content:"→"; position:absolute; left:-9px; top:50%; transform:translateY(-50%); font-size:11px; color:var(--g2); }
+  .vf-en { font-family:var(--mono); font-size:9px; color:var(--g2); }
+  .vf-item.hi .vf-en { color:#555; }
+  .vf-jp { font-size:15px; font-weight:700; color:var(--black); }
   .vf-item.hi .vf-jp { color:var(--white); }
-  .vf-desc { font-size:9px; color:var(--gray3); line-height:1.4; }
-  .vf-item.hi .vf-desc { color:rgba(255,255,255,0.5); }
-  .brush-note { background:var(--off); border-left:2px solid var(--acc); padding:12px 14px; font-size:12px; color:var(--black); line-height:1.75; }
+  .vf-ds { font-size:12px; color:var(--g3); line-height:1.4; }
+  .vf-item.hi .vf-ds { color:#666; }
+  .brush-note { background:var(--off); border-left:3px solid var(--acc); padding:14px 16px; font-size:var(--body); color:var(--black); line-height:1.85; }
   .brush-note strong { color:var(--acc); }
-  .sculpt-right { width:300px; flex-shrink:0; padding-left:28px; display:flex; flex-direction:column; gap:14px; }
+  .sc-right { width:290px; flex-shrink:0; padding-left:28px; display:flex; flex-direction:column; gap:14px; }
   .poly-row { display:flex; gap:10px; }
-  .poly-card { flex:1; border:1px solid var(--gray1); padding:12px; display:flex; flex-direction:column; gap:4px; }
-  .pc-label { font-family:var(--mono); font-size:9px; letter-spacing:0.1em; color:var(--gray2); }
-  .pc-name { font-size:14px; font-weight:900; color:var(--black); }
-  .pc-pros { font-size:11px; color:var(--gray3); line-height:1.6; }
-  .remesh-note { background:var(--off); padding:12px 14px; font-size:12px; color:var(--black); line-height:1.75; border-left:2px solid var(--gray1); }
-  .remesh-note strong { color:var(--black); }
+  .poly-card { flex:1; border:1.5px solid var(--g1); padding:14px 12px; display:flex; flex-direction:column; gap:5px; }
+  .poly-card.hi { border-color:var(--black); border-width:2px; }
+  .pc-lbl { font-family:var(--mono); font-size:9px; color:var(--g2); letter-spacing:0.1em; }
+  .pc-name { font-size:17px; font-weight:900; color:var(--black); }
+  .pc-desc { font-size:13px; color:var(--g3); line-height:1.65; }
+  .remesh-box { background:var(--off); padding:14px 16px; font-size:var(--sub); color:var(--black); line-height:1.8; }
+  .remesh-box strong { color:var(--black); }
+  .save-box { background:var(--black); padding:14px 16px; }
+  .save-box .sb-head { font-family:var(--mono); font-size:10px; color:#555; margin-bottom:6px; }
+  .save-box .sb-body { font-size:var(--sub); color:rgba(255,255,255,0.7); line-height:1.8; }
+  .save-box strong { color:var(--acc2); }
 
-  /* ════════════════════════════
-     S12 — Section card
-  ════════════════════════════ */
+  /* ────────────────────────
+     S12 セクションカード（一緒にやってみよう）
+  ──────────────────────── */
   .s12 { background:var(--black); }
-  .s12 .inner { flex:1; display:flex; flex-direction:column; justify-content:center; padding:60px 80px; gap:16px; }
-  .s12 .sec-tag { font-family:var(--mono); font-size:11px; color:var(--gray3); letter-spacing:0.18em; }
-  .s12 h1 { font-size:56px; font-weight:900; color:var(--white); line-height:1.1; }
+  .s12 .inner { flex:1; display:flex; flex-direction:column; justify-content:center; padding:60px 80px; gap:18px; }
+  .s12 .sec-tag { font-family:var(--mono); font-size:11px; color:#444; letter-spacing:0.18em; }
+  .s12 h1 { font-size:60px; font-weight:900; color:var(--white); line-height:1.05; }
   .s12 h1 em { color:var(--acc); font-style:normal; }
-  .s12 .sub { font-size:16px; color:var(--gray3); }
-  .s12 .steps { margin-top:8px; display:flex; flex-direction:column; gap:6px; }
-  .s12 .step { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,0.4); display:flex; gap:12px; }
+  .s12 .sub { font-size:18px; color:#555; }
+  .s12 .steps { margin-top:4px; display:flex; flex-direction:column; gap:8px; }
+  .s12 .step { font-family:var(--mono); font-size:13px; color:rgba(255,255,255,0.35); display:flex; gap:14px; }
   .s12 .step em { color:rgba(255,255,255,0.7); font-style:normal; }
 </style>
 </head>
@@ -307,44 +326,34 @@
 <!-- ════ S1 タイトル ════ -->
 <div class="sl s1 on">
   <div class="inner">
-    <div class="ch-tag">CHAPTER 01　／　OYAA × 浦添パルコ 3DCG教室</div>
+    <div class="ch">CHAPTER 01　／　OYAA × 浦添パルコ 3DCG教室</div>
     <h1><em>ドーナツ</em>を<br>つくろう</h1>
     <div class="sub">はじめての 3D スカルプトモデリング</div>
     <div class="date">2025.4.5 （土）　15:00 – 16:30</div>
   </div>
   <div class="deco">🍩</div>
-  <div class="ft inv"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S2 講座紹介 / 全8回 ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Course Overview</div><h2>この講座について</h2></div>
-    <span class="pg">2</span>
-  </div>
+  <div class="band"><div><div class="tag">Course Overview</div><h2>この講座について</h2></div><span class="pg">2</span></div>
   <div class="body s2">
     <div class="intro-col">
-      <div class="badge acc">OYAA × 浦添パルコ 3DCG教室</div>
-      <div class="intro-text">
-        全<strong>8回</strong>・月2回の講座です。<br>
-        3DCGの制作を通じて、自分だけの<strong>オリジナルカード</strong>（オリカ）を作り上げます。<br><br>
-        前半4回でモデリングの基礎を習得し、後半4回でカードデザイン・仕上げに取り組みます。
-      </div>
-      <div style="margin-top:4px;font-size:12px;color:var(--gray3);border-left:2px solid var(--acc);padding-left:10px;line-height:1.8;">
-        最終成果物：3DCGで作った自分だけのオリジナルカード ＋ 修了証授与
-      </div>
+      <div class="bdg acc">OYAA × 浦添パルコ 3DCG教室</div>
+      <div class="intro-text">全<strong>8回</strong>・月2回の講座です。<br>3DCGの制作を通じて、自分だけの<strong>オリジナルカード</strong>（オリカ）を作り上げます。<br><br>前半4回でモデリングの基礎を習得し、後半4回でカードデザイン・仕上げに取り組みます。</div>
+      <div class="intro-note">最終成果物：3DCGで作った自分だけのオリジナルカード（オリカ）＋ 修了証授与</div>
     </div>
-    <div class="divider"></div>
-    <div class="sessions-col">
+    <div class="sessions-wrap">
       <div class="period">
-        <div class="period-h">第1期　スカルプト &amp; モデリング基礎　4/5–5/17</div>
+        <div class="p-head">第1期　スカルプト &amp; モデリング基礎　4/5 – 5/17</div>
         <div class="sr now"><span class="sr-n">S01</span><span class="sr-d">4/5</span><span class="sr-t">ドーナツをつくろう</span></div>
         <div class="sr"><span class="sr-n">S02</span><span class="sr-d">4/12</span><span class="sr-t">リッチドーナツ＆質感</span></div>
         <div class="sr"><span class="sr-n">S03</span><span class="sr-d">5/10</span><span class="sr-t">ちびキャラをスカルプト</span></div>
         <div class="sr"><span class="sr-n">S04</span><span class="sr-d">5/17</span><span class="sr-t">ポスターに仕上げよう</span></div>
       </div>
       <div class="period">
-        <div class="period-h">第2期　デザイン &amp; カード制作　6/7–7/12</div>
+        <div class="p-head">第2期　デザイン &amp; カード制作　6/7 – 7/12</div>
         <div class="sr"><span class="sr-n">S05</span><span class="sr-d">6/7</span><span class="sr-t">オリカをデザインしよう</span></div>
         <div class="sr"><span class="sr-n">S06</span><span class="sr-d">6/14</span><span class="sr-t">デジタルカードを作ろう</span></div>
         <div class="sr"><span class="sr-n">S07</span><span class="sr-d">7/5</span><span class="sr-t">飛び出す3Dトレカ</span></div>
@@ -352,375 +361,254 @@
       </div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S3 自己紹介 ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Introduction</div><h2>自己紹介</h2></div>
-    <span class="pg">3</span>
-  </div>
+  <div class="band"><div><div class="tag">Introduction</div><h2>自己紹介</h2></div><span class="pg">3</span></div>
   <div class="body s3">
     <div class="photo-col">
       <div class="photo-box">👤</div>
-      <div class="name-block">
-        <div class="name">お名前</div>
-        <div class="name-ruby">NAME / YOMI</div>
-      </div>
+      <div class="pname">お名前</div>
+      <div class="pruby">NAME</div>
     </div>
     <div class="info-col">
-      <div class="info-row">
-        <div class="info-label">専門・仕事</div>
-        <div class="info-val">（記入してください）</div>
-      </div>
-      <div class="info-row">
-        <div class="info-label">使うソフト・ツール</div>
-        <div class="tags">
-          <span class="tag-item">Nomad Sculpt</span>
-          <span class="tag-item">Blender</span>
-          <span class="tag-item">……</span>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-label">好きなもの・趣味</div>
-        <div class="info-val">（記入してください）</div>
-      </div>
-      <div class="message">
-        （今日のメッセージ・ひとこと）
-      </div>
+      <div class="info-row"><div class="i-lbl">専門・仕事</div><div class="i-val">（記入してください）</div></div>
+      <div class="info-row"><div class="i-lbl">使うソフト・ツール</div><div class="i-tags"><span class="i-tag">Nomad Sculpt</span><span class="i-tag">Blender</span><span class="i-tag">……</span></div></div>
+      <div class="info-row"><div class="i-lbl">好きなもの・趣味</div><div class="i-val">（記入してください）</div></div>
+      <div class="i-msg">（今日のひとこと・メッセージ）</div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S4 今日の流れ ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Schedule</div><h2>今日の流れ</h2></div>
-    <span class="pg">4</span>
-  </div>
+  <div class="band"><div><div class="tag">Schedule</div><h2>今日の流れ</h2></div><span class="pg">4</span></div>
   <div class="body s4">
     <div class="fi"><div class="fi-n">1.</div><div class="fi-b"><div class="fi-t">導入・お話</div><div class="fi-s">3DCGって何？　この講座でやること</div></div><div class="fi-d">10分</div></div>
     <div class="fi"><div class="fi-n">2.</div><div class="fi-b"><div class="fi-t">説明・デモ</div><div class="fi-s">作り方を見てみよう　Nomad Sculpt を開く</div></div><div class="fi-d">20分</div></div>
-    <div class="fi"><div class="fi-n">3.</div><div class="fi-b"><div class="fi-t">実習</div><div class="fi-s">ドーナツをつくろう！　スカルプト→マスク→保存</div></div><div class="fi-d">50分</div></div>
+    <div class="fi"><div class="fi-n">3.</div><div class="fi-b"><div class="fi-t">実習</div><div class="fi-s">ドーナツをつくろう！　スカルプト → マスク → 保存</div></div><div class="fi-d">50分</div></div>
     <div class="fi"><div class="fi-n">4.</div><div class="fi-b"><div class="fi-t">まとめ</div><div class="fi-s">保存・提出・振り返り</div></div><div class="fi-d">10分</div></div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S5 3DCGってなんだ？ ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — 3DCG とは</div><h2>3DCG ってなんだ？</h2></div>
-    <span class="pg">5</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture</div><h2>3DCG ってなんだ？</h2></div><span class="pg">5</span></div>
   <div class="body s5">
     <div class="def-col">
       <div class="def-term">
         <div class="dt-abbr">3D</div>
-        <div class="dt-body">
-          <div class="dt-full">3 Dimension（3次元）</div>
-          <div class="dt-desc">タテ・ヨコ・奥行きの3つの軸をもつ空間のこと。私たちが生きる世界がそのまま3次元です。</div>
-        </div>
+        <div><div class="dt-full">3 Dimension（3次元）</div><div class="dt-desc">タテ・ヨコ・奥行きの3つの軸をもつ空間。私たちが生きる世界がそのまま3次元です。</div></div>
       </div>
       <div class="def-term">
         <div class="dt-abbr">CG</div>
-        <div class="dt-body">
-          <div class="dt-full">Computer Graphics</div>
-          <div class="dt-desc">コンピューターで作った映像・画像のこと。2DCGと3DCGがあります。</div>
-        </div>
+        <div><div class="dt-full">Computer Graphics</div><div class="dt-desc">コンピューターで作った映像・画像のこと。2DCGと3DCGがあります。</div></div>
       </div>
       <div class="def-term">
         <div class="dt-abbr">＝</div>
-        <div class="dt-body">
-          <div class="dt-full" style="font-size:15px;">コンピューターの中に 3D 空間を再現する技術</div>
-          <div class="dt-desc">映画・ゲーム・建築・医療・広告など、あらゆる分野で使われています。</div>
-        </div>
+        <div><div class="dt-full" style="font-size:16px;">コンピューターの中に 3D 空間を再現する技術</div><div class="dt-desc">映画・ゲーム・建築・医療・広告など、あらゆる分野で使われています。</div></div>
       </div>
-      <div class="s5 note">
-        3DCGでは、この3D空間にポリゴン（三角・四角形の面）を組み合わせてモノの形を作ります。その形に色・質感・光をあてて <strong style="color:var(--acc)">レンダリング</strong> することで、1枚の画像として出力されます。
-      </div>
+      <div class="s5-note">3DCGでは、3D空間にポリゴン（三角・四角形の面）を組み合わせてモノの形を作ります。その形に色・質感・光をあてて <strong style="color:var(--acc)">レンダリング</strong> することで、1枚の画像として出力されます。</div>
     </div>
     <div class="dim-col">
-      <div class="dim-label">次元（DIMENSION）の積み重ね</div>
+      <div class="dim-lbl">次元（DIMENSION）の積み重ね</div>
       <div class="dim-row">
-        <div class="dim-item">
-          <div class="di-icon">·</div>
-          <div class="di-dim">0D</div>
-          <div class="di-name">点</div>
-          <div class="di-sub">位置のみ</div>
-        </div>
-        <div class="dim-item">
-          <div class="di-icon">—</div>
-          <div class="di-dim">1D</div>
-          <div class="di-name">線（辺）</div>
-          <div class="di-sub">点が連なる</div>
-        </div>
-        <div class="dim-item">
-          <div class="di-icon">▭</div>
-          <div class="di-dim">2D</div>
-          <div class="di-name">面</div>
-          <div class="di-sub">辺が広がる</div>
-        </div>
-        <div class="dim-item hi">
-          <div class="di-icon">🎲</div>
-          <div class="di-dim">3D</div>
-          <div class="di-name">立体</div>
-          <div class="di-sub">面が積み重なる</div>
-        </div>
+        <div class="dim-item"><div class="di-ico">·</div><div class="di-d">0D</div><div class="di-n">点</div><div class="di-s">位置のみ</div></div>
+        <div class="dim-item"><div class="di-ico">—</div><div class="di-d">1D</div><div class="di-n">線（辺）</div><div class="di-s">点が連なる</div></div>
+        <div class="dim-item"><div class="di-ico">▭</div><div class="di-d">2D</div><div class="di-n">面</div><div class="di-s">辺が広がる</div></div>
+        <div class="dim-item hi"><div class="di-ico">🎲</div><div class="di-d">3D</div><div class="di-n">立体</div><div class="di-s">面が積み重なる</div></div>
       </div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S6 データになる立体空間 ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — データになる空間</div><h2>データで表す 3D 空間</h2></div>
-    <span class="pg">6</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture — データになる空間</div><h2>データで表す 3D 空間</h2></div><span class="pg">6</span></div>
   <div class="body s6">
     <div class="analogy-col">
-      <div class="a-title">アナロジー — スイカ割り</div>
-      <div class="a-scene">
+      <div class="a-box">
+        <div class="a-head">アナロジー — スイカ割り</div>
         <div class="a-main">目隠しをして、スイカに向かって棒を振る。</div>
-        <div class="a-sub">
-          「3歩前に進んで、少し左、そこで振り下ろして」——<br>
-          これは <strong>位置を座標で指示している</strong> ことと同じです。<br><br>
-          コンピューターの3D空間も同じ仕組みです。空間のすべての点は、3つの数値（x, y, z）で一意に定まります。形・色・光——すべてが <strong>数値のデータ</strong> として記録されています。
-        </div>
+        <div class="a-desc">「3歩前に進んで、少し左、そこで振り下ろして」——これは<strong>位置を座標で指示している</strong>ことと同じです。<br><br>コンピューターの3D空間も同じ仕組みです。空間のすべての点は、3つの数値（x, y, z）で一意に定まります。形・色・光——すべてが<strong>数値のデータ</strong>として記録されています。</div>
       </div>
     </div>
     <div class="coord-col">
-      <div class="coord-label">座標系（COORDINATE SYSTEM）</div>
+      <div class="coord-lbl">座標系（COORDINATE SYSTEM）</div>
       <div class="coord-row">
-        <div class="coord-item">
-          <div class="ci-axis" style="color:var(--acc);">X</div>
-          <div class="ci-label">左右（横）</div>
-        </div>
-        <div class="coord-item">
-          <div class="ci-axis" style="color:#2a8a2a;">Y</div>
-          <div class="ci-label">上下（縦）</div>
-        </div>
-        <div class="coord-item">
-          <div class="ci-axis" style="color:#2a5ab0;">Z</div>
-          <div class="ci-label">奥行き</div>
-        </div>
+        <div class="ci"><div class="ci-axis" style="color:var(--acc);">X</div><div class="ci-lbl">左右（横）</div></div>
+        <div class="ci"><div class="ci-axis" style="color:#2a8a2a;">Y</div><div class="ci-lbl">上下（縦）</div></div>
+        <div class="ci"><div class="ci-axis" style="color:#2a5ab0;">Z</div><div class="ci-lbl">奥行き</div></div>
       </div>
-      <div class="coord-note">
-        3D空間内のどんな点も、<strong style="color:var(--black);">（x, y, z）</strong> の3つの数値で表せます。スカルプトでブラシを動かすとき、実際には頂点の座標が書き換わっています。
-      </div>
-      <div style="font-family:var(--mono);font-size:11px;color:var(--gray2);background:var(--off);padding:12px 14px;line-height:1.9;">
-        例：ドーナツの表面の頂点<br>
-        p₀ = ( 1.20, 0.00, 0.45 )<br>
-        p₁ = ( 1.18, 0.03, 0.47 )<br>
-        ⋮　← これが集まって「形」になる
-      </div>
+      <div class="coord-note">3D空間内のどんな点も、<strong>（x, y, z）</strong> の3つの数値で表せます。スカルプトでブラシを動かすとき、実際には頂点の座標が書き換わっています。</div>
+      <div class="coord-code">例：ドーナツの表面の頂点<br>p₀ = ( 1.20,  0.00,  0.45 )<br>p₁ = ( 1.18,  0.03,  0.47 )<br>⋮　← これが集まって「形」になる</div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S7 空間の表現の仕方 ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — 空間の表現</div><h2>3D空間の表し方はひとつじゃない</h2></div>
-    <span class="pg">7</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture — 空間の表現</div><h2>3D空間の表し方はひとつじゃない</h2></div><span class="pg">7</span></div>
   <div class="lead">形をどう記録・表現するかの違いが、用途や得意なことの違いにもつながります。</div>
   <div class="body s7">
     <div class="rep-grid">
-      <div class="rep-card hi">
-        <div class="rc-name">ポリゴンメッシュ</div>
-        <div class="rc-eng">POLYGON MESH</div>
-        <div class="rc-rule"></div>
-        <div class="rc-desc">頂点・辺・面の集合体。面を組み合わせて形を表現します。3DCGの主流形式です。</div>
-        <div class="rc-eg">→ 映像・ゲーム・キャラクター全般</div>
-        <div class="rc-badge-row"><span class="badge acc">今日使う</span></div>
-      </div>
-      <div class="rep-card">
-        <div class="rc-name">NURBS</div>
-        <div class="rc-eng">NURBS SURFACE</div>
-        <div class="rc-rule"></div>
-        <div class="rc-desc">数式（制御点＋重み）で曲面を定義します。拡大しても真に滑らかな曲面を保ちます。</div>
-        <div class="rc-eg">→ 工業設計・自動車・建築・CAD</div>
-      </div>
-      <div class="rep-card">
-        <div class="rc-name">ボクセル</div>
-        <div class="rc-eng">VOXEL</div>
-        <div class="rc-rule"></div>
-        <div class="rc-desc">3D空間をグリッドに分割し、各セルのON/OFFで形を表現します。内部構造を持てます。</div>
-        <div class="rc-eg">→ 医療CT・地形破壊・AI学習</div>
-      </div>
-      <div class="rep-card">
-        <div class="rc-name">点群</div>
-        <div class="rc-eng">POINT CLOUD</div>
-        <div class="rc-rule"></div>
-        <div class="rc-desc">座標と色を持つ点の集合。面・辺の概念がなく、3Dスキャナーの生データ形式です。</div>
-        <div class="rc-eg">→ 測量・建築・自動運転・LiDAR</div>
-      </div>
-      <div class="rep-card">
-        <div class="rc-name">SDF</div>
-        <div class="rc-eng">SIGNED DISTANCE FIELD</div>
-        <div class="rc-rule"></div>
-        <div class="rc-desc">空間の各点が表面からの距離を関数で表現。形の合体・くり抜きが得意です。</div>
-        <div class="rc-eg">→ AIによる3D生成・リアルタイムCG</div>
-      </div>
-      <div class="rep-card">
-        <div class="rc-name">3D Gaussian Splatting</div>
-        <div class="rc-eng">GAUSSIAN SPLATTING</div>
-        <div class="rc-rule"></div>
-        <div class="rc-desc">点群を発展させ、各点に楕円体の広がりと透明度を付加。写真・動画から高速に3Dを再構成できます。</div>
-        <div class="rc-eg">→ 写真・動画からの3D再構成・AI</div>
-      </div>
+      <div class="rc hi"><div class="rc-name">ポリゴンメッシュ</div><div class="rc-eng">POLYGON MESH</div><div class="rc-rule"></div><div class="rc-desc">頂点・辺・面の集合体。面を組み合わせて形を表現します。3DCGの主流形式です。</div><div class="rc-eg">→ 映像・ゲーム・キャラクター全般</div><div style="margin-top:6px;"><span class="bdg acc">今日使う</span></div></div>
+      <div class="rc"><div class="rc-name">NURBS</div><div class="rc-eng">NURBS SURFACE</div><div class="rc-rule"></div><div class="rc-desc">数式（制御点＋重み）で曲面を定義します。拡大しても真に滑らかな曲面を保ちます。</div><div class="rc-eg">→ 工業設計・自動車・建築・CAD</div></div>
+      <div class="rc"><div class="rc-name">ボクセル</div><div class="rc-eng">VOXEL</div><div class="rc-rule"></div><div class="rc-desc">3D空間をグリッドに分割し、各セルのON/OFFで形を表現します。内部構造を持てます。</div><div class="rc-eg">→ 医療CT・地形破壊・AI学習</div></div>
+      <div class="rc"><div class="rc-name">点群</div><div class="rc-eng">POINT CLOUD</div><div class="rc-rule"></div><div class="rc-desc">座標と色を持つ点の集合。面・辺の概念がなく、3Dスキャナーの生データ形式です。</div><div class="rc-eg">→ 測量・建築・自動運転・LiDAR</div></div>
+      <div class="rc"><div class="rc-name">SDF</div><div class="rc-eng">SIGNED DISTANCE FIELD</div><div class="rc-rule"></div><div class="rc-desc">空間の各点が表面からの距離を関数で表現。形の合体・くり抜きが得意です。</div><div class="rc-eg">→ AIによる3D生成・リアルタイムCG</div></div>
+      <div class="rc"><div class="rc-name">3D Gaussian Splatting</div><div class="rc-eng">GAUSSIAN SPLATTING</div><div class="rc-rule"></div><div class="rc-desc">点群を発展させ、各点に楕円体の広がりと透明度を付加。写真・動画から高速に3Dを再構成できます。</div><div class="rc-eg">→ 写真・動画からの3D再構成・AI</div></div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
-<!-- ════ S8 ソフトのいろいろ ════ -->
+<!-- ════ S8 ソフトのいろいろ（4象限） ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — ソフトウェア</div><h2>3DCGソフトいろいろ</h2></div>
-    <span class="pg">8</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture — ソフトウェア</div><h2>3DCGソフトいろいろ</h2></div><span class="pg">8</span></div>
+  <div class="lead">それぞれ得意なことが違います。用途・目的・操作感が大きく異なります。</div>
   <div class="body s8">
-    <div class="tc"><div class="tc-cat">汎用 3DCG</div><div class="tc-name">Blender</div><div class="tc-desc">無料・何でもできます。コミュニティが大きい。</div></div>
-    <div class="tc"><div class="tc-cat">汎用 3DCG</div><div class="tc-name">Maya</div><div class="tc-desc">映画・アニメ制作の定番です。</div></div>
-    <div class="tc"><div class="tc-cat">VFX / プロシージャル</div><div class="tc-name">Houdini</div><div class="tc-desc">特殊効果・プロシージャル生成に強い。</div></div>
-    <div class="tc"><div class="tc-cat">スカルプト</div><div class="tc-name">ZBrush</div><div class="tc-desc">プロ用スカルプトの定番です。</div></div>
-    <div class="tc"><div class="tc-cat">ゲームエンジン</div><div class="tc-name">Unity</div><div class="tc-desc">ゲーム・XR開発の定番です。</div></div>
-    <div class="tc"><div class="tc-cat">ゲームエンジン</div><div class="tc-name">Unreal Engine</div><div class="tc-desc">高品質グラフィックスに強いです。</div></div>
-    <div class="tc"><div class="tc-cat">設計・建築</div><div class="tc-name">Rhino / AutoCAD</div><div class="tc-desc">数値・図面から正確に設計します。</div></div>
-    <div class="tc"><div class="tc-cat">プログラミングアート</div><div class="tc-name">Processing / TD</div><div class="tc-desc">コードで映像・インタラクションを作ります。</div></div>
-    <div class="tc hi"><div class="tc-cat">今日使う — iPad スカルプト</div><div class="tc-name">Nomad Sculpt</div><div class="tc-desc">iPadで使えるスカルプトツール。指とApple Pencilで直感的に操作できます。</div><div class="tc-note">← 今日はこれ！</div></div>
+    <div class="quad-wrap">
+      <!-- 軸 -->
+      <div class="ax-h"></div>
+      <div class="ax-v"></div>
+      <!-- 軸ラベル -->
+      <div class="ax-lbl top">映像・ゲーム・アート</div>
+      <div class="ax-lbl bottom">設計・エンジニアリング</div>
+      <div class="ax-lbl left">アーティスト寄り</div>
+      <div class="ax-lbl right">エンジニア寄り</div>
+      <!-- 象限ラベル -->
+      <div class="qlbl tl">キャラ・映像 × 感覚的</div>
+      <div class="qlbl tr">映像・ゲーム × 技術的</div>
+      <div class="qlbl bl">造形・スカルプト</div>
+      <div class="qlbl br">設計・プログラミング</div>
+
+      <!-- ソフト配置 （left/top = 中心からの% 、50%=中心） -->
+      <!-- 上左 象限 -->
+      <div class="sw" style="left:18%;top:22%;">
+        <div class="dot"></div><div class="lbl">ZBrush</div><div class="sub">スカルプト（プロ用）</div>
+      </div>
+      <div class="sw" style="left:28%;top:32%;">
+        <div class="dot"></div><div class="lbl">Maya</div><div class="sub">映画・アニメ</div>
+      </div>
+      <div class="sw" style="left:42%;top:24%;">
+        <div class="dot"></div><div class="lbl">Blender</div><div class="sub">無料・汎用</div>
+      </div>
+      <!-- 上右 象限 -->
+      <div class="sw" style="left:68%;top:22%;">
+        <div class="dot"></div><div class="lbl">Houdini</div><div class="sub">VFX・プロシージャル</div>
+      </div>
+      <div class="sw" style="left:72%;top:36%;">
+        <div class="dot"></div><div class="lbl">Unreal Engine</div><div class="sub">ゲーム・映像</div>
+      </div>
+      <div class="sw" style="left:62%;top:40%;">
+        <div class="dot"></div><div class="lbl">Unity</div><div class="sub">ゲーム・XR</div>
+      </div>
+      <!-- 下右 象限 -->
+      <div class="sw" style="left:74%;top:64%;">
+        <div class="dot"></div><div class="lbl">AutoCAD / Rhino</div><div class="sub">建築・設計</div>
+      </div>
+      <div class="sw" style="left:66%;top:74%;">
+        <div class="dot"></div><div class="lbl">Fusion 360</div><div class="sub">プロダクトデザイン</div>
+      </div>
+      <div class="sw" style="left:78%;top:55%;">
+        <div class="dot"></div><div class="lbl">Processing / TD</div><div class="sub">プログラミングアート</div>
+      </div>
+      <!-- 左下：Nomad Sculpt（今日使う） -->
+      <div class="sw star" style="left:20%;top:58%;">
+        <div class="dot"></div><div class="lbl">Nomad Sculpt ★</div><div class="sub">iPad スカルプト ← 今日</div>
+      </div>
+    </div>
+    <div class="quad-legend">
+      <div class="ql-head">LEGEND</div>
+      <div class="ql-item"><div class="ql-dot star"></div><div class="ql-text">今日使うソフト</div></div>
+      <div class="ql-item"><div class="ql-dot"></div><div class="ql-text">その他のソフト</div></div>
+      <div style="margin-top:12px;font-size:13px;color:var(--g3);line-height:1.8;border-left:2px solid var(--g1);padding-left:10px;">どのソフトも<br>できることの<br>大枠は同じ。<br>「得意な用途」<br>が異なります。</div>
+    </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S9 制作の流れ ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — 制作工程</div><h2>3DCG 制作の流れ</h2></div>
-    <span class="pg">9</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture — 制作工程</div><h2>3DCG 制作の流れ</h2></div><span class="pg">9</span></div>
   <div class="lead">3DCGの制作はいくつかの工程に分かれています。この講座ではそのうちの一部を体験します。</div>
   <div class="body s9">
     <div class="flow-list">
       <div class="flow-item off"><span class="f-num">1</span><div class="f-body"><div class="f-title">プリプロダクション</div><div class="f-sub">コンセプトアート・設定・絵コンテ</div></div><span class="f-tag">S02/S05</span></div>
       <div class="flow-item on"><span class="f-num">2</span><div class="f-body"><div class="f-title">モデリング</div><div class="f-sub">形を造る — スカルプト・ポリゴンなど</div></div><span class="f-tag">S01–03 / S06–07</span></div>
-      <div class="flow-item partial"><span class="f-num">3</span><div class="f-body"><div class="f-title">サーフェシング</div><div class="f-sub">表面の情報を整える — マテリアル・テクスチャなど</div></div><span class="f-tag">S02–03 / S06</span></div>
+      <div class="flow-item part"><span class="f-num">3</span><div class="f-body"><div class="f-title">サーフェシング</div><div class="f-sub">表面の情報を整える — マテリアル・テクスチャなど</div></div><span class="f-tag">S02–03 / S06</span></div>
       <div class="flow-item off"><span class="f-num">4</span><div class="f-body"><div class="f-title">リギング・アニメーション</div><div class="f-sub">骨格を仕込んで動かす</div></div><span class="f-tag">講座外</span></div>
-      <div class="flow-item partial"><span class="f-num">5</span><div class="f-body"><div class="f-title">ライティング</div><div class="f-sub">光源・環境光・カメラ設定</div></div><span class="f-tag">S04 / S07</span></div>
-      <div class="flow-item partial"><span class="f-num">6</span><div class="f-body"><div class="f-title">レンダリング・ポストプロセス</div><div class="f-sub">画像として出力・色補正・エフェクト</div></div><span class="f-tag">S04 / S08</span></div>
+      <div class="flow-item part"><span class="f-num">5</span><div class="f-body"><div class="f-title">ライティング</div><div class="f-sub">光源・環境光・カメラ設定</div></div><span class="f-tag">S04 / S07</span></div>
+      <div class="flow-item part"><span class="f-num">6</span><div class="f-body"><div class="f-title">レンダリング・ポストプロセス</div><div class="f-sub">画像として出力・色補正・エフェクト</div></div><span class="f-tag">S04 / S08</span></div>
       <div class="flow-item off"><span class="f-num">7</span><div class="f-body"><div class="f-title">コンポジット</div><div class="f-sub">映像合成・仕上げ</div></div><span class="f-tag">講座外</span></div>
     </div>
     <div class="flow-legend">
-      <div class="legend-item"><div class="lg-dot" style="background:var(--black);"></div><div class="lg-text">講座で扱います</div></div>
-      <div class="legend-item"><div class="lg-dot" style="background:var(--gray1);border:1px solid var(--gray2);"></div><div class="lg-text">一部体験します</div></div>
-      <div class="legend-item"><div class="lg-dot" style="background:var(--gray1);"></div><div class="lg-text">講座外（いつか挑戦！）</div></div>
+      <div class="lg-item"><div class="lg-dot" style="background:var(--black);"></div><div class="lg-text">講座で扱います</div></div>
+      <div class="lg-item"><div class="lg-dot" style="background:var(--g1);border:1px solid var(--g2);"></div><div class="lg-text">一部体験します</div></div>
+      <div class="lg-item"><div class="lg-dot" style="background:var(--g1);"></div><div class="lg-text">講座外（いつか！）</div></div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S10 モデリング ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — モデリング</div><h2>モデリングとは</h2></div>
-    <span class="pg">10</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture — モデリング</div><h2>モデリングとは</h2></div><span class="pg">10</span></div>
   <div class="body s10">
     <div class="mod-list">
-      <div class="mod-group-label">手動でつくる</div>
-      <div class="mod-item hi">
-        <div class="mi-name">スカルプト <span style="font-size:10px;color:var(--acc2);">本講座</span></div>
-        <div class="mi-desc">ブラシで複数の頂点を一括操作します。直感的に形を作ることができます。</div>
-        <div class="mi-eg">Nomad Sculpt・ZBrush</div>
-      </div>
-      <div class="mod-item">
-        <div class="mi-name">ボックスモデリング</div>
-        <div class="mi-desc">頂点・辺・面をひとつひとつ手動で操作します。ゲーム・映像制作の主流です。</div>
-        <div class="mi-eg">Blender EditMode</div>
-      </div>
-      <div class="mod-item">
-        <div class="mi-name">NURBS編集</div>
-        <div class="mi-desc">制御点を操作して曲面を定義します。拡大しても滑らかさが保たれます。</div>
-        <div class="mi-eg">Rhinoceros</div>
-      </div>
-      <div class="mod-group-label">プログラム / AI がつくる</div>
-      <div class="mod-item">
-        <div class="mi-name">プロシージャル</div>
-        <div class="mi-desc">コード・数式・ノードで形を自動生成します。</div>
-        <div class="mi-eg">Houdini・Blender GeometryNodes</div>
-      </div>
-      <div class="mod-item">
-        <div class="mi-name">AIモデリング</div>
-        <div class="mi-desc">テキスト・画像・スケッチから形を推論・生成します。</div>
-        <div class="mi-eg">Point-E・TripoSR</div>
-      </div>
+      <div class="mg-lbl">手動でつくる</div>
+      <div class="mi hi"><div class="mi-name">スカルプト <span style="font-size:11px;color:var(--acc2);">本講座</span></div><div class="mi-desc">ブラシで複数の頂点を一括操作します。直感的に形を作ることができます。</div><div class="mi-eg">Nomad Sculpt・ZBrush</div></div>
+      <div class="mi"><div class="mi-name">ボックスモデリング</div><div class="mi-desc">頂点・辺・面をひとつひとつ手動で操作します。ゲーム・映像制作の主流です。</div><div class="mi-eg">Blender EditMode</div></div>
+      <div class="mi"><div class="mi-name">NURBS編集</div><div class="mi-desc">制御点を操作して曲面を定義します。拡大しても滑らかさが保たれます。</div><div class="mi-eg">Rhinoceros</div></div>
+      <div class="mg-lbl">プログラム / AI がつくる</div>
+      <div class="mi"><div class="mi-name">プロシージャル</div><div class="mi-desc">コード・数式・ノードで形を自動生成します。</div><div class="mi-eg">Houdini・Blender GeomNodes</div></div>
+      <div class="mi"><div class="mi-name">AIモデリング</div><div class="mi-desc">テキスト・画像・スケッチから形を推論・生成します。</div><div class="mi-eg">Point-E・TripoSR</div></div>
     </div>
-    <div class="mod-note-col">
-      <div class="mod-def">
-        <strong>モデリング</strong>とは、3D空間上のデータを作ったり、データの中身を動かすことで形を変えることです。制作の出発点となる <strong>最重要工程</strong> です。
-      </div>
-      <div class="mod-point">
-        3DCGにおいて、ものや形はすべて <strong style="color:var(--black);">データ（数値）</strong> で表されます。
-      </div>
+    <div class="mod-note">
+      <div class="mod-def"><strong>モデリング</strong>とは、3D空間上のデータを作ったり、データの中身を動かすことで形を変えることです。制作の出発点となる<strong>最重要工程</strong>です。</div>
+      <div class="mod-pt">3DCGにおいて、ものや形はすべて<strong style="color:var(--black);">データ（数値）</strong>で表されます。</div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- ════ S11 スカルプト ════ -->
 <div class="sl">
-  <div class="band">
-    <div><div class="tag">Lecture — スカルプト</div><h2>スカルプトの仕組み</h2></div>
-    <span class="pg">11</span>
-  </div>
+  <div class="band"><div><div class="tag">Lecture — スカルプト</div><h2>スカルプトの仕組み</h2></div><span class="pg">11</span></div>
   <div class="body s11">
-    <div class="sculpt-left">
-      <div class="sculpt-def">
-        スカルプト（彫刻）というその名の通り、すでにあるメッシュに対して<strong>ブラシで押し出したり盛り上げたりする</strong>モデリング手法です。
+    <div class="sc-left">
+      <div class="sc-def">スカルプト（彫刻）というその名の通り、すでにあるメッシュに対して<strong>ブラシで押し出したり盛り上げたり</strong>するモデリング手法です。</div>
+      <div class="vf">
+        <div class="vf-item"><div class="vf-en">VERTEX</div><div class="vf-jp">頂点</div><div class="vf-ds">x・y・z の座標をもつ点</div></div>
+        <div class="vf-item"><div class="vf-en">EDGE</div><div class="vf-jp">辺</div><div class="vf-ds">頂点と頂点をつないだ線</div></div>
+        <div class="vf-item"><div class="vf-en">FACE</div><div class="vf-jp">ポリゴン</div><div class="vf-ds">辺で囲まれた三角・四角形</div></div>
+        <div class="vf-item hi"><div class="vf-en">MESH</div><div class="vf-jp">メッシュ</div><div class="vf-ds">ポリゴンが集まった形</div></div>
       </div>
-      <div class="vertex-flow">
-        <div class="vf-item"><div class="vf-en">VERTEX</div><div class="vf-jp">頂点</div><div class="vf-desc">x・y・z の座標をもつ点</div></div>
-        <div class="vf-item"><div class="vf-en">EDGE</div><div class="vf-jp">辺</div><div class="vf-desc">頂点と頂点をつないだ線</div></div>
-        <div class="vf-item"><div class="vf-en">FACE</div><div class="vf-jp">ポリゴン</div><div class="vf-desc">辺で囲まれた三角・四角形</div></div>
-        <div class="vf-item hi"><div class="vf-en">MESH</div><div class="vf-jp">メッシュ</div><div class="vf-desc">ポリゴンが集まった形</div></div>
-      </div>
-      <div class="brush-note">
-        ブラシを当てると、円の範囲内にある <strong>頂点の座標（x・y・z）</strong> が一斉に指定方向へ移動します。粘土と違うのは、動いているのが「物質」ではなく <strong>「数値」</strong> であることです。
-      </div>
+      <div class="brush-note">ブラシを当てると、円の範囲内にある<strong>頂点の座標（x・y・z）</strong>が一斉に指定方向へ移動します。粘土と違うのは、動いているのが「物質」ではなく<strong>「数値」</strong>であることです。</div>
     </div>
-    <div class="sculpt-right">
+    <div class="sc-right">
       <div class="poly-row">
-        <div class="poly-card">
-          <div class="pc-label">HIGHPOLY</div>
-          <div class="pc-name">ハイポリ</div>
-          <div class="pc-pros">頂点が<strong>多い</strong> → 細かく変形できる → 滑らか / 処理が重い</div>
-        </div>
-        <div class="poly-card">
-          <div class="pc-label">LOWPOLY</div>
-          <div class="pc-name">ローポリ</div>
-          <div class="pc-pros">頂点が<strong>少ない</strong> → 大まかにしか変形できない → 軽い / 荒い</div>
-        </div>
+        <div class="poly-card hi"><div class="pc-lbl">HIGHPOLY</div><div class="pc-name">ハイポリ</div><div class="pc-desc">頂点が<strong>多い</strong> → 細かく変形できる → 滑らか / 処理が重い</div></div>
+        <div class="poly-card"><div class="pc-lbl">LOWPOLY</div><div class="pc-name">ローポリ</div><div class="pc-desc">頂点が<strong>少ない</strong> → 大まかにしか変形できない → 軽い / 荒い</div></div>
       </div>
-      <div class="remesh-note">
-        <strong>リメッシュ</strong> — スカルプト中に頂点の密度・構造が崩れたとき、均一に整え直す機能です。Nomad Sculpt では頻繁に使います。
-      </div>
-      <div style="background:var(--black);padding:12px 14px;border-radius:2px;">
-        <div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:5px;">⚠ 保存について</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.75;">Nomad Sculpt は <strong style="color:var(--acc2);">自動保存しません</strong>。10分に1回、<span style="font-family:var(--mono);color:rgba(255,255,255,0.5);">☰ → Files</span> で上書き保存しましょう。</div>
+      <div class="remesh-box"><strong>リメッシュ</strong> — スカルプト中に頂点の密度・構造が崩れたとき、均一に整え直す機能です。Nomad Sculpt では頻繁に使います。</div>
+      <div class="save-box">
+        <div class="sb-head">⚠ 保存について</div>
+        <div class="sb-body">Nomad Sculpt は<strong>自動保存しません</strong>。10分に1回、<span style="font-family:var(--mono);color:#555;">☰ → Files</span> で上書き保存しましょう。</div>
       </div>
     </div>
   </div>
-  <div class="ft"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
-<!-- ════ S12 一緒にやってみよう（セクションカード） ════ -->
+<!-- ════ S12 いっしょにやってみよう ════ -->
 <div class="sl s12">
   <div class="inner">
     <div class="sec-tag">PRACTICE</div>
@@ -733,7 +621,7 @@
       <div class="step"><span>04</span><span><em>保存・提出</em>　／　名前をつけて提出フォルダへ</span></div>
     </div>
   </div>
-  <div class="ft inv"><span>S01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft inv"><span>SS01</span><span>ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 </div><!-- /canvas -->
@@ -752,11 +640,8 @@
 
   function rescale() {
     const W=1280, H=720, sc=Math.min(innerWidth/W, innerHeight/H);
-    const c = document.getElementById('canvas');
-    c.style.transform = `scale(${sc})`;
-    const wrap = document.querySelector('.wrap');
-    wrap.style.width = innerWidth + 'px';
-    wrap.style.height = innerHeight + 'px';
+    document.getElementById('canvas').style.transform = `scale(${sc})`;
+    Object.assign(document.querySelector('.wrap').style, { width:innerWidth+'px', height:innerHeight+'px' });
   }
   rescale(); addEventListener('resize', rescale);
 
@@ -774,7 +659,7 @@
     document.getElementById('nc').textContent = `${cur+1} / ${sls.length}`;
   }
   function go(d) { cur = Math.max(0, Math.min(sls.length-1, cur+d)); update(); }
-  function goto(i) { cur = i; update(); }
+  function goto(i) { cur=i; update(); }
 
   addEventListener('keydown', e => {
     if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
