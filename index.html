@@ -81,7 +81,7 @@ body.nav-open .nav{transform:translateX(0);}
 .welcome-title{font-size:400%;font-weight:900;color:var(--p1);}
 .welcome-sub{font-size:13px;color:var(--sub);line-height:1.7;}
 .welcome-hint{font-family:var(--mono);font-size:10px;color:var(--label);margin-top:8px;letter-spacing:.08em;}
-.welcome-bg-model{position:absolute;inset:0;width:100%;height:100%;opacity:1;pointer-events:none;}
+.welcome-bg-model{width:100%;height:100%;opacity:0.75;pointer-events:none;}
 .frame-view{display:none;flex:1;flex-direction:column;}
 .frame-view.active{display:flex;}
 .frame-view iframe{flex:1;border:none;width:100%;}
@@ -230,12 +230,12 @@ body.nav-open .nav{transform:translateX(0);}
 <!-- コンテンツ -->
 <div class="content">
   <div class="welcome" id="welcome">
-  <model-viewer
-  class="welcome-bg-model"
-  src="assets/models/Donut_01.glb"
-  auto-rotate
-  rotation-per-second="20deg">
-　</model-viewer>
+      <model-viewer
+      class="welcome-bg-model"
+      src="assets/models/Donut_01.glb"
+      auto-rotate
+      rotation-per-second="20deg">
+    　</model-viewer>
     <!-- <img class="welcome-icon" src="assets/images/donut_giphy.gif" alt=""> -->
     <div class="welcome-title">OYAA 3DCG教室</div>
     <div class="welcome-sub">スカルプトモデリング × オリカ<br>全8回の冒険記録</div>
