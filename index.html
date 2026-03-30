@@ -20,8 +20,29 @@
 html,body{height:100%;overflow:hidden;}
 body{font-family:var(--sans);background:var(--bg);color:var(--body);}
 
-/* トップバー */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--p1);display:flex;align-items:center;padding:0 14px;gap:12px;z-index:300;box-shadow:0 1px 8px rgba(0,0,0,.3);}
+/* トップバー：普段は上に隠れている */
+.topbar{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--topbar-h);background:var(--p1);
+  display:flex;align-items:center;padding:0 14px;gap:12px;
+  z-index:300;box-shadow:0 1px 8px rgba(0,0,0,.3);
+  transform:translateY(-100%);
+  transition:transform .25s;
+}
+/* トリガーホバー・トップバー自身ホバー・ナビ開時 → 表示 */
+.topbar-trigger:hover + .topbar,
+.topbar:hover,
+body.nav-open .topbar{
+  transform:translateY(0);
+}
+/* トリガーエリア（上端8px） */
+.topbar-trigger{
+  position:fixed;top:0;left:0;right:0;
+  height:8px;z-index:301;
+}
+/* ナビ開いている時はトリガー無効 */
+body.nav-open .topbar-trigger{pointer-events:none;}
+
 .toggle-btn{width:32px;height:32px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px;border-radius:5px;transition:background .15s;flex-shrink:0;}
 .toggle-btn:hover{background:rgba(255,255,255,.08);}
 .toggle-btn span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:all .25s;}
@@ -37,15 +58,15 @@ body.nav-open .toggle-btn span:nth-child(3){transform:translateY(-7px) rotate(-4
 .overlay{display:none;position:fixed;inset:0;top:var(--topbar-h);background:rgba(0,0,0,.35);z-index:199;}
 body.nav-open .overlay{display:block;}
 
-/* 左ナビ */
-.nav{position:fixed;top:var(--topbar-h);left:0;bottom:0;width:var(--nav-w);background:var(--p1);overflow-y:auto;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
-body.nav-open .nav{transform:translateX(0);}
+/* 左ナビ：ナビ開時はtopbar-h分下げる */
+.nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);background:var(--p1);overflow-y:auto;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
 
 /* 大セクション見出し */
 .big-sec{padding:14px 14px 4px;font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.07);margin-top:4px;}
 .big-sec:first-child{border-top:none;margin-top:0;}
 
-/* ホームボタン */
+/* ナビボタン */
 .nav-btn{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:12px;font-weight:700;color:rgba(255,255,255,.65);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s,color .12s;border-left:2px solid transparent;}
 .nav-btn:hover{background:rgba(255,255,255,.06);color:#fff;}
 .nav-btn.active{background:rgba(95,160,224,.12);color:var(--p1a);border-left-color:var(--p1a);}
@@ -75,22 +96,22 @@ body.nav-open .nav{transform:translateX(0);}
 .nav-footer{padding:12px 14px 20px;border-top:1px solid rgba(255,255,255,.07);font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);line-height:1.7;margin-top:8px;}
 
 /* コンテンツ */
-.content{position:fixed;top:var(--topbar-h);left:0;right:0;bottom:0;display:flex;flex-direction:column;}
+.content{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;}
 .welcome{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;}
-.welcome-icon{width:160px;}
 .welcome-title{font-size:400%;font-weight:900;color:var(--p1);}
 .welcome-sub{font-size:13px;color:var(--sub);line-height:1.7;}
 .welcome-hint{font-family:var(--mono);font-size:10px;color:var(--label);margin-top:8px;letter-spacing:.08em;}
-.welcome-bg-model{width:40vw;height:40vw;max-width:400px;min-width:200px;opacity:0.75;pointer-events:none;}
+.welcome-bg-model{width:40vw;height:40vw;max-width:400px;min-width:200px;pointer-events:none;}
 .frame-view{display:none;flex:1;flex-direction:column;}
 .frame-view.active{display:flex;}
 .frame-view iframe{flex:1;border:none;width:100%;}
 </style>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
-<!-- トップバー -->
+<!-- トリガー＋トップバー -->
+<div class="topbar-trigger"></div>
 <div class="topbar">
   <button class="toggle-btn" onclick="toggleNav()" aria-label="メニュー">
     <span></span><span></span><span></span>
@@ -107,8 +128,6 @@ body.nav-open .nav{transform:translateX(0);}
 
 <!-- 左ナビ -->
 <nav class="nav">
-
-  <!-- ホーム -->
   <div style="padding:8px 0 4px;">
     <button class="nav-btn" id="btn-home" onclick="show_welcome()">
       <span class="nav-icon">🏠</span>
@@ -116,40 +135,30 @@ body.nav-open .nav{transform:translateX(0);}
     </button>
   </div>
 
-  <!-- 生徒用資料 -->
   <div class="big-sec">👨‍🎓 生徒用資料</div>
 
-  <!-- パスポート（アコーディオン） -->
   <button class="acc-header" onclick="toggle_acc('acc-passport')">
-    <span class="acc-icon">📖</span>
-    <span class="acc-label">パスポート</span>
-    <span class="acc-arrow">▶</span>
+    <span class="acc-icon">📖</span><span class="acc-label">パスポート</span><span class="acc-arrow">▶</span>
   </button>
   <div class="acc-body" id="acc-passport">
-    <button class="nav-btn" onclick="open_frame('passport_view.html','👨‍🎓 生徒用資料')">
+    <button class="nav-btn" onclick="open_frame('passport_view.html','パスポート')">
       <span class="nav-icon">🗺️</span>
       <div class="nav-info"><div class="nav-label">コアシート ＋ 各回シート</div><div class="nav-meta">passport_view</div></div>
     </button>
   </div>
 
-  <!-- ナレッジシート（アコーディオン） -->
   <button class="acc-header" onclick="toggle_acc('acc-knowledge')">
-    <span class="acc-icon">📘</span>
-    <span class="acc-label">ナレッジシート</span>
-    <span class="acc-arrow">▶</span>
+    <span class="acc-icon">📘</span><span class="acc-label">ナレッジシート</span><span class="acc-arrow">▶</span>
   </button>
   <div class="acc-body" id="acc-knowledge">
-   <button class="nav-btn" onclick="open_frame('passport/knowledge/k01.html','👨‍🎓 生徒用資料')">
-  <span class="nav-icon">📘</span>
-  <div class="nav-info"><div class="nav-label">K01 ナレッジシート</div><div class="nav-meta">第1回配布</div></div>
-  </button>
+    <button class="nav-btn" onclick="open_frame('passport/knowledge/k01.html','K01 ナレッジシート')">
+      <span class="nav-icon">📘</span>
+      <div class="nav-info"><div class="nav-label">K01 ナレッジシート</div><div class="nav-meta">第1回配布</div></div>
+    </button>
   </div>
 
-  <!-- ワークシート（アコーディオン） -->
   <button class="acc-header" onclick="toggle_acc('acc-worksheet')">
-    <span class="acc-icon">🎨</span>
-    <span class="acc-label">ワークシート</span>
-    <span class="acc-arrow">▶</span>
+    <span class="acc-icon">🎨</span><span class="acc-label">ワークシート</span><span class="acc-arrow">▶</span>
   </button>
   <div class="acc-body" id="acc-worksheet">
     <button class="nav-btn disabled">
@@ -164,59 +173,41 @@ body.nav-open .nav{transform:translateX(0);}
     </button>
   </div>
 
-  <!-- 講師用資料 -->
   <div class="big-sec">👨‍🏫 講師用資料</div>
 
-  <!-- プランシート（アコーディオン） -->
   <button class="acc-header" onclick="toggle_acc('acc-plan')">
-    <span class="acc-icon">📋</span>
-    <span class="acc-label">プランシート</span>
-    <span class="acc-arrow">▶</span>
+    <span class="acc-icon">📋</span><span class="acc-label">プランシート</span><span class="acc-arrow">▶</span>
   </button>
   <div class="acc-body" id="acc-plan">
     <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s01.html','講師プランシート S01')">
-      <span class="nav-icon">📋</span>
-      <div class="nav-info"><div class="nav-label">S01</div><div class="nav-meta">4/5</div></div>
-      <span class="nav-tag gold">講師</span>
+      <span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">S01</div><div class="nav-meta">4/5</div></div><span class="nav-tag gold">講師</span>
     </button>
     <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s02.html','講師プランシート S02')">
-      <span class="nav-icon">📋</span>
-      <div class="nav-info"><div class="nav-label">S02</div><div class="nav-meta">4/12</div></div>
-      <span class="nav-tag gold">講師</span>
+      <span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">S02</div><div class="nav-meta">4/12</div></div><span class="nav-tag gold">講師</span>
     </button>
     <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s03.html','講師プランシート S03')">
-      <span class="nav-icon">📋</span>
-      <div class="nav-info"><div class="nav-label">S03</div><div class="nav-meta">5/10</div></div>
-      <span class="nav-tag gold">講師</span>
+      <span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">S03</div><div class="nav-meta">5/10</div></div><span class="nav-tag gold">講師</span>
     </button>
-     <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s04.html','講師プランシート S04')">
-      <span class="nav-icon">📋</span>
-      <div class="nav-info"><div class="nav-label">S04</div><div class="nav-meta">5/17</div></div>
-      <span class="nav-tag gold">講師</span>
-    </button>
-  </div>
-  <!-- スライド（アコーディオン） -->
-  <button class="acc-header" onclick="toggle_acc('acc-slide')">
-    <span class="acc-icon">🖥️</span>
-    <span class="acc-label">スライド</span>
-    <span class="acc-arrow">▶</span>
-  </button>
-  <div class="acc-body" id="acc-slide">
-    <button class="nav-btn" onclick="open_frame('instructor/slides/ss01.html','授業スライド 01')">
-      <span class="nav-icon">🖥️</span>
-      <div class="nav-info"><div class="nav-label">S01 スライド</div><div class="nav-meta">4/5</div></div>
-      <span class="nav-tag gold">制作中</span>
+    <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s04.html','講師プランシート S04')">
+      <span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">S04</div><div class="nav-meta">5/17</div></div><span class="nav-tag gold">講師</span>
     </button>
   </div>
 
-  <!-- 全体計画書 -->
+  <button class="acc-header" onclick="toggle_acc('acc-slide')">
+    <span class="acc-icon">🖥️</span><span class="acc-label">スライド</span><span class="acc-arrow">▶</span>
+  </button>
+  <div class="acc-body" id="acc-slide">
+    <button class="nav-btn" onclick="open_frame('instructor/slides/ss01.html','授業スライド S01')">
+      <span class="nav-icon">🖥️</span><div class="nav-info"><div class="nav-label">S01 スライド</div><div class="nav-meta">4/5</div></div><span class="nav-tag gray">制作中</span>
+    </button>
+  </div>
+
   <button class="nav-btn" onclick="open_frame('instructor/浦添パルコ.pdf','浦添パルコ 3DCG教室 全体計画')" style="padding-left:14px;">
     <span class="nav-icon">📑</span>
     <div class="nav-info"><div class="nav-label">全体計画書</div><div class="nav-meta">PDF</div></div>
     <span class="nav-tag gold">講師</span>
   </button>
 
-  <!-- ギャラリー -->
   <div class="big-sec">🔮 ギャラリー</div>
   <button class="nav-btn disabled">
     <span class="nav-icon">🔮</span>
@@ -230,12 +221,12 @@ body.nav-open .nav{transform:translateX(0);}
 <!-- コンテンツ -->
 <div class="content">
   <div class="welcome" id="welcome">
-      <model-viewer
+    <model-viewer
       class="welcome-bg-model"
-      src="assets/models/Donut_01.glb"
+      src="assets/models/Donut_02glb"
       auto-rotate
       rotation-per-second="20deg">
-    　</model-viewer>
+    </model-viewer>
     <!-- <img class="welcome-icon" src="assets/images/donut_giphy.gif" alt=""> -->
     <div class="welcome-title">OYAA 3DCG教室</div>
     <div class="welcome-sub">スカルプトモデリング × オリカ<br>全8回の冒険記録</div>
