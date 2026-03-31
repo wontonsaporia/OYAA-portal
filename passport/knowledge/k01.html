@@ -37,13 +37,23 @@ body {
 }
 .hole-gutter {
   width: 22px; flex-shrink: 0; background: #f0ece2;
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: space-evenly; padding: 80px 0;
+  position: relative; min-height: 643px;
+  border-right: 1px solid #e0dbd0;
 }
 .card.front .hole-gutter { border-right: 1px solid #e0dbd0; }
-.card.back  .hole-gutter { border-left: 1px solid #e0dbd0; order: 1; }
+.card.back  .hole-gutter { border-right: none; border-left: 1px solid #e0dbd0; order: 1; }
 .card.back  .card-inner  { order: 0; }
-.hole { width: 10px; height: 10px; border-radius: 50%; background: #d8d4c8; border: 1px solid #c8c4b8; }
+.hole {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #d8d4c8; border: 1px solid #c8c4b8;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.hole:nth-child(1) { top:  76px; }
+.hole:nth-child(2) { top: 151px; }
+.hole:nth-child(3) { top: 227px; }
+.hole:nth-child(4) { top: 416px; }
+.hole:nth-child(5) { top: 491px; }
+.hole:nth-child(6) { top: 567px; }
 .card-inner { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 .kh { padding: 10px 14px 9px; flex-shrink: 0; }
 .kh-a  { background: #0d2340; }
@@ -56,7 +66,7 @@ body {
 .kh-dr { background: #3a1a10; }
 .kh-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
 .kh-badge {
-  font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700;
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
   border: 1px solid; border-radius: 2px; padding: 2px 7px; letter-spacing: 0.07em;
 }
 .kh-a  .kh-badge { color: #5fa0e0; background: rgba(95,160,224,0.1); border-color: rgba(95,160,224,0.3); }
@@ -73,11 +83,11 @@ body {
 .ks { padding: 10px 13px; border-bottom: 1px solid #e8e4da; flex-shrink: 0; }
 .ks.grow { flex: 1; }
 .sl {
-  font-family: 'Space Mono', monospace; font-size: 7.5px; font-weight: 700;
+  font-family: 'Space Mono', monospace; font-size: 8.5px; font-weight: 700;
   color: #aaa; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 7px;
 }
 .intro {
-  font-size: 10.5px; color: #333; line-height: 1.8;
+  font-size: 12px; color: #333; line-height: 1.8;
   padding: 9px 11px; background: #e8f0f8;
   border-left: 3px solid #5fa0e0; border-radius: 0 4px 4px 0;
 }
@@ -85,11 +95,11 @@ body {
 
 /* 次元フロー */
 .dim-row { display: flex; align-items: stretch; gap: 4px; }
-.dim-item { flex: 1; text-align: center; background: #f0ede6; border-radius: 5px; padding: 10px 4px 9px; }
+.dim-item { flex: 1; text-align: center; background: #f0ede6; border-radius: 5px; padding: 12px 4px 11px; }
 .dim-item.hi { background: #e8f0f8; border: 1.5px solid #5fa0e0; }
 .di-icon { font-size: 20px; display: block; line-height: 1; }
 .di-num { font-family: 'Space Mono', monospace; font-size: 7px; color: #5fa0e0; font-weight: 700; margin-top: 4px; line-height: 1.4; }
-.di-label { font-size: 9.5px; color: #555; font-weight: 500; margin-top: 3px; }
+.di-label { font-size: 10.5px; color: #555; font-weight: 500; margin-top: 3px; }
 .dim-item.hi .di-label { font-weight: 700; color: #0d2340; }
 .di-sub { font-size: 8px; color: #999; margin-top: 2px; }
 .dim-arr { font-size: 11px; color: #bbb; flex-shrink: 0; align-self: center; }
@@ -103,11 +113,11 @@ body {
 .flow-item.on  .flow-num { color: #5fa0e0; }
 .flow-item.partial .flow-num { color: #7ab0d8; }
 .flow-item.off .flow-num { color: #888; }
-.flow-title { font-size: 10px; font-weight: 700; }
+.flow-title { font-size: 11.5px; font-weight: 700; }
 .flow-item.on  .flow-title { color: #fff; }
 .flow-item.partial .flow-title { color: #d0e8f8; }
 .flow-item.off .flow-title { color: #555; }
-.flow-sub { font-size: 8px; margin-top: 1px; }
+.flow-sub { font-size: 9px; margin-top: 1px; }
 .flow-item.on  .flow-sub { color: #7ab0d8; }
 .flow-item.partial .flow-sub { color: #90b8d0; }
 .flow-item.off .flow-sub { color: #777; }
@@ -125,7 +135,7 @@ body {
 .ml-group-label.manual { background: #0d2340; color: #7ab0d8; }
 .ml-group-label.auto   { background: #2a2a40; color: #a090d0; }
 .ml-item {
-  display: flex; gap: 9px; padding: 7px 10px;
+  display: flex; gap: 7px; padding: 5px 8px;
   background: #f5f3ee; border: 1px solid #e5e0d5;
   border-radius: 4px; align-items: flex-start;
 }
@@ -137,7 +147,7 @@ body {
   background: #edf3fa; margin-top: 1px;
 }
 .ml-body { flex: 1; }
-.ml-name { font-size: 10px; font-weight: 700; color: #1a1a1a; }
+.ml-name { font-size: 11px; font-weight: 700; color: #1a1a1a; }
 .ml-item.hi .ml-name { color: #fff; }
 .ml-star {
   font-family: 'Space Mono', monospace; font-size: 7px;
@@ -145,9 +155,9 @@ body {
   border-radius: 2px; padding: 1px 4px; font-weight: 700;
   margin-left: 4px; vertical-align: middle;
 }
-.ml-desc { font-size: 8.5px; color: #555; line-height: 1.5; margin-top: 2px; }
+.ml-desc { font-size: 9.5px; color: #555; line-height: 1.4; margin-top: 1px; }
 .ml-item.hi .ml-desc { color: #7ab8d8; }
-.ml-eg { font-size: 7.5px; color: #aaa; margin-top: 2px; }
+.ml-eg { font-size: 8px; color: #aaa; margin-top: 1px; }
 .ml-item.hi .ml-eg { color: #4a80b0; }
 
 /* データ構造 */
@@ -158,24 +168,34 @@ body {
 }
 .ds-num { font-family: 'Space Mono', monospace; font-size: 8px; color: #bbb; flex-shrink: 0; width: 14px; text-align: right; margin-top: 2px; }
 .ds-body { flex: 1; }
-.ds-name { font-size: 10px; font-weight: 700; color: #1a1a1a; }
+.ds-name { font-size: 11px; font-weight: 700; color: #1a1a1a; }
 .ds-link { font-family: 'Space Mono', monospace; font-size: 7px; color: #5fa0e0; margin-top: 1px; }
-.ds-desc { font-size: 8.5px; color: #555; line-height: 1.5; margin-top: 2px; }
-.ds-use  { font-size: 7.5px; color: #aaa; margin-top: 2px; }
+.ds-desc { font-size: 10px; color: #555; line-height: 1.5; margin-top: 2px; }
+.ds-use  { font-size: 8.5px; color: #aaa; margin-top: 2px; }
+.ds-img {
+  width: 64px; height: 54px; flex-shrink: 0;
+  border: 1px dashed #c0ccd8; border-radius: 3px;
+  background: #edf3fa;
+  display: flex; align-items: center; justify-content: center;
+}
+.ds-img span {
+  font-family: 'Space Mono', monospace; font-size: 6px;
+  color: #90a8c0; text-align: center; line-height: 1.4;
+}
 
 /* スカルプト原理 */
-.prin-item { background: #f5f3ee; border-radius: 4px; padding: 9px 11px; }
-.prin-title { font-size: 10.5px; font-weight: 700; color: #0d2340; margin-bottom: 5px; }
-.prin-body { font-size: 10px; color: #333; line-height: 1.7; }
+.prin-item { background: #f5f3ee; border-radius: 4px; padding: 11px 12px; }
+.prin-title { font-size: 12px; font-weight: 700; color: #0d2340; margin-bottom: 5px; }
+.prin-body { font-size: 11px; color: #333; line-height: 1.7; }
 .prin-body strong { color: #0d2340; }
 .hipoly-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-.hp-item { background: #f5f3ee; border-radius: 4px; padding: 9px 10px; }
+.hp-item { background: #f5f3ee; border-radius: 4px; padding: 12px 11px; }
 .hp-item.hi-border { border-top: 2px solid #5fa0e0; }
 .hp-item.lo-border { border-top: 2px solid #aaa; }
 .hp-label { font-family: 'Space Mono', monospace; font-size: 8.5px; font-weight: 700; margin-bottom: 4px; }
 .hp-item.hi-border .hp-label { color: #0d2340; }
 .hp-item.lo-border .hp-label { color: #555; }
-.hp-body { font-size: 9.5px; color: #333; line-height: 1.55; }
+.hp-body { font-size: 11px; color: #333; line-height: 1.55; }
 
 /* ソフト紹介 */
 .soft-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
@@ -185,11 +205,11 @@ body {
   display: flex; flex-direction: column; gap: 2px;
 }
 .soft-tag { font-size: 7px; color: #999; background: #ede8df; border-radius: 2px; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-family: 'Space Mono', monospace; }
-.soft-name { font-size: 10px; font-weight: 700; color: #1a1a1a; display: block; }
-.soft-desc { font-size: 8px; color: #888; display: block; line-height: 1.35; }
+.soft-name { font-size: 11px; font-weight: 700; color: #1a1a1a; display: block; }
+.soft-desc { font-size: 9.5px; color: #888; display: block; line-height: 1.35; }
 .soft-item.nomad { background: #0d2340; border-color: #0d2340; grid-column: span 3; flex-direction: row; align-items: center; gap: 10px; padding: 8px 11px; }
 .soft-item.nomad .soft-name { color: #fff; font-size: 12px; }
-.soft-item.nomad .soft-desc { color: #7ab0d8; font-size: 9px; }
+.soft-item.nomad .soft-desc { color: #7ab0d8; font-size: 10.5px; }
 .nomad-badge { font-family: 'Space Mono', monospace; font-size: 7px; background: #5fa0e0; color: #0d2340; border-radius: 2px; padding: 4px 6px; font-weight: 700; flex-shrink: 0; white-space: nowrap; text-align: center; line-height: 1.5; }
 .logo-ph { width: 100%; height: 24px; border: 1px dashed #c0d0e0; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-top: 3px; }
 .logo-ph span { font-family: 'Space Mono', monospace; font-size: 6px; color: #b0c0d0; }
@@ -201,8 +221,8 @@ body {
 .gl-sec { margin-bottom: 10px; }
 .gl-sec-label { font-family: 'Space Mono', monospace; font-size: 7.5px; font-weight: 700; color: #fff; background: #0d2340; padding: 2px 8px; border-radius: 2px; display: inline-block; margin-bottom: 6px; }
 .gl-item { display: flex; gap: 7px; align-items: baseline; margin-bottom: 4px; }
-.gl-term { font-weight: 700; color: #0d2340; flex-shrink: 0; min-width: 76px; font-size: 10px; }
-.gl-def { color: #444; font-size: 9.5px; line-height: 1.5; }
+.gl-term { font-weight: 700; color: #0d2340; flex-shrink: 0; min-width: 80px; font-size: 11px; }
+.gl-def { color: #444; font-size: 10.5px; line-height: 1.5; }
 
 /* プリミティブ */
 .prim-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
@@ -212,7 +232,7 @@ body {
 .prim-item.today .prim-fig { border-color: #2a5070; background: #0a1a30; }
 .prim-fig span { font-family: 'Space Mono', monospace; font-size: 6px; color: #90a8c0; }
 .prim-item.today .prim-fig span { color: #3a6090; }
-.prim-ja { font-size: 8px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.3; }
+.prim-ja { font-size: 9.5px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.3; }
 .prim-item.today .prim-ja { color: #fff; }
 .prim-en { font-family: 'Space Mono', monospace; font-size: 6.5px; color: #aaa; text-align: center; }
 .prim-item.today .prim-en { color: #5fa0e0; }
@@ -221,7 +241,7 @@ body {
 .kf { background: #3a1a10; padding: 8px 13px; display: flex; gap: 9px; align-items: flex-start; flex-shrink: 0; }
 .kf-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
 .kf-label { font-family: 'Space Mono', monospace; font-size: 7.5px; color: #e09870; margin-bottom: 3px; }
-.kf-body { font-size: 10px; color: #fff; line-height: 1.65; }
+.kf-body { font-size: 11px; color: #fff; line-height: 1.65; }
 .kf-body strong { color: #f0b870; }
 
 .divider { display: flex; align-items: center; gap: 10px; color: #aaa; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; width: 359px; }
@@ -234,17 +254,18 @@ body {
   <button class="nav-btn active" onclick="show(0)">A▲ 3DCGとは</button>
   <button class="nav-btn"        onclick="show(1)">A▼ 制作の流れ</button>
   <button class="nav-btn"        onclick="show(2)">B▲ モデリング手法</button>
-  <button class="nav-btn"        onclick="show(3)">B▼ データ構造</button>
-  <button class="nav-btn"        onclick="show(4)">C▲ スカルプト</button>
-  <button class="nav-btn"        onclick="show(5)">C▼ ソフト</button>
-  <button class="nav-btn"        onclick="show(6)">D▲ 用語集・プリミティブ</button>
+  <button class="nav-btn"        onclick="show(3)">B▼ データ構造①</button>
+  <button class="nav-btn"        onclick="show(4)">C▲ データ構造②</button>
+  <button class="nav-btn"        onclick="show(5)">C▼ スカルプト</button>
+  <button class="nav-btn"        onclick="show(6)">D▲ ソフト</button>
+  <button class="nav-btn"        onclick="show(7)">D▼ 用語集・プリミティブ</button>
 </div>
 
 <!-- ════ K01-A▲ 3DCGとは ════ -->
 <div class="page">
   <div class="page-label">K01-A ▲</div>
   <div class="card front">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-a">
         <div class="kh-meta">
@@ -313,7 +334,7 @@ body {
 <div class="page">
   <div class="page-label">K01-A ▼</div>
   <div class="card back">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-ar">
         <div class="kh-meta">
@@ -395,7 +416,7 @@ body {
 <div class="page">
   <div class="page-label">K01-B ▲</div>
   <div class="card front">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-b">
         <div class="kh-meta">
@@ -410,10 +431,10 @@ body {
             3DCGにおいて、ものや形はすべて<strong>データ（数値）</strong>で表されます。<strong>モデリング</strong>とは、そのデータを作ったり、データの中身を動かすことで形を変えることです。制作の出発点となる<strong>最重要工程</strong>です。
           </div>
         </div>
-        <div class="ks grow" style="padding:10px 13px;">
+        <div class="ks grow" style="padding:7px 11px;">
 
           <span class="ml-group-label manual">形を自分の手で操作する</span>
-          <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:9px;">
+          <div style="display:flex; flex-direction:column; gap:3px; margin-bottom:6px;">
             <div class="ml-item">
               <div class="ml-icon-box"></div>
               <div class="ml-body">
@@ -441,7 +462,7 @@ body {
           </div>
 
           <span class="ml-group-label auto">プログラムやAIが形をつくる</span>
-          <div style="display:flex; flex-direction:column; gap:4px;">
+          <div style="display:flex; flex-direction:column; gap:3px;">
             <div class="ml-item">
               <div class="ml-icon-box"></div>
               <div class="ml-body">
@@ -471,14 +492,14 @@ body {
 <div class="page">
   <div class="page-label">K01-B ▼</div>
   <div class="card back">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-br">
         <div class="kh-meta">
-          <span class="kh-badge">K 01 — 裏 2/4</span>
+          <span class="kh-badge">K 01 — 裏 2/5</span>
           <span class="kh-session">Ch.01 / 4.5</span>
         </div>
-        <div class="kh-title">3Dデータのカタチ</div>
+        <div class="kh-title">3Dデータのカタチ ①</div>
       </div>
       <div class="kb">
         <div class="ks">
@@ -488,11 +509,13 @@ body {
           </div>
         </div>
         <div class="ks grow" style="padding:10px 13px;">
-          <div class="sl" style="margin-bottom:8px;">📦 データ構造の種類</div>
-          <div style="display:flex; flex-direction:column; gap:5px;">
+          <div class="sl" style="margin-bottom:8px;">📦 データ構造の種類（1/2）</div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
 
             <div class="ds-item">
               <div class="ds-num">1</div>
+              <div class="ds-img"><span>ポリゴン
+メッシュ</span></div>
               <div class="ds-body">
                 <div class="ds-name">ポリゴンメッシュ</div>
                 <div class="ds-link">← ポリゴンモデリング・スカルプト</div>
@@ -503,6 +526,7 @@ body {
 
             <div class="ds-item">
               <div class="ds-num">2</div>
+              <div class="ds-img"><span>NURBS</span></div>
               <div class="ds-body">
                 <div class="ds-name">NURBS</div>
                 <div class="ds-link">← NURBS編集</div>
@@ -513,6 +537,7 @@ body {
 
             <div class="ds-item">
               <div class="ds-num">3</div>
+              <div class="ds-img"><span>ボクセル</span></div>
               <div class="ds-body">
                 <div class="ds-name">ボクセル</div>
                 <div class="ds-desc">3D空間をグリッドに分割し、各セルのON/OFFで形を表現します。内部構造を持てます。</div>
@@ -521,8 +546,34 @@ body {
               </div>
             </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ K01-B▼② 3Dデータのカタチ② ════ -->
+<div class="page">
+  <div class="page-label">K01-C ▲</div>
+  <div class="card front">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+    <div class="card-inner">
+      <div class="kh kh-br">
+        <div class="kh-meta">
+          <span class="kh-badge">K 01 — 裏 3/5</span>
+          <span class="kh-session">Ch.01 / 4.5</span>
+        </div>
+        <div class="kh-title">3Dデータのカタチ ②</div>
+      </div>
+      <div class="kb">
+        <div class="ks grow" style="padding:10px 13px;">
+          <div class="sl" style="margin-bottom:8px;">📦 データ構造の種類（2/2）</div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+
             <div class="ds-item">
               <div class="ds-num">4</div>
+              <div class="ds-img"><span>点群</span></div>
               <div class="ds-body">
                 <div class="ds-name">点群（Point Cloud）</div>
                 <div class="ds-desc">座標と色を持つ点の集合です。面・辺の概念がなく、3Dスキャナーの生データ形式です。</div>
@@ -532,6 +583,7 @@ body {
 
             <div class="ds-item">
               <div class="ds-num">5</div>
+              <div class="ds-img"><span>SDF</span></div>
               <div class="ds-body">
                 <div class="ds-name">SDF（符号付き距離関数）</div>
                 <div class="ds-desc">空間の各点が表面からどれだけ離れているかを関数で表現します。形の合体・くり抜きが得意です。</div>
@@ -541,6 +593,8 @@ body {
 
             <div class="ds-item">
               <div class="ds-num">6</div>
+              <div class="ds-img"><span>Gaussian
+Splat</span></div>
               <div class="ds-body">
                 <div class="ds-name">3D Gaussian Splatting</div>
                 <div class="ds-desc">点群を発展させ、各点に楕円体の広がりと透明度を付加したものです。写真・動画から高速に3Dシーンを再構成できます。</div>
@@ -558,9 +612,9 @@ body {
 
 <!-- ════ K01-C▲ スカルプトの仕組み ════ -->
 <div class="page">
-  <div class="page-label">K01-C ▲</div>
-  <div class="card front">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+  <div class="page-label">K01-C ▼</div>
+  <div class="card back">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-c">
         <div class="kh-meta">
@@ -570,14 +624,14 @@ body {
         <div class="kh-title">スカルプトの仕組み</div>
       </div>
       <div class="kb">
-        <div class="ks">
+        <div class="ks" style="padding:7px 13px;">
           <div class="intro" style="margin-bottom:0;">
             今回の講座で使うスカルプトモデリングについて詳しく見ていきましょう。スカルプト（彫刻）というその名の通り、すでにあるメッシュに対して、押し出したり盛り上げたりすることで造形するモデリング手法です。
           </div>
         </div>
-        <div class="ks">
+        <div class="ks" style="padding:12px 13px;">
           <div class="sl">🔬 なぜ形が変えられるのか</div>
-          <div class="dim-row" style="margin-bottom:10px;">
+          <div class="dim-row" style="margin-bottom:11px;">
             <div class="dim-item">
               <span class="di-icon">·</span>
               <div class="di-num">頂点</div>
@@ -611,7 +665,7 @@ body {
             <div class="prin-body">ブラシを当てると、円の範囲内にある<strong>頂点の座標（x・y・z）</strong>が一斉に指定方向へ移動します。粘土と違うのは、動いているのが「物質」ではなく<strong>「数値」</strong>であることです。</div>
           </div>
         </div>
-        <div class="ks">
+        <div class="ks grow" style="padding:12px 13px;">
           <div class="sl">📊 ハイポリとローポリ</div>
           <div class="hipoly-grid">
             <div class="hp-item hi-border">
@@ -624,15 +678,6 @@ body {
             </div>
           </div>
         </div>
-        <div class="ks grow" style="display:flex; align-items:center;">
-          <div style="width:100%; display:flex; gap:9px; align-items:flex-start; background:#fffbe6; border:1px solid #e8cc50; border-radius:5px; padding:11px 13px;">
-            <span style="font-size:18px; flex-shrink:0; margin-top:1px;">💡</span>
-            <div>
-              <div style="font-size:10.5px; font-weight:700; color:#4a3800; margin-bottom:4px;">リメッシュ</div>
-              <div style="font-size:10px; color:#4a3800; line-height:1.7;">スカルプト中に頂点の密度・構造が崩れたとき、均一に整え直す機能です。Nomad Sculptでは頻繁に使う操作です。</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -641,9 +686,9 @@ body {
 
 <!-- ════ K01-C▼ 3DCGソフトいろいろ ════ -->
 <div class="page">
-  <div class="page-label">K01-C ▼</div>
-  <div class="card back">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+  <div class="page-label">K01-D ▲</div>
+  <div class="card front">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-cr">
         <div class="kh-meta">
@@ -721,9 +766,9 @@ body {
 
 <!-- ════ K01-D▲ 用語集＋プリミティブ ════ -->
 <div class="page">
-  <div class="page-label">K01-D ▲</div>
-  <div class="card front">
-    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div></div>
+  <div class="page-label">K01-D ▼</div>
+  <div class="card back">
+    <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
     <div class="card-inner">
       <div class="kh kh-d">
         <div class="kh-meta">
