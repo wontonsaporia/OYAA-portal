@@ -200,14 +200,50 @@
 <div class="wrap"><div class="canvas" id="canvas">
 
 <!-- 01 タイトル -->
-<div class="sl s01 on">
-  <div class="inner">
-    <div class="aline" style="margin-bottom:26px;"></div>
-    <div class="cbadge">OYAA × 浦添パルコ 3DCG教室　Chapter 01</div>
-    <h1>はじめての<br>3D<em>スカルプト</em>！<br>ドーナツをつくろう</h1>
-    <div class="sub" style="margin-top:20px;">2025.4.5（土）</div>
+<div class="sl s01 on" style="background:#0D2340;position:relative;overflow:hidden;">
+  <!-- 地図風SVG背景装飾 -->
+  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+    <!-- ペーパー風ラジアルグラデーション -->
+    <defs>
+      <radialGradient id="bg1" cx="75%" cy="50%" r="60%">
+        <stop offset="0%" stop-color="#1a3a60" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#0D2340" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bg2" cx="10%" cy="80%" r="45%">
+        <stop offset="0%" stop-color="#3A2A14" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#0D2340" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1280" height="720" fill="url(#bg1)"/>
+    <rect width="1280" height="720" fill="url(#bg2)"/>
+    <!-- 等高線風コンター（Map/Paper感） -->
+    <ellipse cx="980" cy="360" rx="380" ry="280" fill="none" stroke="#C8A060" stroke-width="0.8" opacity="0.10"/>
+    <ellipse cx="980" cy="360" rx="300" ry="210" fill="none" stroke="#C8A060" stroke-width="0.8" opacity="0.12"/>
+    <ellipse cx="980" cy="360" rx="220" ry="145" fill="none" stroke="#C8A060" stroke-width="0.8" opacity="0.14"/>
+    <ellipse cx="980" cy="360" rx="140" ry="85" fill="none" stroke="#C8A060" stroke-width="1" opacity="0.18"/>
+    <!-- 道（Map/Road/Ch1 #7A5A28） -->
+    <path d="M 700 720 Q 820 560 920 420 Q 1000 310 1040 200" fill="none" stroke="#7A5A28" stroke-width="2.5" opacity="0.25" stroke-linecap="round"/>
+    <path d="M 1280 580 Q 1160 500 1060 410 Q 960 320 940 180" fill="none" stroke="#8A6A30" stroke-width="1.5" opacity="0.18" stroke-linecap="round" stroke-dasharray="12 8"/>
+    <!-- ノード（P1 Chapter 01 ドーナツ村） -->
+    <rect x="1060" y="148" width="120" height="52" rx="6" fill="#3A2A14" stroke="#C8A060" stroke-width="1.2" opacity="0.7"/>
+    <text x="1120" y="165" font-family="Space Mono,monospace" font-size="9" fill="#C8A060" text-anchor="middle" opacity="0.8" letter-spacing="1">Ch.01</text>
+    <text x="1120" y="185" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#F5EAD0" text-anchor="middle" opacity="0.8">ドーナツ村</text>
+    <!-- スタンプ破線枠 -->
+    <rect x="1150" y="156" width="22" height="14" rx="2" fill="none" stroke="#C8A060" stroke-width="1" stroke-dasharray="3 2" opacity="0.45"/>
+    <!-- クロスハッチ風テクスチャ（右側のみ薄く） -->
+    <line x1="820" y1="0" x2="1280" y2="720" stroke="#C8A060" stroke-width="0.4" opacity="0.05"/>
+    <line x1="900" y1="0" x2="1280" y2="570" stroke="#C8A060" stroke-width="0.4" opacity="0.05"/>
+    <line x1="1000" y1="0" x2="1280" y2="430" stroke="#C8A060" stroke-width="0.4" opacity="0.05"/>
+    <line x1="1100" y1="0" x2="1280" y2="280" stroke="#C8A060" stroke-width="0.4" opacity="0.05"/>
+  </svg>
+  <!-- コンテンツ -->
+  <div class="inner" style="position:relative;z-index:1;">
+    <div style="width:44px;height:3px;background:#C8A060;margin-bottom:26px;"></div>
+    <div class="cbadge" style="color:#C8A060;border-color:rgba(200,160,96,0.4);">OYAA × 浦添パルコ 3DCG教室　Chapter 01</div>
+    <h1 style="color:#fff;">はじめての<br>3D<em style="color:#C8A060;">スカルプト</em>！<br>ドーナツをつくろう</h1>
+    <div class="sub" style="margin-top:20px;color:#5FA0E0;">2025.4.5（土）</div>
   </div>
-  <div class="ft" style="border-color:rgba(255,255,255,0.1);"><span style="color:rgba(255,255,255,0.3);">01 / 16</span><span style="color:rgba(255,255,255,0.3);">S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft" style="border-color:rgba(200,160,96,0.15);background:rgba(13,35,64,0.6);position:relative;z-index:1;"><span style="color:rgba(200,160,96,0.4);">01 / 17</span><span style="color:rgba(200,160,96,0.4);">S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 02 講座紹介 & 全8回 -->
@@ -232,7 +268,7 @@
       <div class="sr"><span class="sr-n">S08</span><span class="sr-d">7/12</span><span class="sr-t">仕上げ・発表・修了</span></div>
     </div>
   </div>
-  <div class="ft th-w"><span>02 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>02 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 03 自己紹介 -->
@@ -248,7 +284,7 @@
       <div class="aff">沖縄県立芸術大学　非常勤講師<br><span style="font-size:14px;color:rgba(255,255,255,0.38);">OYAA × 浦添パルコ 3DCG教室</span></div>
     </div>
   </div>
-  <div class="ft th-k"><span>03 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-k"><span>03 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 04 今日の流れ -->
@@ -260,7 +296,7 @@
     <div class="fi"><div class="fi-n">3.</div><div class="fi-b"><div class="fi-t">実習：ドーナツをつくろう！</div><div class="fi-s">トーラス読み込み → スカルプト → マスク処理 → 保存 → マテリアル</div></div><div class="fi-d">演習</div></div>
     <div class="fi"><div class="fi-n">4.</div><div class="fi-b"><div class="fi-t">まとめ・振り返り</div><div class="fi-s">提出・振り返り・次回予告</div></div><div class="fi-d">まとめ</div></div>
   </div>
-  <div class="ft th-w"><span>04 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>04 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 05 3DCGってなに？ -->
@@ -284,7 +320,7 @@
       </ul>
     </div>
   </div>
-  <div class="ft th-w"><span>05 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>05 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 06 データになる立体空間 -->
@@ -312,7 +348,7 @@
       </div>
     </div>
   </div>
-  <div class="ft th-w"><span>06 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>06 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 07 空間の表現の仕方 -->
@@ -320,14 +356,14 @@
   <div class="H th-w"><span class="tag">LECTURE 03</span><h2>3Dってなんだ？<br><span style="font-size:26px;font-weight:500;color:var(--g3);">空間の表現の仕方はひとつじゃない</span></h2><div class="rule"></div></div>
   <div class="body" style="padding-top:18px;">
     <div class="cg cg4" style="flex:1;">
-      <div class="cc hl"><div class="cc-n">ポリゴン<br>メッシュ</div><div class="cc-e">POLYGON MESH</div><div class="cc-d" style="color:rgba(255,255,255,0.6);">点・辺・面で構成。最も広く使われる方法。ゲーム・映画・スカルプト、すべてに使われる。</div><div class="cc-b">今日はコレ</div></div>
-      <div class="cc"><div class="cc-n">点群</div><div class="cc-e">POINT CLOUD</div><div class="cc-d">空間を無数の点の集まりで記録する方法。3DスキャナやLiDAR（ライダー）で取得される。面は持たない。</div></div>
-      <div class="cc"><div class="cc-n">Gaussian<br>Splatting</div><div class="cc-e">3D GAUSSIAN SPLATTING</div><div class="cc-d">点群を進化させた新しい手法（2023年〜）。各点を楕円体で表現し、リアルな見た目を高速に再現できる。</div></div>
-      <div class="cc"><div class="cc-n">NURBS / SDF</div><div class="cc-e">NURBS / SIGNED DISTANCE FIELD</div><div class="cc-d">数式で滑らかな曲面を定義する。工業製品設計や CAD に使われる。ポリゴンより高精度。</div></div>
+      <div class="cc hl"><div class="cc-n">ポリゴン<br>メッシュ</div><div class="cc-e">POLYGON MESH</div><div class="cc-d" style="color:rgba(255,255,255,0.6);">点・辺・面で構成。最も広く使われる方法。ゲーム・映画・スカルプト、すべてに使われる。</div><div class="img-ph" style="margin-top:auto;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.2);"><div class="ph-label" style="color:rgba(255,255,255,0.4);">📷</div><div class="ph-path" style="color:rgba(255,255,255,0.35);">assets/images/sl07_polygon_mesh.png</div></div><div class="cc-b">今日はコレ</div></div>
+      <div class="cc"><div class="cc-n">点群</div><div class="cc-e">POINT CLOUD</div><div class="cc-d">空間を無数の点の集まりで記録する方法。3DスキャナやLiDAR（ライダー）で取得される。面は持たない。</div><div class="img-ph" style="margin-top:auto;"><div class="ph-label">📷</div><div class="ph-path">assets/images/sl07_point_cloud.png</div></div></div>
+      <div class="cc"><div class="cc-n">Gaussian<br>Splatting</div><div class="cc-e">3D GAUSSIAN SPLATTING</div><div class="cc-d">点群を進化させた新しい手法（2023年〜）。各点を楕円体で表現し、リアルな見た目を高速に再現できる。</div><div class="img-ph" style="margin-top:auto;"><div class="ph-label">📷</div><div class="ph-path">assets/images/sl07_gaussian.png</div></div></div>
+      <div class="cc"><div class="cc-n">NURBS / SDF</div><div class="cc-e">NURBS / SIGNED DISTANCE FIELD</div><div class="cc-d">数式で滑らかな曲面を定義する。工業製品設計や CAD に使われる。ポリゴンより高精度。</div><div class="img-ph" style="margin-top:auto;"><div class="ph-label">📷</div><div class="ph-path">assets/images/sl07_nurbs.png</div></div></div>
     </div>
     <p class="bt" style="margin-top:12px;flex-shrink:0;">表現方法によって得意な用途が異なる。Nomad Sculpt で扱うのは<strong>ポリゴンメッシュ</strong>。</p>
   </div>
-  <div class="ft th-w"><span>07 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>07 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 08 ソフトウェアのいろいろ -->
@@ -343,7 +379,7 @@
       <div class="cc hl"><img src="../../assets/logos/logo_nomad_light.png" style="height:36px;object-fit:contain;align-self:flex-start;margin-bottom:2px;"><div class="cc-n">Nomad Sculpt</div><div class="cc-e">iPadアプリ</div><div class="cc-d" style="color:rgba(255,255,255,0.6);">iPadだけで動くスカルプトツール。Apple Pencil で直感的に使えるプロ品質のアプリ。</div><div class="cc-b">今日はコレ</div></div>
     </div>
   </div>
-  <div class="ft th-w"><span>08 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>08 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 09 3DCGの制作の流れ -->
@@ -363,7 +399,7 @@
     <p class="bt" style="text-align:center;">赤い番号が<strong>今日の授業で体験するステップ</strong>。まずは「形を作る」と「色をつける」ところから始める。</p>
     <div class="img-ph" style="width:100%;flex-shrink:0;"><div class="ph-label">📷 制作フロー図解</div><div class="ph-path">../../assets/images/sl09_pipeline.png</div></div>
   </div>
-  <div class="ft th-o"><span>09 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-o"><span>09 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 10 モデリングの種類 -->
@@ -378,7 +414,7 @@
     </div>
     <p class="bt" style="margin-top:11px;flex-shrink:0;">スカルプトはポリゴンモデリングの一手法。面の数が非常に多い<strong>ハイポリ</strong>状態で作業する。</p>
   </div>
-  <div class="ft th-w"><span>10 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>10 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 11 スカルプトの仕組み -->
@@ -407,7 +443,7 @@
       </div>
     </div>
   </div>
-  <div class="ft th-w"><span>11 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>11 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 12 演習：アプリを開いてドーナツ -->
@@ -423,31 +459,46 @@
     </div>
     <div class="img-ph" style="flex-shrink:0;"><div class="ph-label">📷 Nomad Sculpt スクリーンショット</div><div class="ph-path">../../assets/images/sl12_nomad_torus.png</div></div>
   </div>
-  <div class="ft th-o"><span>12 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-o"><span>12 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
-<!-- 13 演習：マスク処理 [技術HL] -->
+<!-- 13 演習：マスク処理 概念 -->
 <div class="sl th-w">
-  <div class="H th-w"><span class="tag">PRACTICE 02</span><h2>マスク処理でチョコソースを再現しよう</h2><div class="rule"></div></div>
-  <div class="body" style="padding-top:14px;">
-    <!-- IMG: assets/images/sl13_mask_extract.png (マスク→Extract の手順スクリーンショット) -->
+  <div class="H th-w"><span class="tag">PRACTICE 02 — A</span><h2>マスク処理でチョコソースを再現しよう</h2><div class="rule"></div></div>
+  <div class="body" style="padding-top:16px;">
     <div class="hlb">⚡ 技術ハイライト — 今日のメインテクニック</div>
-    <div class="tcol" style="flex:1;align-items:flex-start;">
-      <div class="col" style="gap:12px;">
-        <div class="def"><div class="def-t">マスクとは？</div><div class="def-b">メッシュの「一部だけ」を選択して保護・操作する機能。今回はマスクを<strong>切り出し範囲の指定</strong>として使う。</div></div>
-        <p class="bt">マスクした領域を <strong>Extract</strong> することで、選択部分を<strong>別パーツ（新しいメッシュ）</strong>として独立させられる。</p>
-        <div class="img-ph"><div class="ph-label">📷 マスク操作スクリーンショット</div><div class="ph-path">../../assets/images/sl13_mask_extract.png</div></div>
+    <div class="tcol" style="flex:1;align-items:stretch;gap:32px;">
+      <div class="col" style="gap:16px;justify-content:flex-start;">
+        <div class="def"><div class="def-t">マスクとは？</div><div class="def-b">メッシュの「一部だけ」を選択して保護・操作する機能。塗った部分はスカルプトブラシの影響を受けなくなる（保護される）。</div></div>
+        <div class="def" style="border-color:#111;"><div class="def-t">今回の使い方</div><div class="def-b">マスクを<strong>切り出し範囲の指定</strong>として使う。マスクした領域を <strong>Extract</strong> すると、その部分が新しい独立したメッシュとして分離される。</div></div>
       </div>
-      <div class="col" style="gap:0;">
-        <div class="dsteps">
-          <div class="ds"><div class="ds-n hl">1</div><div class="ds-b"><div class="ds-t">Mask ブラシで塗る</div><div class="ds-s">チョコにしたい部分をなぞる。Mask Blur で境界を調整できる。</div></div></div>
-          <div class="ds"><div class="ds-n hl">2</div><div class="ds-b"><div class="ds-t">Extract → New Mesh</div><div class="ds-s">メニューから Extract を実行。マスク部分が新しいメッシュとして分離される。</div><div class="ds-c">Extract → New Mesh</div></div></div>
-          <div class="ds"><div class="ds-n hl">3</div><div class="ds-b"><div class="ds-t">パーツに名前をつける</div><div class="ds-s">Scene パネルで分離されたメッシュを選択し、名前を変更する。</div><div class="ds-c">donut_choco</div></div></div>
-        </div>
+      <div class="col" style="gap:12px;justify-content:flex-start;">
+        <div class="img-ph" style="flex:1;"><div class="ph-label">📷 マスク概念図 / Before → After</div><div class="ph-path">../../assets/images/sl13a_mask_concept.png</div></div>
       </div>
     </div>
   </div>
-  <div class="ft th-w"><span>13 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>13 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+</div>
+
+<!-- 14 演習：マスク処理 操作手順 -->
+<div class="sl th-w">
+  <div class="H th-w"><span class="tag">PRACTICE 02 — B</span><h2>マスク処理：操作手順</h2><div class="rule"></div></div>
+  <div class="body" style="padding-top:16px;">
+    <div class="tcol" style="flex:1;align-items:stretch;gap:32px;">
+      <div class="col" style="gap:0;">
+        <div class="dsteps">
+          <div class="ds"><div class="ds-n hl">1</div><div class="ds-b"><div class="ds-t">Mask ブラシで塗る</div><div class="ds-s">ブラシメニューから Mask を選択し、チョコにしたい部分をなぞる。Mask Blur で境界をなめらかに調整できる。</div></div></div>
+          <div class="ds"><div class="ds-n hl">2</div><div class="ds-b"><div class="ds-t">Extract → New Mesh</div><div class="ds-s">メニューから Extract を実行。マスクした部分が新しいメッシュとして分離される。</div><div class="ds-c">Extract → New Mesh</div></div></div>
+          <div class="ds"><div class="ds-n hl">3</div><div class="ds-b"><div class="ds-t">元メッシュを非表示で確認</div><div class="ds-s">Scene パネルで元のドーナツを目のアイコンで隠し、チョコパーツが正しく分離されたか確認する。</div></div></div>
+          <div class="ds"><div class="ds-n hl">4</div><div class="ds-b"><div class="ds-t">パーツに名前をつける</div><div class="ds-s">Scene パネルで分離したメッシュを選択し、わかりやすい名前に変更する。</div><div class="ds-c">donut_choco</div></div></div>
+        </div>
+      </div>
+      <div class="col" style="gap:12px;justify-content:flex-start;">
+        <div class="img-ph" style="flex:1;"><div class="ph-label">📷 Extract操作スクリーンショット</div><div class="ph-path">../../assets/images/sl14_mask_extract.png</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="ft th-w"><span>14 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 14 演習：保存しよう -->
@@ -472,7 +523,7 @@
       </div>
     </div>
   </div>
-  <div class="ft th-w"><span>14 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>15 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 15 演習：色を付けよう -->
@@ -497,7 +548,7 @@
       </div>
     </div>
   </div>
-  <div class="ft th-w"><span>15 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-w"><span>16 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 <!-- 16 まとめ -->
@@ -513,7 +564,7 @@
     </ul>
     <div class="nx"><strong>次回（4/12）：リッチドーナツ＆質感</strong><br>マテリアルをさらに深める。光沢・粗さ・金属感を操り、同じ形が全く別の質感に変わることを体験する。ちびキャラ発想シート（X01）も配布します。</div>
   </div>
-  <div class="ft th-o"><span>16 / 16</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
+  <div class="ft th-o"><span>17 / 17</span><span>S01  ドーナツをつくろう　／　浦添パルコ 3DCG教室</span></div>
 </div>
 
 </div></div>
@@ -521,7 +572,7 @@
 <div class="nav">
   <button class="nb" onclick="go(-1)">‹</button>
   <div class="nds" id="nds"></div>
-  <span class="nc" id="nc">1 / 16</span>
+  <span class="nc" id="nc">1 / 17</span>
   <button class="nb" onclick="go(1)">›</button>
 </div>
 
