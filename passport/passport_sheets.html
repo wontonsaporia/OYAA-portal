@@ -74,30 +74,36 @@
     flex-direction: row;
   }
 
-  /* 表面：穴を右に / 裏面：穴を左に */
-  .card.back  { flex-direction: row-reverse; }
+  /* 表面：穴を左に / 裏面：穴を右に */
   .card.front { flex-direction: row; }
+  .card.back  { flex-direction: row-reverse; }
 
   .hole-gutter {
     width: 22px;
     flex-shrink: 0;
     background: #f0ece2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    border-left: 1px solid #e0dbd0;
+    position: relative;
+    min-height: 643px;
+    border-right: 1px solid #e0dbd0;
   }
   .card.back .hole-gutter {
-    border-left: none;
-    border-right: 1px solid #e0dbd0;
+    border-right: none;
+    border-left: 1px solid #e0dbd0;
   }
   .hole {
     width: 10px; height: 10px;
     border-radius: 50%;
     background: #d8d4c8;
     border: 1px solid #c8c4b8;
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
   }
+  .hole:nth-child(1) { top:  76px; }
+  .hole:nth-child(2) { top: 151px; }
+  .hole:nth-child(3) { top: 227px; }
+  .hole:nth-child(4) { top: 416px; }
+  .hole:nth-child(5) { top: 491px; }
+  .hole:nth-child(6) { top: 567px; }
 
   .card-inner {
     flex: 1;
@@ -288,12 +294,6 @@
   .p2 .check-circle { border: 1.5px solid #1a0d40; }
   .p2 .next-block { background: #1a0d40; }
   .p2 .next-block .block-label { color: #a07ae0; }
-  @media print {
-    .nav { display: none !important; }
-    .session { display: flex !important; }
-    .page-label { display: none !important; }
-    .divider { display: none !important; }
-  }
 </style>
 </head>
 <body>
@@ -316,7 +316,7 @@
   <div>
     <div class="page-label">S01 ▲ 表面</div>
     <div class="card front p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p1">
         <div class="meta"><span class="mono">Chapter 01</span><span class="mono">4 / 5</span></div>
@@ -349,7 +349,7 @@
   <div>
     <div class="page-label">S01 ▼ 裏面</div>
     <div class="card back p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p1"><span class="mono">Chapter 01 — 記録</span><span class="mono">4 / 5</span></div>
       <div class="body">
@@ -374,7 +374,7 @@
   <div>
     <div class="page-label">S02 ▲ 表面</div>
     <div class="card front p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p1">
         <div class="meta"><span class="mono">Chapter 02</span><span class="mono">4 / 12</span></div>
@@ -407,7 +407,7 @@
   <div>
     <div class="page-label">S02 ▼ 裏面</div>
     <div class="card back p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p1"><span class="mono">Chapter 02 — 記録</span><span class="mono">4 / 12</span></div>
       <div class="body">
@@ -432,7 +432,7 @@
   <div>
     <div class="page-label">S03 ▲ 表面</div>
     <div class="card front p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p1">
         <div class="meta"><span class="mono">Chapter 03</span><span class="mono">5 / 10</span></div>
@@ -465,7 +465,7 @@
   <div>
     <div class="page-label">S03 ▼ 裏面</div>
     <div class="card back p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p1"><span class="mono">Chapter 03 — 記録</span><span class="mono">5 / 10</span></div>
       <div class="body">
@@ -490,7 +490,7 @@
   <div>
     <div class="page-label">S04 ▲ 表面</div>
     <div class="card front p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p1">
         <div class="meta"><span class="mono">Chapter 04</span><span class="mono">5 / 17</span></div>
@@ -523,7 +523,7 @@
   <div>
     <div class="page-label">S04 ▼ 裏面</div>
     <div class="card back p1">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p1"><span class="mono">Chapter 04 — 記録</span><span class="mono">5 / 17</span></div>
       <div class="body">
@@ -548,7 +548,7 @@
   <div>
     <div class="page-label">S05 ▲ 表面</div>
     <div class="card front p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p2">
         <div class="meta"><span class="mono">Chapter 05</span><span class="mono">6 / 7</span></div>
@@ -581,7 +581,7 @@
   <div>
     <div class="page-label">S05 ▼ 裏面</div>
     <div class="card back p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p2"><span class="mono">Chapter 05 — 記録</span><span class="mono" style="color:#e09870;">6 / 7</span></div>
       <div class="body">
@@ -606,7 +606,7 @@
   <div>
     <div class="page-label">S06 ▲ 表面</div>
     <div class="card front p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p2">
         <div class="meta"><span class="mono">Chapter 06</span><span class="mono">6 / 14</span></div>
@@ -639,7 +639,7 @@
   <div>
     <div class="page-label">S06 ▼ 裏面</div>
     <div class="card back p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p2"><span class="mono">Chapter 06 — 記録</span><span class="mono" style="color:#e09870;">6 / 14</span></div>
       <div class="body">
@@ -663,7 +663,7 @@
   <div>
     <div class="page-label">S07 ▲ 表面</div>
     <div class="card front p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p2">
         <div class="meta"><span class="mono">Chapter 07</span><span class="mono">7 / 5</span></div>
@@ -696,7 +696,7 @@
   <div>
     <div class="page-label">S07 ▼ 裏面</div>
     <div class="card back p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p2"><span class="mono">Chapter 07 — 記録</span><span class="mono" style="color:#e09870;">7 / 5</span></div>
       <div class="body">
@@ -720,7 +720,7 @@
   <div>
     <div class="page-label">S08 ▲ 表面</div>
     <div class="card front p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="header p2">
         <div class="meta"><span class="mono">Chapter 08</span><span class="mono">7 / 12</span></div>
@@ -753,7 +753,7 @@
   <div>
     <div class="page-label">S08 ▼ 裏面</div>
     <div class="card back p2">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="back-header p2"><span class="mono">Chapter 08 — 記録</span><span class="mono" style="color:#e09870;">7 / 12</span></div>
       <div class="body">
