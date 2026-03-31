@@ -544,20 +544,29 @@
 
   /* ── 穴スペース ── */
   .card { flex-direction: row; }
-  .card.front { flex-direction: row-reverse; }
-  .card.back  { flex-direction: row; }
+  .card.front { flex-direction: row; }
+  .card.back  { flex-direction: row-reverse; }
   .hole-gutter {
     width: 22px;
     flex-shrink: 0;
     background: #f0ece2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    border-left: 1px solid #e0dbd0;
+    position: relative;
+    border-right: 1px solid #e0dbd0;
+    min-height: 643px;
   }
-  .card.front .hole-gutter { border-left: none; border-right: 1px solid #e0dbd0; }
-  .hole { width: 10px; height: 10px; border-radius: 50%; background: #d8d4c8; border: 1px solid #c8c4b8; }
+  .card.back .hole-gutter { border-right: none; border-left: 1px solid #e0dbd0; }
+  .hole {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #d8d4c8; border: 1px solid #c8c4b8;
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+  }
+  .hole:nth-child(1) { top:  76px; }
+  .hole:nth-child(2) { top: 151px; }
+  .hole:nth-child(3) { top: 227px; }
+  .hole:nth-child(4) { top: 416px; }
+  .hole:nth-child(5) { top: 491px; }
+  .hole:nth-child(6) { top: 567px; }
   .card-inner { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 </style>
 </head>
@@ -576,7 +585,7 @@
     <div>
       <div class="page-label">P01 — 表紙</div>
       <div class="card front">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="cover">
 
@@ -700,6 +709,30 @@
 <!-- 下部タイトル -->
 <text x="359" y="635" text-anchor="middle"
   font-family="Space Mono,monospace" font-size="7.5" fill="rgba(80,50,10,0.35)" letter-spacing="4">ADVENTURE MAP — 全8回の冒険</text>
+
+<!-- P02 穴列（右端） -->
+<g id="holes-p02">
+  <rect x="337" y="0" width="22" height="643" fill="#f0ece2" opacity="0.92"/>
+  <line x1="337" y1="0" x2="337" y2="643" stroke="#e0dbd0" stroke-width="1"/>
+  <circle cx="348" cy="76"  r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="348" cy="151" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="348" cy="227" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="348" cy="416" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="348" cy="491" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="348" cy="567" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+</g>
+
+<!-- P03 穴列（左端） -->
+<g id="holes-p03">
+  <rect x="359" y="0" width="22" height="643" fill="#f0ece2" opacity="0.92"/>
+  <line x1="381" y1="0" x2="381" y2="643" stroke="#e0dbd0" stroke-width="1"/>
+  <circle cx="370" cy="76"  r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="370" cy="151" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="370" cy="227" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="370" cy="416" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="370" cy="491" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+  <circle cx="370" cy="567" r="5" fill="#d8d4c8" stroke="#c8c4b8" stroke-width="1"/>
+</g>
 </svg>
       </div>
     </div>
@@ -710,7 +743,7 @@
     <div>
       <div class="page-label">P04 — Tips・ルール</div>
       <div class="card back">
-      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="hole-gutter"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <div class="card-inner">
       <div class="tips-bg">
 
