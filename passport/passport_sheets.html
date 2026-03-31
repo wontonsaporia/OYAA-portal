@@ -288,6 +288,12 @@
   .p2 .check-circle { border: 1.5px solid #1a0d40; }
   .p2 .next-block { background: #1a0d40; }
   .p2 .next-block .block-label { color: #a07ae0; }
+  @media print {
+    .nav { display: none !important; }
+    .session { display: flex !important; }
+    .page-label { display: none !important; }
+    .divider { display: none !important; }
+  }
 </style>
 </head>
 <body>
