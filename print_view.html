@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>印刷ビュー — OYAA 3DCG教室</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p1:#0d2340;--p1a:#5fa0e0;
+  --bg:#f0ede6;--card:#faf8f2;--border:#e0dbd0;
+  --sans:'Noto Sans JP',sans-serif;
+  --mono:'Space Mono',monospace;
+}
+body{font-family:var(--sans);background:var(--bg);color:#1a1a1a;padding:24px 20px 60px;}
+
+/* ── UI ── */
+.top-header{
+  max-width:700px;margin:0 auto 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.top-title{font-family:var(--mono);font-size:12px;color:var(--p1);letter-spacing:.12em;text-transform:uppercase;}
+.print-btn{
+  font-family:var(--mono);font-size:11px;
+  background:var(--p1);color:#fff;border:none;border-radius:4px;
+  padding:9px 20px;cursor:pointer;letter-spacing:.08em;transition:background .15s;
+}
+.print-btn:hover{background:#1a3a5a;}
+
+.selector{
+  max-width:700px;margin:0 auto 16px;
+  background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 18px;
+}
+.selector-label{
+  font-family:var(--mono);font-size:9px;color:#aaa;
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;
+}
+
+/* コアシートボタン */
+.core-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:4px;
+  border:1.5px solid var(--border);
+  background:#fff;cursor:pointer;
+  transition:all .12s;user-select:none;
+  width:100%;margin-bottom:12px;
+}
+.core-btn:hover{border-color:var(--p1a);}
+.core-btn.selected{border-color:var(--p1);background:#e8f0fa;}
+.core-btn-num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--p1);}
+.core-btn-info{font-size:12px;font-weight:700;color:#444;}
+.core-btn-meta{font-family:var(--mono);font-size:9px;color:#aaa;margin-left:auto;}
+
+/* チャプターシートグリッド */
+.section-label{
+  font-family:var(--mono);font-size:9px;color:#aaa;
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;margin-top:4px;
+}
+.session-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.sess-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 4px;border-radius:4px;
+  border:1.5px solid var(--border);background:#fff;cursor:pointer;
+  transition:all .12s;user-select:none;
+}
+.sess-btn:hover{border-color:var(--p1a);}
+.sess-btn.selected{border-color:var(--p1);background:#e8f0fa;}
+.sess-num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--p1);}
+.sess-date{font-family:var(--mono);font-size:8px;color:#aaa;}
+.sess-name{font-size:10px;font-weight:700;text-align:center;color:#444;line-height:1.3;}
+
+.hint{
+  max-width:700px;margin:0 auto 20px;
+  font-family:var(--mono);font-size:9px;color:#aaa;letter-spacing:.06em;
+}
+
+/* ── A4プレビュー ── */
+.preview-wrap{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:24px;}
+.a4-page{
+  background:#fff;width:595px;height:842px;
+  margin:0 auto;
+  box-shadow:0 4px 24px rgba(0,0,0,.15);
+  border-radius:2px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  overflow:hidden;position:relative;
+}
+/* コアシートはA4全面（1×1） */
+.a4-page.core-layout{
+  grid-template-columns:1fr;
+  grid-template-rows:1fr;
+}
+.a4-cell{
+  border:0.5px solid #e8e4dc;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:#faf8f2;
+}
+.a4-cell iframe{
+  width:359px;height:643px;border:none;
+  transform-origin:center center;transform:scale(0.8);
+  pointer-events:none;
+}
+.a4-page.core-layout .a4-cell iframe{
+  width:718px;height:643px;transform:scale(0.82);
+}
+.a4-label{
+  position:absolute;bottom:6px;right:10px;
+  font-family:var(--mono);font-size:7px;color:#ccc;letter-spacing:.1em;
+}
+.empty-cell{
+  background:repeating-linear-gradient(45deg,#f8f6f0,#f8f6f0 4px,#f2f0ea 4px,#f2f0ea 8px);
+}
+
+/* ── 印刷時 ── */
+@media print {
+  body{background:#fff;padding:0;}
+  .top-header,.selector,.hint{display:none !important;}
+  .preview-wrap{gap:0;max-width:none;}
+  .a4-page{
+    width:210mm;height:297mm;
+    box-shadow:none;margin:0;
+    page-break-after:always;
+  }
+  @page{size:A4 portrait;margin:5mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="top-header">
+  <div class="top-title">🖨️ 印刷ビュー</div>
+  <button class="print-btn" onclick="window.print()">印刷する</button>
+</div>
+
+<div class="selector">
+  <!-- コアシート -->
+  <div class="selector-label">コアシート</div>
+  <div class="core-btn" id="core-btn" onclick="toggleCore()">
+    <div class="core-btn-num">📖</div>
+    <div class="core-btn-info">コアシート（P01–P04）</div>
+    <div class="core-btn-meta">第1回配布 · A4全面</div>
+  </div>
+
+  <!-- チャプターシート -->
+  <div class="section-label">チャプターシート（2回 = A4 1枚）</div>
+  <div class="session-grid" id="session-grid"></div>
+</div>
+
+<div class="hint" id="hint">印刷したいシートを選んでください。</div>
+
+<div class="preview-wrap" id="preview-wrap"></div>
+
+<script>
+const SESSIONS = [
+  {n:1,id:'s0',date:'4/5', name:'ドーナツをつくろう'},
+  {n:2,id:'s1',date:'4/12',name:'リッチドーナツ'},
+  {n:3,id:'s2',date:'5/10',name:'ちびキャラ'},
+  {n:4,id:'s3',date:'5/17',name:'ポスター完成'},
+  {n:5,id:'s4',date:'6/7', name:'オリカデザイン'},
+  {n:6,id:'s5',date:'6/14',name:'デジタルカード'},
+  {n:7,id:'s6',date:'7/5', name:'飛び出すカード'},
+  {n:8,id:'s7',date:'7/12',name:'発表・修了'},
+];
+
+let selectedSessions = [];
+let coreSelected = false;
+
+// チャプターボタン生成
+const grid = document.getElementById('session-grid');
+SESSIONS.forEach(s => {
+  const btn = document.createElement('div');
+  btn.className = 'sess-btn';
+  btn.dataset.id = s.id;
+  btn.innerHTML = `
+    <div class="sess-num">S0${s.n}</div>
+    <div class="sess-date">${s.date}</div>
+    <div class="sess-name">${s.name}</div>
+  `;
+  btn.addEventListener('click', () => {
+    if(btn.classList.contains('selected')){
+      btn.classList.remove('selected');
+      selectedSessions = selectedSessions.filter(i => i !== s.id);
+    } else {
+      btn.classList.add('selected');
+      selectedSessions.push(s.id);
+    }
+    renderPreview();
+  });
+  grid.appendChild(btn);
+});
+
+// コアシートトグル
+function toggleCore(){
+  coreSelected = !coreSelected;
+  document.getElementById('core-btn').classList.toggle('selected', coreSelected);
+  renderPreview();
+}
+
+// プレビュー生成
+function renderPreview(){
+  const wrap = document.getElementById('preview-wrap');
+  const hint = document.getElementById('hint');
+  wrap.innerHTML = '';
+
+  const pages = [];
+
+  // コアシートページ
+  if(coreSelected) pages.push({type:'core'});
+
+  // チャプターシートページ（2回ずつ）
+  for(let i = 0; i < selectedSessions.length; i += 2){
+    pages.push({type:'chapter', sessions: selectedSessions.slice(i, i+2)});
+  }
+
+  if(pages.length === 0){
+    hint.textContent = '印刷したいシートを選んでください。';
+    return;
+  }
+  hint.textContent = `合計 ${pages.length} 枚の A4 が生成されます。`;
+
+  pages.forEach((page, pi) => {
+    const pageEl = document.createElement('div');
+
+    if(page.type === 'core'){
+      // コアシート：全面表示
+      pageEl.className = 'a4-page core-layout';
+      const cell = document.createElement('div');
+      cell.className = 'a4-cell';
+      const frame = document.createElement('iframe');
+      frame.src = 'passport/passport_core.html';
+      frame.title = 'コアシート';
+      cell.appendChild(frame);
+      pageEl.appendChild(cell);
+    } else {
+      // チャプターシート：2×2
+      pageEl.className = 'a4-page';
+      [0,1].forEach(row => {
+        const sid = page.sessions[row];
+        if(sid){
+          // 表面
+          const fc = document.createElement('div');
+          fc.className = 'a4-cell';
+          const ff = document.createElement('iframe');
+          ff.src = `passport/passport_sheets.html#${sid}`;
+          ff.title = '表面';
+          fc.appendChild(ff);
+          pageEl.appendChild(fc);
+          // 裏面
+          const bc = document.createElement('div');
+          bc.className = 'a4-cell';
+          const bf = document.createElement('iframe');
+          bf.src = `passport/passport_sheets.html#${sid}`;
+          bf.title = '裏面';
+          bc.appendChild(bf);
+          pageEl.appendChild(bc);
+        } else {
+          pageEl.appendChild(Object.assign(document.createElement('div'),{className:'a4-cell empty-cell'}));
+          pageEl.appendChild(Object.assign(document.createElement('div'),{className:'a4-cell empty-cell'}));
+        }
+      });
+    }
+
+    const label = document.createElement('div');
+    label.className = 'a4-label';
+    label.textContent = `PAGE ${pi+1}`;
+    pageEl.appendChild(label);
+    wrap.appendChild(pageEl);
+  });
+}
+</script>
+</body>
+</html>
