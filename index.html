@@ -29,6 +29,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--body);}
   transform:translateY(-100%);
   transition:transform .25s;
 }
+body.on-home .topbar{transform:translateY(0);}
 /* トリガーホバー・トップバー自身ホバー・ナビ開時 → 表示 */
 .topbar-trigger:hover + .topbar,
 .topbar:hover,
@@ -262,6 +263,7 @@ function show_welcome(){
   document.getElementById('topbar-current').textContent='';
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('btn-home').classList.add('active');
+  document.body.classList.add('on-home'); 
   closeNav();
 }
 
@@ -272,6 +274,7 @@ function open_frame(url, title){
   document.getElementById('topbar-current').textContent=title;
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   event.currentTarget.classList.add('active');
+  document.body.classList.remove('on-home'); 
   closeNav();
 }
 </script>
