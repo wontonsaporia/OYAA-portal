@@ -239,11 +239,14 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
 <div class="content">
   <div class="welcome" id="welcome">
     <model-viewer
-      class="welcome-bg-model"
-      src="assets/models/Donut_03.glb"
-      auto-rotate
-      rotation-per-second="20deg">
-    </model-viewer>
+  class="welcome-bg-model"
+  src="assets/models/Donut_03.glb"
+  auto-rotate
+  rotation-per-second="20deg"
+  camera-orbit="0deg 60deg 4m"
+  orientation="10deg 30deg 0deg"
+  tone-mapping="commerce" >
+</model-viewer> 
     <!-- <img class="welcome-icon" src="assets/images/donut_giphy.gif" alt=""> -->
     <div class="welcome-title">OYAA 3DCG教室</div>
     <div class="welcome-sub">スカルプトモデリング × オリカ<br>全8回の冒険記録</div>
