@@ -12,7 +12,384 @@
   :root {
     --bg-dark: #1a1a2e;
     --bg-slide: #0f0f23;
+    --accent-orange: #ff6b35;<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ストップモーションアニメを作ろう！</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Dela+Gothic+One&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-dark: #1a1a2e;
+    --bg-slide: #0f0f23;
     --accent-orange: #ff6b35;
+    --accent-yellow: #ffc857;
+    --accent-cyan: #00d4aa;
+    --accent-pink: #ff4d6d;
+    --accent-blue: #4ea8de;
+    --text-white: #f0f0f0;
+    --text-dim: #8888aa;
+    --font-display: 'Dela Gothic One', cursive;
+    --font-body: 'Zen Kaku Gothic New', sans-serif;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    font-family: var(--font-body);
+    color: var(--text-white);
+  }
+
+  .deck { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 60px 80px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: auto; }
+
+  .slide::before {
+    content: ''; position: absolute; inset: 0;
+    opacity: 0.08; pointer-events: none;
+    background:
+      radial-gradient(circle at 15% 25%, var(--grad-a, var(--accent-orange)) 0%, transparent 50%),
+      radial-gradient(circle at 85% 75%, var(--grad-b, var(--accent-cyan)) 0%, transparent 50%);
+  }
+
+  .s-title   { --grad-a: var(--accent-orange); --grad-b: var(--accent-yellow); }
+  .s-film    { --grad-a: var(--accent-blue);   --grad-b: var(--accent-cyan);   }
+  .s-q1      { --grad-a: var(--accent-yellow); --grad-b: var(--accent-pink);   }
+  .s-lumiere { --grad-a: #2a1a3e;              --grad-b: #1a1a2e;              }
+  .s-q2      { --grad-a: var(--accent-pink);   --grad-b: var(--accent-yellow); }
+  .s-anime   { --grad-a: var(--accent-pink);   --grad-b: var(--accent-orange); }
+  .s-q3      { --grad-a: var(--accent-cyan);   --grad-b: var(--accent-yellow); }
+  .s-stopmo  { --grad-a: var(--accent-cyan);   --grad-b: var(--accent-blue);   }
+  .s-mission { --grad-a: var(--accent-yellow); --grad-b: var(--accent-orange); }
+  .s-sample  { --grad-a: var(--accent-pink);   --grad-b: var(--accent-yellow); }
+  .s-story   { --grad-a: var(--accent-cyan);   --grad-b: var(--accent-yellow); }
+  .s-create  { --grad-a: var(--accent-orange); --grad-b: var(--accent-pink);   }
+  .s-present { --grad-a: var(--accent-blue);   --grad-b: var(--accent-cyan);   }
+  .s-end     { --grad-a: var(--accent-yellow); --grad-b: var(--accent-orange); }
+
+  .sc { position: relative; z-index: 1; width: 100%; max-width: 1100px; text-align: center; }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.3; margin-bottom: 20px; letter-spacing: 0.02em;
+  }
+  h2 {
+    font-family: var(--font-body); font-weight: 700;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.3; margin-bottom: 24px;
+  }
+  .q-text {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4.5vw, 56px);
+    line-height: 1.5;
+  }
+  .subtitle {
+    font-size: clamp(18px, 2.5vw, 28px);
+    color: var(--text-dim); font-weight: 400; margin-bottom: 16px;
+  }
+  .big-text {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 700; line-height: 1.8;
+  }
+
+  .accent-orange { color: var(--accent-orange); }
+  .accent-yellow { color: var(--accent-yellow); }
+  .accent-cyan   { color: var(--accent-cyan); }
+  .accent-pink   { color: var(--accent-pink); }
+  .accent-blue   { color: var(--accent-blue); }
+
+  .highlight { display: inline-block; padding: 4px 16px; border-radius: 8px; margin: 4px 0; }
+  .hl-orange { background: rgba(255,107,53,0.2);  color: var(--accent-orange); }
+  .hl-yellow { background: rgba(255,200,87,0.2);  color: var(--accent-yellow); }
+  .hl-cyan   { background: rgba(0,212,170,0.2);   color: var(--accent-cyan); }
+  .hl-pink   { background: rgba(255,77,109,0.2);  color: var(--accent-pink); }
+
+  .data-table {
+    margin: 30px auto; border-collapse: separate; border-spacing: 0;
+    width: 90%; max-width: 800px; text-align: left; font-size: clamp(16px, 2vw, 24px);
+  }
+  .data-table th {
+    padding: 12px 20px; font-weight: 700; color: var(--text-dim);
+    font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+  }
+  .data-table td { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .data-table .num {
+    font-family: var(--font-body); font-weight: 900;
+    color: var(--accent-yellow); text-align: right; font-size: 1.1em;
+  }
+
+  .steps {
+    display: flex; gap: 20px; justify-content: center;
+    margin: 30px 0; flex-wrap: nowrap; width: 100%;
+  }
+  .step {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 20px 16px;
+    flex: 1; min-width: 0; max-width: 300px; text-align: center;
+  }
+  .step-num { font-family: var(--font-display); font-size: 30px; margin-bottom: 8px; }
+  .step-text { font-size: clamp(15px, 1.8vw, 21px); font-weight: 400; line-height: 1.5; }
+
+  .tips { display: flex; gap: 16px; justify-content: center; margin-top: 24px; flex-wrap: nowrap; }
+  .tip {
+    background: rgba(255,255,255,0.05); border-radius: 12px;
+    padding: 14px 24px; font-size: clamp(14px, 1.6vw, 20px);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .tip-icon { font-size: 1.4em; }
+
+  .arrow-flow {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin: 20px 0; flex-wrap: wrap;
+    font-size: clamp(18px, 2.2vw, 28px); font-weight: 700;
+  }
+  .arrow-flow .arrow { color: var(--text-dim); font-size: 0.8em; }
+
+  .video-cue {
+    margin-top: 24px; padding: 16px 32px;
+    border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px;
+    color: var(--text-dim); font-size: clamp(14px, 1.5vw, 18px); display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  a.video-cue:hover { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+  .title-badge {
+    display: inline-block; font-size: clamp(14px, 1.6vw, 18px);
+    padding: 6px 20px; border-radius: 30px;
+    background: rgba(255,107,53,0.15); color: var(--accent-orange);
+    font-weight: 700; margin-bottom: 16px; letter-spacing: 0.08em;
+  }
+  .emoji-big { font-size: clamp(48px, 6vw, 80px); margin-bottom: 16px; display: block; }
+
+  .nav-bar {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 100; display: flex; align-items: center; gap: 16px;
+    background: rgba(15,15,35,0.85); backdrop-filter: blur(8px);
+    padding: 10px 20px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.1); color: var(--text-white);
+    font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.2); }
+  .nav-counter { font-size: 14px; color: var(--text-dim); min-width: 60px; text-align: center; }
+  .progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-orange), var(--accent-yellow));
+    z-index: 100; transition: width 0.4s ease;
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck">
+
+  <!-- 01 タイトル -->
+  <div class="slide s-title active"><div class="sc">
+    <div class="title-badge">デジタル体験教室 ─ OYAA</div>
+    <h1>ストップモーション<br>アニメを作ろう！</h1>
+    <p class="subtitle">写真で「うごくアニメ」を作るよ！</p>
+  </div></div>
+
+  <!-- 02 映像の正体 -->
+  <div class="slide s-film"><div class="sc">
+    <h2>映像の正体</h2>
+    <div class="big-text">
+      写真 <span class="accent-cyan">1枚</span> → うごかない<br><br>
+      じゃあ、たくさん並べて<br>速く切りかえると…？<br><br>
+      <span class="highlight hl-cyan">→ うごいて見える！</span>
+    </div>
+  </div></div>
+
+  <!-- 03 問い：最初の映画 -->
+  <div class="slide s-q1"><div class="sc">
+    <p class="q-text">世界で最初の映画って<br><span class="accent-yellow">何が映ってる</span>と思う？</p>
+  </div></div>
+
+  <!-- 04 答え：リュミエール -->
+  <div class="slide s-lumiere"><div class="sc">
+    <h2>世界で最初の映画</h2>
+    <div class="big-text" style="margin-bottom:12px;">
+      リュミエール兄弟<br><span class="accent-yellow">『列車の到着』</span>（1896年）
+    </div>
+    <p class="subtitle">たった50秒。<br>お客さんは列車がとび出すと思って<span class="accent-pink">にげた！</span></p>
+    <a href="https://youtu.be/1FAj9fJQRZA" target="_blank" class="video-cue" style="text-decoration:none;">▶ 動画をみてみよう</a>
+  </div></div>
+
+  <!-- 05 問い：アニメ枚数 -->
+  <div class="slide s-q2"><div class="sc">
+    <p class="q-text">みんなが見てるアニメ<br>1話で<span class="accent-pink">何枚の絵</span>を<br>使ってると思う？</p>
+  </div></div>
+
+  <!-- 06 答え：アニメの秘密 -->
+  <div class="slide s-anime"><div class="sc">
+    <h2>アニメの秘密</h2>
+    <p class="subtitle">ぜんぶ <span class="accent-yellow">1枚ずつ描いた絵</span> でできている</p>
+    <table class="data-table">
+      <thead><tr><th>作品</th><th style="text-align:right;">作画枚数</th></tr></thead>
+      <tbody>
+        <tr><td>TVアニメ 1話（約25分）</td><td class="num">約 3,000〜4,000 枚</td></tr>
+        <tr><td>崖の上のポニョ（100分）</td><td class="num" style="color:var(--accent-orange);">約 170,000 枚</td></tr>
+        <tr><td>かぐや姫の物語（137分）</td><td class="num" style="color:var(--accent-pink);">約 240,000 枚</td></tr>
+      </tbody>
+    </table>
+    <p class="big-text" style="font-size:clamp(18px,2.2vw,28px);">
+      ぜんぶ人が手で描いてる。<span class="accent-yellow">すごくない？</span>
+    </p>
+  </div></div>
+
+  <!-- 07 問い：絵を描かずに -->
+  <div class="slide s-q3"><div class="sc">
+    <p class="q-text">じゃあ、<span class="accent-cyan">絵を描かずに</span><br>アニメを作れる？</p>
+  </div></div>
+
+  <!-- 08 答え：ストップモーション -->
+  <div class="slide s-stopmo"><div class="sc">
+    <h2>ストップモーションアニメ</h2>
+    <div class="big-text" style="margin-bottom:20px;">
+      アニメは <span class="accent-pink">"絵を描く"</span><br>
+      ストップモーションは <span class="accent-cyan">"写真を撮る"</span>
+    </div>
+    <div class="arrow-flow">
+      <span>少し動かす</span><span class="arrow">→</span>
+      <span class="accent-yellow">写真</span><span class="arrow">→</span>
+      <span>少し動かす</span><span class="arrow">→</span>
+      <span class="accent-yellow">写真</span><span class="arrow">→</span><span>…</span>
+    </div>
+    <p class="subtitle" style="margin-top:16px;">カクカク動くのが、<span class="accent-cyan">味</span>になる！</p>
+    <div class="video-cue">▶ ストップモーション作品をみてみよう</div>
+  </div></div>
+
+  <!-- 09 みんなでやってみよう -->
+  <div class="slide s-mission"><div class="sc">
+    <div class="title-badge" style="background:rgba(255,200,87,0.15); color:var(--accent-yellow);">Mission</div>
+    <h2>みんなで やってみよう！</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num accent-cyan">1</div><div class="step-text">ペンや消しゴムを<br>少しずつ動かす</div></div>
+      <div class="step"><div class="step-num accent-yellow">2</div><div class="step-text">こんどは人間で！<br>好きなポーズ</div></div>
+      <div class="step"><div class="step-num accent-pink">3</div><div class="step-text">再生して<br>みてみよう！</div></div>
+    </div>
+  </div></div>
+
+  <!-- 10 先生の作品 -->
+  <div class="slide s-sample"><div class="sc">
+    <h2>先生の作品紹介</h2>
+    <div class="steps">
+      <div class="step" style="border-color:rgba(0,212,170,0.3);"><div class="step-num accent-cyan">A</div><div class="step-text">変形ループ<br><span style="font-size:0.85em;">形がどんどん変わる</span></div></div>
+      <div class="step" style="border-color:rgba(255,77,109,0.3);"><div class="step-num accent-pink">B</div><div class="step-text">ミニストーリー<br><span style="font-size:0.85em;">まるい玉が…？</span></div></div>
+    </div>
+    <div class="video-cue" style="margin-top:20px;">▶ 先生の作品をみてみよう</div>
+  </div></div>
+
+  <!-- 11 お話のつくりかた -->
+  <div class="slide s-story"><div class="sc">
+    <h2>お話のつくりかた</h2>
+    <p class="subtitle">物語は <span class="accent-yellow">3ステップ</span></p>
+    <div class="steps">
+      <div class="step"><div class="step-num accent-cyan">①</div><div class="step-text">キャラがいる</div></div>
+      <div class="step"><div class="step-num accent-yellow">②</div><div class="step-text">何かが起きる</div></div>
+      <div class="step"><div class="step-num accent-pink">③</div><div class="step-text">変化する！</div></div>
+    </div>
+    <p class="big-text" style="margin-top:20px; font-size:clamp(18px,2.5vw,30px);">
+      粘土ストップモーションは<br><span class="highlight hl-orange">"形が変わる" のが最大の武器</span>
+    </p>
+  </div></div>
+
+  <!-- 12 制作スタート -->
+  <div class="slide s-create"><div class="sc">
+    <span class="emoji-big">🎬</span>
+    <h2>さあ、作ろう！</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num accent-orange">1</div><div class="step-text">キャラクターを<br>作る</div></div>
+      <div class="step"><div class="step-num accent-yellow">2</div><div class="step-text">背景の色を<br>えらぶ</div></div>
+      <div class="step"><div class="step-num accent-cyan">3</div><div class="step-text">撮影しながら<br>小道具を足す</div></div>
+    </div>
+    <div class="tips">
+      <div class="tip"><span class="tip-icon">📷</span>カメラは動かさない</div>
+      <div class="tip"><span class="tip-icon">🤏</span>動かすのは少しずつ</div>
+      <div class="tip"><span class="tip-icon">👋</span>手やかげに注意</div>
+    </div>
+    <p style="margin-top:20px; font-size:clamp(16px,2vw,24px); color:var(--accent-yellow); font-weight:700;">途中で変えてOK！ 作りながら考えよう</p>
+  </div></div>
+
+  <!-- 13 発表 -->
+  <div class="slide s-present"><div class="sc">
+    <span class="emoji-big">🎤</span>
+    <h2>発表タイム</h2>
+    <p class="subtitle">みんなの作品を見せ合おう！</p>
+    <div class="steps">
+      <div class="step"><div class="step-text"><span class="accent-cyan">キャラの名前</span>は？</div></div>
+      <div class="step"><div class="step-text">どんな<span class="accent-yellow">お話</span>？</div></div>
+      <div class="step"><div class="step-text"><span class="accent-pink">工夫</span>したところは？</div></div>
+    </div>
+    <p class="big-text" style="margin-top:24px; font-size:clamp(18px,2.2vw,28px);">みんなの さくひんを 大切に 👏</p>
+  </div></div>
+
+  <!-- 14 おわりに -->
+  <div class="slide s-end"><div class="sc">
+    <h2>おわりに</h2>
+    <div class="big-text" style="line-height:2;">
+      <span class="highlight hl-orange">作品を保存しよう</span><br>
+      <span class="highlight hl-yellow">おうちの人に見せてね</span>
+    </div>
+    <div style="margin-top:32px; padding:24px 32px; background:rgba(255,255,255,0.04); border-radius:16px; border:1px solid rgba(255,255,255,0.08);">
+      <p class="subtitle" style="margin-bottom:0; color:var(--text-white);">
+        写真を並べると <span class="accent-cyan">映像</span> になる。<br>
+        動かないものが <span class="accent-pink">動き出す</span>。<br>
+        それが <span class="accent-yellow">ストップモーションアニメ</span>！
+      </p>
+    </div>
+  </div></div>
+
+</div>
+
+<nav class="nav-bar">
+  <button class="nav-btn" onclick="go(-1)">◀</button>
+  <span class="nav-counter" id="counter">1 / 14</span>
+  <button class="nav-btn" onclick="go(1)">▶</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+  function show(idx) {
+    cur = Math.max(0, Math.min(total - 1, idx));
+    slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+    document.getElementById('counter').textContent = `${cur + 1} / ${total}`;
+    document.getElementById('progress').style.width = `${((cur + 1) / total) * 100}%`;
+  }
+  function go(d) { show(cur + d); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  });
+  show(0);
+</script>
+</body>
+</html>
     --accent-yellow: #ffc857;
     --accent-cyan: #00d4aa;
     --accent-pink: #ff4d6d;
