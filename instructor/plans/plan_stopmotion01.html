@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ストップモーション体験教室 — 講師用プランシート</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sans: 'Noto Sans JP', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --black: #111;
+    --dark:  #333;
+    --mid:   #666;
+    --gray:  #999;
+    --line:  #ccc;
+    --white: #fff;
+  }
+
+  body {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--black);
+    background: #e8e8e4;
+    padding: 20px;
+  }
+
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--white);
+    margin: 0 auto;
+    padding: 12mm 11mm 10mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+
+  /* ── ヘッダー ── */
+  .hdr {
+    border-bottom: 2px solid var(--black);
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+  .hdr-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .hdr-code { font-family: var(--mono); font-size: 9px; color: var(--mid); letter-spacing: 0.1em; }
+  .hdr-meta { font-family: var(--mono); font-size: 9px; color: var(--mid); }
+  .hdr-title { font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+  .hdr-sub { font-size: 10px; color: var(--mid); }
+
+  /* ── セクション ── */
+  .section { margin-bottom: 10px; }
+  .sec-label {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px; margin-bottom: 6px;
+  }
+
+  /* ── 準備物 ── */
+  .checklist {
+    display: flex; flex-direction: column;
+    gap: 4px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; line-height: 1.4;
+  }
+  .chk {
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+  .chk-tag { font-family: var(--mono); font-size: 8.5px; color: var(--mid); min-width: 34px; }
+
+  /* ── タイムライン ── */
+  .tl-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .tl-table thead tr { border-bottom: 1.5px solid var(--black); }
+  .tl-table thead th {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray); padding: 3px 5px; text-align: left;
+  }
+  .tl-table tbody tr { border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tl-table tbody tr:last-child { border-bottom: none; }
+  .tl-table td { padding: 5px 5px; line-height: 1.55; }
+
+  .col-time  { width: 13mm; }
+  .col-dur   { width: 9mm; text-align: right; color: var(--gray); font-family: var(--mono); font-size: 9.5px; }
+  .col-block { width: 22mm; }
+  .col-slide { width: 14mm; text-align: center; }
+  .col-memo  { width: auto; }
+  .col-note  { width: 40mm; font-size: 10px; color: var(--mid); border-left: 1px solid var(--line); padding-left: 7px; }
+
+  .time-val { font-family: var(--mono); font-size: 10.5px; font-weight: 700; }
+  .block-name { font-weight: 700; font-size: 11.5px; }
+  .block-sub  { font-size: 9.5px; color: var(--mid); margin-top: 1px; }
+
+  .row-intro td:first-child  { border-left: 3px solid #555; }
+  .row-lecture td:first-child { border-left: 3px solid #888; }
+  .row-practice td:first-child { border-left: 3px solid #111; }
+  .row-wrap td:first-child   { border-left: 3px solid #555; }
+  .row-practice { background: #fafaf6; }
+
+  .slide-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 8px;
+    background: #f0f0f0; border: 1px solid var(--line);
+    padding: 1px 4px; border-radius: 1px;
+    color: var(--mid);
+    white-space: nowrap;
+  }
+  .hl-mark {
+    display: inline-block; font-size: 8px; font-family: var(--mono);
+    background: var(--black); color: var(--white);
+    padding: 1px 4px; border-radius: 1px; margin-top: 3px;
+  }
+
+  .memo-main { color: var(--dark); }
+  .memo-sub  { font-size: 10px; color: var(--mid); margin-top: 2px; }
+  .note-head { font-size: 8.5px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .note-item { display: flex; gap: 3px; margin-bottom: 2px; font-size: 10px; }
+  .note-item::before { content: "▲"; font-size: 7.5px; color: var(--gray); flex-shrink: 0; margin-top: 2px; }
+
+  /* ── 次回 ── */
+  .next-block { font-size: 11.5px; color: var(--dark); line-height: 1.8; }
+
+  /* ── フッター ── */
+  .footer {
+    margin-top: 10px; padding-top: 5px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 8px; color: var(--gray);
+  }
+
+  /* ── めあて・まとめ ── */
+  .aim-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .aim-block, .sum-block {
+    border: 1px solid var(--line);
+    border-radius: 2px; padding: 6px 9px;
+  }
+  .aim-block .sec-label, .sum-block .sec-label {
+    border-bottom: none; margin-bottom: 4px; padding-bottom: 0;
+  }
+  .aim-item, .sum-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11.5px; line-height: 1.5; margin-bottom: 3px;
+  }
+  .aim-item::before { content: "●"; font-size: 8px; color: var(--gray); flex-shrink: 0; margin-top: 3px; }
+  .sum-item .chk {
+    width: 11px; height: 11px; margin-top: 2px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .sheet { box-shadow: none; padding: 10mm 10mm 8mm; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ヘッダー -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <span class="hdr-code">デジタル体験教室 — 講師用プランシート</span>
+      <span class="hdr-meta">2025.4.5（土）　13:00–14:30　90分　3名（小4・小6・小6）</span>
+    </div>
+    <div class="hdr-title">ストップモーションアニメを作ろう！</div>
+    <div class="hdr-sub">粘土で「うごくアニメ」を作る体験教室　／　Stop Motion Studio（iPad）</div>
+  </div>
+
+  <!-- 準備物 -->
+  <div class="section">
+    <div class="sec-label">準備物チェックリスト</div>
+    <div class="checklist">
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">機材</span>講師用 iPad（スライド表示＋撮影デモ用）・充電器</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">素材</span>小麦粘土（先方持参の見本粘土犬キャラを確認）・画用紙（背景用・複数色）</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">アプリ</span>生徒iPad に Stop Motion Studio がインストール済みか確認</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">動画</span>リュミエール兄弟 YouTube（オフライン保存推奨）・ストップモーション参考作品・先生の見本2本</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">データ</span>スライド（ss_stopmotion.html / 14枚）表示確認済み</div>
+    </div>
+  </div>
+
+  <!-- めあて・まとめ -->
+  <div class="aim-wrap">
+    <div class="aim-block">
+      <div class="sec-label">今日のめあて</div>
+      <div class="aim-item">映像の仕組み（写真の連続＝動画）を体験的に理解する</div>
+      <div class="aim-item">粘土でオリジナルキャラを作り、ストップモーションアニメを完成させる</div>
+      <div class="aim-item">「形が変わること」が粘土ストップモーションの面白さだと気づく</div>
+    </div>
+    <div class="sum-block">
+      <div class="sec-label">今日のまとめ（授業後に確認）</div>
+      <div class="sum-item"><div class="chk"></div>映像の仕組みを体験で理解できた</div>
+      <div class="sum-item"><div class="chk"></div>オリジナルキャラのストップモーションを完成できた</div>
+      <div class="sum-item"><div class="chk"></div>動画を保存して持ち帰れた</div>
+    </div>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="section">
+    <div class="sec-label">タイムライン　／　導入 → 講義 → 体験 → 制作 → 発表 → まとめ</div>
+    <table class="tl-table">
+      <thead>
+        <tr>
+          <th class="col-time">時刻</th>
+          <th class="col-dur">時間</th>
+          <th class="col-block">ブロック</th>
+          <th class="col-slide">スライド</th>
+          <th class="col-memo">講師メモ・説明ポイント</th>
+          <th class="col-note">詰まりポイント対応</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- 導入 -->
+        <tr class="row-intro">
+          <td><span class="time-val">13:00</span></td>
+          <td class="col-dur">5分</td>
+          <td>
+            <div class="block-name">導入</div>
+            <div class="block-sub">挨拶・自己紹介</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 1</span>
+          </td>
+          <td>
+            <div class="memo-main">KO自己紹介（「アニメを作る仕事をしてます」で一言）。生徒3人に名前＋好きなもの1つを聞く。</div>
+            <div class="memo-sub">3人なので1人30秒。タイトルは見せるだけ。流れの説明はしない（体験で伝わる）。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">緊張して話せない子 → 「好きな食べ物でもOK」で逃げ道を作る</div>
+          </td>
+        </tr>
+
+        <!-- 講義 -->
+        <tr class="row-lecture">
+          <td><span class="time-val">13:05</span></td>
+          <td class="col-dur">12分</td>
+          <td>
+            <div class="block-name">講義</div>
+            <div class="block-sub">映像とは何か</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 2</span><br>
+            <span class="slide-tag">Slide 3</span><br>
+            <span class="slide-tag">Slide 4</span><br>
+            <span class="slide-tag">Slide 5</span><br>
+            <span class="slide-tag">Slide 6</span><br>
+            <span class="slide-tag">Slide 7</span><br>
+            <span class="slide-tag">Slide 8</span>
+          </td>
+          <td>
+            <div class="memo-main">【Slide 2】写真1枚→うごかない→たくさん並べると映像。【Slide 3】問い：「最初の映画、何が映ってると思う？」生徒に振る。</div>
+            <div class="memo-sub">
+              【Slide 4】リュミエール兄弟 YouTube再生（50秒）。「にげた」エピソードで笑いをとる。<br>
+              【Slide 5】問い：「アニメ1話で何枚？」生徒に予想させる。<br>
+              【Slide 6】答え：枚数比較表。ポニョ17万枚、かぐや姫24万枚。「すごくない？」で驚きを共有。<br>
+              【Slide 7】問い：「絵を描かずにアニメ作れる？」<br>
+              【Slide 8】答え：ストップモーション＝写真を撮る。参考作品YouTube再生。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">Wi-Fiが不安定 → 動画はオフライン保存しておく</div>
+            <div class="note-item">問いかけに反応が薄い → 間を置いてから自分で答えてOK。テンポ優先</div>
+            <div class="note-item">説明が長引く → Slide 5〜8は計5分以内で</div>
+          </td>
+        </tr>
+
+        <!-- 体験 -->
+        <tr class="row-practice">
+          <td><span class="time-val">13:17</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">体験</div>
+            <div class="block-sub">みんなでやってみよう</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 9</span>
+          </td>
+          <td>
+            <div class="memo-main">①ものSM（3分）：テーブル上のペン・消しゴムを全員で少しずつ動かしてKOが撮影→再生。②人間SM（5分）：3人にポーズ→撮影×10〜15枚→再生。</div>
+            <div class="memo-sub">「ありえない動きが面白い！」を体で実感させる。振り返り2分：「これがストップモーション」。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">恥ずかしがる子 → ものSMを先にやることでハードル下げ済み</div>
+            <div class="note-item">時間超過 → 人間SMは省略可。ものSMだけで十分伝わる</div>
+          </td>
+        </tr>
+
+        <!-- 見本＋構造 -->
+        <tr class="row-lecture">
+          <td><span class="time-val">13:27</span></td>
+          <td class="col-dur">5分</td>
+          <td>
+            <div class="block-name">見本紹介</div>
+            <div class="block-sub">物語の最小構造</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 10</span><br>
+            <span class="slide-tag">Slide 11</span>
+          </td>
+          <td>
+            <div class="memo-main">見本A再生（変形ループ）→ 見本B再生（ミニストーリー：玉→おにぎり食べる→三角になる）。</div>
+            <div class="memo-sub">
+              【Slide 11】物語の3ステップ：①キャラがいる ②何かが起きる ③変化する。<br>
+              「粘土は形が変わるのが最大の武器。正解はない。作りながらお話が変わってもOK」
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">見本が再生できない → カメラロールから直接再生</div>
+          </td>
+        </tr>
+
+        <!-- 制作・撮影 -->
+        <tr class="row-practice">
+          <td><span class="time-val">13:32</span></td>
+          <td class="col-dur">40分</td>
+          <td>
+            <div class="block-name">制作・撮影</div>
+            <div class="block-sub">各自でアニメを作る</div>
+            <div class="hl-mark">★ メイン</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 12</span>
+          </td>
+          <td>
+            <div class="memo-main"><strong>最初5〜7分でキャラ＋背景（画用紙の色選び）。できた子から即撮影スタート。</strong></div>
+            <div class="memo-sub">
+              撮影のコツを最初に一言：カメラ固定・少しずつ・手や影に注意。<br>
+              小道具は途中で作って足す：「何かアイテム作ってみて。キャラに渡したら何が起きる？」<br>
+              3人を巡回。声かけ：「それ面白いね、次どうなる？」「形が変わってもいいよ」<br>
+              手が止まってる子には「小道具1個作ってみよう」（手を動かす具体指示）。<br>
+              <strong>14:05頃に「あと7分。そろそろ終わりに向かおう」と予告。</strong>
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">何を作るか決められない → 「好きな動物を丸から作ってみよう」</div>
+            <div class="note-item">カメラが動いた → 固定方法を一緒に確認（立てかけ等）</div>
+            <div class="note-item">枚数が少ない → 「10枚でも動いて見えるから大丈夫」</div>
+            <div class="note-item">凝りすぎて撮影に入れない → 「完璧じゃなくてOK。撮りながら足せる」</div>
+          </td>
+        </tr>
+
+        <!-- 発表 -->
+        <tr class="row-practice">
+          <td><span class="time-val">14:12</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">発表</div>
+            <div class="block-sub">鑑賞・質問</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 13</span>
+          </td>
+          <td>
+            <div class="memo-main">3人×約3分。作品再生→KOが質問→拍手。</div>
+            <div class="memo-sub">
+              聞くこと：キャラの名前・どんなお話・工夫したところ。<br>
+              上手さではなく発想・工夫・挑戦をほめる。具体的に：「形が変わるところ面白い」「そのアイテムのアイデアすごい」。<br>
+              他の子にも「○○さんの作品で好きなところある？」と振る。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">作品が未完成 → 途中まででOK。「ここまでで発表しよう」</div>
+            <div class="note-item">話せない子 → KOが作品を見ながら「これは○○かな？」とリードする</div>
+          </td>
+        </tr>
+
+        <!-- まとめ -->
+        <tr class="row-wrap">
+          <td><span class="time-val">14:22</span></td>
+          <td class="col-dur">8分</td>
+          <td>
+            <div class="block-name">まとめ</div>
+            <div class="block-sub">保存・おわりに</div>
+          </td>
+          <td class="col-slide">
+            <span class="slide-tag">Slide 14</span>
+          </td>
+          <td>
+            <div class="memo-main">Stop Motion Studio → 動画書き出し → カメラロール保存。全員の保存完了を確認。</div>
+            <div class="memo-sub">
+              Slide 14でまとめ：「写真を並べると映像になる。動かないものが動き出す。それがストップモーションアニメ」。<br>
+              「おうちの人に見せてね」「スマホと身の回りのもので、おうちでも作れるよ」。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">書き出し方がわからない → 一緒に操作して見せる</div>
+            <div class="note-item">時間余り → 「もう1本短いの作ってみる？」</div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 備考 -->
+  <div class="section">
+    <div class="sec-label">運営メモ</div>
+    <div class="next-block">
+      本来の3DCG講座（S01）は参加者ゼロのため、急遽ストップモーション体験教室に差し替え。先方（キアラ先生）プランをベースにKOがアレンジ。<br>
+      小麦粘土・見本の粘土犬キャラは先方が持参。画用紙の色数を確認しておく。<br>
+      制作パートは「作りながら撮る」を基本方針とし、キャラ作りと撮影を分離しない。
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <span>ストップモーション体験教室 — 講師プランシート</span>
+    <span>INSTRUCTOR ONLY　／　OYAA 浦添パルコ デジタル体験教室　2025.4.5</span>
+  </div>
+
+</div>
+</body>
+</html>
