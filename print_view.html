@@ -10,272 +10,329 @@
 :root{
   --p1:#0d2340;--p1a:#5fa0e0;
   --bg:#f0ede6;--card:#faf8f2;--border:#e0dbd0;
-  --sans:'Noto Sans JP',sans-serif;
-  --mono:'Space Mono',monospace;
+  --sans:'Noto Sans JP',sans-serif;--mono:'Space Mono',monospace;
 }
 body{font-family:var(--sans);background:var(--bg);color:#1a1a1a;padding:24px 20px 60px;}
 
-/* ── UI ── */
-.top-header{
-  max-width:700px;margin:0 auto 24px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-}
+/* ── ヘッダー ── */
+.top-header{max-width:720px;margin:0 auto 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .top-title{font-family:var(--mono);font-size:12px;color:var(--p1);letter-spacing:.12em;text-transform:uppercase;}
-.print-btn{
-  font-family:var(--mono);font-size:11px;
-  background:var(--p1);color:#fff;border:none;border-radius:4px;
-  padding:9px 20px;cursor:pointer;letter-spacing:.08em;transition:background .15s;
-}
+.print-btn{font-family:var(--mono);font-size:11px;background:var(--p1);color:#fff;border:none;border-radius:4px;padding:9px 20px;cursor:pointer;letter-spacing:.08em;transition:background .15s;}
 .print-btn:hover{background:#1a3a5a;}
+.print-btn:disabled{opacity:.4;cursor:default;}
 
-.selector{
-  max-width:700px;margin:0 auto 16px;
-  background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 18px;
-}
-.selector-label{
-  font-family:var(--mono);font-size:9px;color:#aaa;
-  letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;
-}
+/* ── セレクターカード ── */
+.selector{max-width:720px;margin:0 auto 16px;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 18px;}
+.sec-label{font-family:var(--mono);font-size:9px;color:#aaa;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;margin-top:14px;}
+.sec-label:first-child{margin-top:0;}
 
 /* コアシートボタン */
-.core-btn{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 14px;border-radius:4px;
-  border:1.5px solid var(--border);
-  background:#fff;cursor:pointer;
-  transition:all .12s;user-select:none;
-  width:100%;margin-bottom:12px;
-}
+.core-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:4px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:all .12s;width:100%;margin-bottom:4px;}
 .core-btn:hover{border-color:var(--p1a);}
 .core-btn.selected{border-color:var(--p1);background:#e8f0fa;}
-.core-btn-num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--p1);}
-.core-btn-info{font-size:12px;font-weight:700;color:#444;}
-.core-btn-meta{font-family:var(--mono);font-size:9px;color:#aaa;margin-left:auto;}
+.core-btn-icon{font-size:18px;}
+.core-btn-info{font-size:12px;font-weight:700;color:#444;flex:1;}
+.core-btn-meta{font-family:var(--mono);font-size:9px;color:#aaa;}
 
-/* チャプターシートグリッド */
-.section-label{
-  font-family:var(--mono);font-size:9px;color:#aaa;
-  letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;margin-top:4px;
-}
-.session-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.sess-btn{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:8px 4px;border-radius:4px;
-  border:1.5px solid var(--border);background:#fff;cursor:pointer;
-  transition:all .12s;user-select:none;
-}
-.sess-btn:hover{border-color:var(--p1a);}
-.sess-btn.selected{border-color:var(--p1);background:#e8f0fa;}
-.sess-num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--p1);}
-.sess-date{font-family:var(--mono);font-size:8px;color:#aaa;}
-.sess-name{font-size:10px;font-weight:700;text-align:center;color:#444;line-height:1.3;}
+/* チャプター・ナレッジ グリッド */
+.sess-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:4px;}
+.know-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:4px;}
+.item-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:4px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:all .12s;user-select:none;}
+.item-btn:hover{border-color:var(--p1a);}
+.item-btn.selected{border-color:var(--p1);background:#e8f0fa;}
+.item-num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--p1);}
+.item-date{font-family:var(--mono);font-size:8px;color:#aaa;}
+.item-name{font-size:10px;font-weight:700;text-align:center;color:#444;line-height:1.3;}
 
-.hint{
-  max-width:700px;margin:0 auto 20px;
-  font-family:var(--mono);font-size:9px;color:#aaa;letter-spacing:.06em;
-}
+/* 表裏オプション */
+.face-opts{display:flex;gap:6px;margin-bottom:12px;}
+.face-btn{font-family:var(--mono);font-size:10px;padding:5px 12px;border:1.5px solid var(--border);border-radius:3px;background:#fff;cursor:pointer;transition:all .12s;}
+.face-btn:hover{border-color:var(--p1a);}
+.face-btn.selected{border-color:var(--p1);background:#e8f0fa;color:var(--p1);}
 
-/* ── A4プレビュー ── */
-.preview-wrap{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:24px;}
-.a4-page{
-  background:#fff;width:595px;height:842px;
-  margin:0 auto;
-  box-shadow:0 4px 24px rgba(0,0,0,.15);
-  border-radius:2px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:1fr 1fr;
-  overflow:hidden;position:relative;
-}
-/* コアシートはA4全面（1×1） */
-.a4-page.core-layout{
-  grid-template-columns:1fr;
-  grid-template-rows:1fr;
-}
-.a4-cell{
-  border:0.5px solid #e8e4dc;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;background:#faf8f2;
-}
-.a4-cell iframe{
-  width:359px;height:643px;border:none;
-  transform-origin:center center;transform:scale(0.8);
-  pointer-events:none;
-}
-.a4-page.core-layout .a4-cell iframe{
-  width:718px;height:643px;transform:scale(0.82);
-}
-.a4-label{
-  position:absolute;bottom:6px;right:10px;
-  font-family:var(--mono);font-size:7px;color:#ccc;letter-spacing:.1em;
-}
-.empty-cell{
-  background:repeating-linear-gradient(45deg,#f8f6f0,#f8f6f0 4px,#f2f0ea 4px,#f2f0ea 8px);
-}
-
-/* ── 印刷時 ── */
-@media print {
-  body{background:#fff;padding:0;}
-  .top-header,.selector,.hint{display:none !important;}
-  .preview-wrap{gap:0;max-width:none;}
-  .a4-page{
-    width:210mm;height:297mm;
-    box-shadow:none;margin:0;
-    page-break-after:always;
-  }
-  @page{size:A4 portrait;margin:5mm;}
-}
+/* ヒント */
+.hint{max-width:720px;margin:0 auto 16px;font-family:var(--mono);font-size:9px;color:#aaa;letter-spacing:.06em;}
 </style>
 </head>
 <body>
 
 <div class="top-header">
   <div class="top-title">🖨️ 印刷ビュー</div>
-  <button class="print-btn" onclick="printSelf()">印刷する</button>
+  <button class="print-btn" id="print-btn" onclick="doPrint()">印刷する</button>
 </div>
 
 <div class="selector">
+
   <!-- コアシート -->
-  <div class="selector-label">コアシート</div>
+  <div class="sec-label">📖 コアシート</div>
   <div class="core-btn" id="core-btn" onclick="toggleCore()">
-    <div class="core-btn-num">📖</div>
+    <div class="core-btn-icon">📖</div>
     <div class="core-btn-info">コアシート（P01–P04）</div>
     <div class="core-btn-meta">第1回配布 · A4全面</div>
   </div>
 
   <!-- チャプターシート -->
-  <div class="section-label">チャプターシート（2回 = A4 1枚）</div>
-  <div class="session-grid" id="session-grid"></div>
+  <div class="sec-label">📄 チャプターシート</div>
+  <div class="face-opts">
+    <div class="face-btn selected" id="face-both" onclick="setFace('both')">表面 ＋ 裏面</div>
+    <div class="face-btn" id="face-front" onclick="setFace('front')">表面のみ（4枚/A4）</div>
+    <div class="face-btn" id="face-back" onclick="setFace('back')">裏面のみ（4枚/A4）</div>
+  </div>
+  <div class="sess-grid" id="sess-grid"></div>
+
+  <!-- ナレッジシート -->
+  <div class="sec-label">📘 ナレッジシート K01（ページ選択）</div>
+  <div class="know-grid" id="know-grid"></div>
+
 </div>
 
 <div class="hint" id="hint">印刷したいシートを選んでください。</div>
 
-<div class="preview-wrap" id="preview-wrap"></div>
-
 <script>
+// ══════════════════════════════════
+// データ定義
+// ══════════════════════════════════
 const SESSIONS = [
-  {n:1,id:'s0',date:'4/5', name:'ドーナツをつくろう'},
-  {n:2,id:'s1',date:'4/12',name:'リッチドーナツ'},
-  {n:3,id:'s2',date:'5/10',name:'ちびキャラ'},
-  {n:4,id:'s3',date:'5/17',name:'ポスター完成'},
-  {n:5,id:'s4',date:'6/7', name:'オリカデザイン'},
-  {n:6,id:'s5',date:'6/14',name:'デジタルカード'},
-  {n:7,id:'s6',date:'7/5', name:'飛び出すカード'},
-  {n:8,id:'s7',date:'7/12',name:'発表・修了'},
+  {n:1,date:'4/5', name:'ドーナツをつくろう'},
+  {n:2,date:'4/12',name:'リッチドーナツ'},
+  {n:3,date:'5/10',name:'ちびキャラ'},
+  {n:4,date:'5/17',name:'ポスター完成'},
+  {n:5,date:'6/7', name:'オリカデザイン'},
+  {n:6,date:'6/14',name:'デジタルカード'},
+  {n:7,date:'7/5', name:'飛び出すカード'},
+  {n:8,date:'7/12',name:'発表・修了'},
 ];
 
-let selectedSessions = [];
-let coreSelected = false;
+const K01_PAGES = [
+  {id:'k01-a-front', label:'A▲',name:'3DCGとは'},
+  {id:'k01-a-back',  label:'A▼',name:'制作の流れ'},
+  {id:'k01-b-front', label:'B▲',name:'モデリング手法'},
+  {id:'k01-b-back',  label:'B▼',name:'データ構造①'},
+  {id:'k01-c-front', label:'C▲',name:'データ構造②'},
+  {id:'k01-c-back',  label:'C▼',name:'スカルプト'},
+  {id:'k01-d-front', label:'D▲',name:'ソフト'},
+  {id:'k01-d-back',  label:'D▼',name:'用語集'},
+];
 
-// チャプターボタン生成
-const grid = document.getElementById('session-grid');
+// ══════════════════════════════════
+// 状態
+// ══════════════════════════════════
+let coreSelected = false;
+let faceMode = 'both'; // 'both' | 'front' | 'back'
+let selectedSessions = new Set();
+let selectedKnowledge = new Set();
+
+// ══════════════════════════════════
+// ボタン生成
+// ══════════════════════════════════
+const sessGrid = document.getElementById('sess-grid');
 SESSIONS.forEach(s => {
   const btn = document.createElement('div');
-  btn.className = 'sess-btn';
-  btn.dataset.id = s.id;
-  btn.innerHTML = `
-    <div class="sess-num">S0${s.n}</div>
-    <div class="sess-date">${s.date}</div>
-    <div class="sess-name">${s.name}</div>
-  `;
+  btn.className = 'item-btn';
+  btn.dataset.n = s.n;
+  btn.innerHTML = `<div class="item-num">S0${s.n}</div><div class="item-date">${s.date}</div><div class="item-name">${s.name}</div>`;
   btn.addEventListener('click', () => {
-    if(btn.classList.contains('selected')){
-      btn.classList.remove('selected');
-      selectedSessions = selectedSessions.filter(i => i !== s.id);
-    } else {
-      btn.classList.add('selected');
-      selectedSessions.push(s.id);
-    }
-    renderPreview();
+    if(selectedSessions.has(s.n)){selectedSessions.delete(s.n);btn.classList.remove('selected');}
+    else{selectedSessions.add(s.n);btn.classList.add('selected');}
+    updateHint();
   });
-  grid.appendChild(btn);
+  sessGrid.appendChild(btn);
 });
 
-// コアシートトグル
+const knowGrid = document.getElementById('know-grid');
+K01_PAGES.forEach(p => {
+  const btn = document.createElement('div');
+  btn.className = 'item-btn';
+  btn.dataset.id = p.id;
+  btn.innerHTML = `<div class="item-num">${p.label}</div><div class="item-name">${p.name}</div>`;
+  btn.addEventListener('click', () => {
+    if(selectedKnowledge.has(p.id)){selectedKnowledge.delete(p.id);btn.classList.remove('selected');}
+    else{selectedKnowledge.add(p.id);btn.classList.add('selected');}
+    updateHint();
+  });
+  knowGrid.appendChild(btn);
+});
+
+// ══════════════════════════════════
+// トグル
+// ══════════════════════════════════
 function toggleCore(){
   coreSelected = !coreSelected;
   document.getElementById('core-btn').classList.toggle('selected', coreSelected);
-  renderPreview();
+  updateHint();
 }
 
-// プレビュー生成
-function renderPreview(){
-  const wrap = document.getElementById('preview-wrap');
+function setFace(mode){
+  faceMode = mode;
+  ['both','front','back'].forEach(m => document.getElementById('face-'+m).classList.toggle('selected', m===mode));
+  updateHint();
+}
+
+function updateHint(){
   const hint = document.getElementById('hint');
-  wrap.innerHTML = '';
-
-  const pages = [];
-
-  // コアシートページ
-  if(coreSelected) pages.push({type:'core'});
-
-  // チャプターシートページ（2回ずつ）
-  for(let i = 0; i < selectedSessions.length; i += 2){
-    pages.push({type:'chapter', sessions: selectedSessions.slice(i, i+2)});
+  const parts = [];
+  if(coreSelected) parts.push('コアシート 1枚');
+  if(selectedSessions.size > 0){
+    if(faceMode==='both') parts.push(`チャプターシート 表裏 ${Math.ceil(selectedSessions.size/2)}枚`);
+    else parts.push(`チャプターシート ${faceMode==='front'?'表面':'裏面'} ${Math.ceil(selectedSessions.size/4)}枚`);
   }
-
-  if(pages.length === 0){
-    hint.textContent = '印刷したいシートを選んでください。';
-    return;
-  }
-  hint.textContent = `合計 ${pages.length} 枚の A4 が生成されます。`;
-
-  pages.forEach((page, pi) => {
-    const pageEl = document.createElement('div');
-
-    if(page.type === 'core'){
-      // コアシート：全面表示
-      pageEl.className = 'a4-page core-layout';
-      const cell = document.createElement('div');
-      cell.className = 'a4-cell';
-      const frame = document.createElement('iframe');
-      frame.src = 'passport/passport_core.html';
-      frame.title = 'コアシート';
-      cell.appendChild(frame);
-      pageEl.appendChild(cell);
-    } else {
-      // チャプターシート：2×2
-      pageEl.className = 'a4-page';
-      [0,1].forEach(row => {
-        const sid = page.sessions[row];
-        if(sid){
-          // 表面
-          const fc = document.createElement('div');
-          fc.className = 'a4-cell';
-          const ff = document.createElement('iframe');
-          ff.src = `passport/passport_sheets.html#${sid}`;
-          ff.title = '表面';
-          fc.appendChild(ff);
-          pageEl.appendChild(fc);
-          // 裏面
-          const bc = document.createElement('div');
-          bc.className = 'a4-cell';
-          const bf = document.createElement('iframe');
-          bf.src = `passport/passport_sheets.html#${sid}`;
-          bf.title = '裏面';
-          bc.appendChild(bf);
-          pageEl.appendChild(bc);
-        } else {
-          pageEl.appendChild(Object.assign(document.createElement('div'),{className:'a4-cell empty-cell'}));
-          pageEl.appendChild(Object.assign(document.createElement('div'),{className:'a4-cell empty-cell'}));
-        }
-      });
-    }
-
-    const label = document.createElement('div');
-    label.className = 'a4-label';
-    label.textContent = `PAGE ${pi+1}`;
-    pageEl.appendChild(label);
-    wrap.appendChild(pageEl);
-  });
+  if(selectedKnowledge.size > 0) parts.push(`ナレッジシート ${Math.ceil(selectedKnowledge.size/4)}枚`);
+  hint.textContent = parts.length > 0 ? `合計 A4 ${parts.join('、')} が印刷されます。` : '印刷したいシートを選んでください。';
 }
-function printSelf(){
-  const w = window.open('', '_blank');
-  w.document.write(document.documentElement.outerHTML);
+
+// ══════════════════════════════════
+// 印刷実行
+// ══════════════════════════════════
+async function doPrint(){
+  if(!coreSelected && selectedSessions.size===0 && selectedKnowledge.size===0){
+    alert('印刷するシートを選んでください。');return;
+  }
+
+  // 各ファイルのHTMLを取得
+  const fetched = {};
+  const toFetch = [];
+  if(coreSelected) toFetch.push('passport/passport_core.html');
+  if(selectedSessions.size>0) toFetch.push('passport/passport_sheets.html');
+  if(selectedKnowledge.size>0) toFetch.push('passport/knowledge/k01.html');
+
+  for(const url of toFetch){
+    try{
+      const res = await fetch(url);
+      fetched[url] = await res.text();
+    }catch(e){
+      alert(`ファイルの読み込みに失敗しました: ${url}`);return;
+    }
+  }
+
+  // 印刷用HTMLを組み立て
+  const w = window.open('','_blank','width=900,height=700');
+  w.document.write(buildPrintDoc(fetched));
   w.document.close();
-  w.focus();
-  w.print();
-  w.close();
+  setTimeout(()=>{w.focus();w.print();},800);
+}
+
+function buildPrintDoc(fetched){
+  // 共通スタイル
+  const baseStyle = `
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#fff;font-family:'Noto Sans JP',sans-serif;}
+    .a4-page{
+      width:210mm;height:297mm;
+      display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+      page-break-after:always;overflow:hidden;
+      background:#fff;
+    }
+    .a4-page.single{grid-template-columns:1fr;grid-template-rows:1fr;}
+    .a4-cell{
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .card-wrap{
+      transform:scale(0.78);transform-origin:center center;
+      width:359px;height:643px;flex-shrink:0;
+    }
+    .nav,.page-label,.divider,.nav-btn{display:none!important;}
+    .page{display:none!important;}
+    .page.print-show{display:flex!important;flex-direction:column;align-items:center;}
+    .session{display:none!important;}
+    .session.print-show{display:flex!important;flex-direction:column;align-items:center;}
+    @page{size:A4 portrait;margin:5mm;}
+  `;
+
+  let pages = [];
+
+  // ── コアシート ──
+  if(coreSelected && fetched['passport/passport_core.html']){
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(fetched['passport/passport_core.html'],'text/html');
+    const style = doc.querySelector('style')?.innerHTML || '';
+    const bodyHTML = doc.body.innerHTML;
+    pages.push(`
+      <div class="a4-page single">
+        <div class="a4-cell">
+          <div class="card-wrap">
+            <style>${style}</style>
+            ${bodyHTML}
+          </div>
+        </div>
+      </div>
+    `);
+  }
+
+  // ── チャプターシート ──
+  if(selectedSessions.size > 0 && fetched['passport/passport_sheets.html']){
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(fetched['passport/passport_sheets.html'],'text/html');
+    const style = doc.querySelector('style')?.innerHTML || '';
+
+    const sessions = [...selectedSessions].sort((a,b)=>a-b);
+
+    if(faceMode==='both'){
+      // 2回ずつ：左上=表、右上=裏、左下=表、右下=裏
+      for(let i=0;i<sessions.length;i+=2){
+        const group = sessions.slice(i,i+2);
+        let cells = '';
+        group.forEach(n => {
+          const idx = n-1;
+          const sessEl = doc.querySelectorAll('.session')[idx];
+          const front = sessEl?.querySelector('.front')?.outerHTML || '';
+          const back = sessEl?.querySelector('.back')?.outerHTML || '';
+          cells += `
+            <div class="a4-cell"><div class="card-wrap"><style>${style}</style>${front}</div></div>
+            <div class="a4-cell"><div class="card-wrap"><style>${style}</style>${back}</div></div>
+          `;
+        });
+        // 奇数の場合は空セルで埋める
+        if(group.length===1) cells += `<div class="a4-cell"></div><div class="a4-cell"></div>`;
+        pages.push(`<div class="a4-page">${cells}</div>`);
+      }
+    } else {
+      // 4枚ずつ（表のみ or 裏のみ）
+      const faceClass = faceMode==='front' ? '.front' : '.back';
+      for(let i=0;i<sessions.length;i+=4){
+        const group = sessions.slice(i,i+4);
+        let cells = '';
+        group.forEach(n=>{
+          const idx=n-1;
+          const sessEl=doc.querySelectorAll('.session')[idx];
+          const card=sessEl?.querySelector(faceClass)?.outerHTML||'';
+          cells+=`<div class="a4-cell"><div class="card-wrap"><style>${style}</style>${card}</div></div>`;
+        });
+        while(cells.split('a4-cell').length-1 < 4) cells+=`<div class="a4-cell"></div>`;
+        pages.push(`<div class="a4-page">${cells}</div>`);
+      }
+    }
+  }
+
+  // ── ナレッジシート ──
+  if(selectedKnowledge.size>0 && fetched['passport/knowledge/k01.html']){
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(fetched['passport/knowledge/k01.html'],'text/html');
+    const style=doc.querySelector('style')?.innerHTML||'';
+    const allPages=[...doc.querySelectorAll('.page')];
+    const pageOrder=['k01-a-front','k01-a-back','k01-b-front','k01-b-back','k01-c-front','k01-c-back','k01-d-front','k01-d-back'];
+    const selected=pageOrder.filter(id=>selectedKnowledge.has(id));
+
+    for(let i=0;i<selected.length;i+=4){
+      const group=selected.slice(i,i+4);
+      let cells='';
+      group.forEach(id=>{
+        const idx=pageOrder.indexOf(id);
+        const pageEl=allPages[idx];
+        const card=pageEl?.querySelector('.card')?.outerHTML||'';
+        cells+=`<div class="a4-cell"><div class="card-wrap"><style>${style}</style>${card}</div></div>`;
+      });
+      while(cells.split('a4-cell').length-1 < 4) cells+=`<div class="a4-cell"></div>`;
+      pages.push(`<div class="a4-page">${cells}</div>`);
+    }
+  }
+
+  return `<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="UTF-8">
+    <title>印刷</title>
+    <style>${baseStyle}</style>
+  </head><body>${pages.join('')}</body></html>`;
 }
 </script>
 </body>
