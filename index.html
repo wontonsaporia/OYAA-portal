@@ -38,7 +38,7 @@ body.nav-open .hamburger span:nth-child(1){transform:translateY(7px) rotate(45de
 body.nav-open .hamburger span:nth-child(2){opacity:0;}
 body.nav-open .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
-/* ── トップバー：ホバー時・ホーム時・ナビ開時に表示 ── */
+/* ── トップバー ── */
 .topbar{
   position:fixed;top:0;left:0;right:0;
   height:var(--topbar-h);background:var(--p1);
@@ -51,11 +51,8 @@ body.nav-open .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45
 .topbar:hover,
 body.nav-open .topbar,
 body.on-home .topbar{transform:translateY(0);}
-
-/* トリガーエリア */
 .topbar-trigger{position:fixed;top:0;left:0;right:0;height:8px;z-index:299;}
 body.nav-open .topbar-trigger{pointer-events:none;}
-
 .topbar-title{font-family:var(--mono);font-size:12px;color:#fff;font-weight:700;letter-spacing:.05em;}
 .topbar-title span{color:var(--p1a);}
 .topbar-subtitle{font-family:var(--mono);font-size:9px;color:var(--p1s);letter-spacing:.08em;}
@@ -69,11 +66,8 @@ body.nav-open .overlay{display:block;}
 .nav{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);background:var(--p1);overflow-y:auto;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
 body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
 
-/* 大セクション見出し */
 .big-sec{padding:14px 14px 4px;font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.07);margin-top:4px;}
 .big-sec:first-child{border-top:none;margin-top:0;}
-
-/* ナビボタン */
 .nav-btn{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:12px;font-weight:700;color:rgba(255,255,255,.65);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s,color .12s;border-left:2px solid transparent;}
 .nav-btn:hover{background:rgba(255,255,255,.06);color:#fff;}
 .nav-btn.active{background:rgba(95,160,224,.12);color:var(--p1a);border-left-color:var(--p1a);}
@@ -85,8 +79,6 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
 .nav-tag{font-family:var(--mono);font-size:7.5px;padding:1px 5px;border-radius:2px;flex-shrink:0;}
 .nav-tag.gray{background:rgba(255,255,255,.08);color:rgba(255,255,255,.3);}
 .nav-tag.gold{background:rgba(232,204,80,.15);color:#e8cc50;}
-
-/* アコーディオン */
 .acc-header{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:12px;font-weight:700;color:rgba(255,255,255,.65);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s,color .12s;user-select:none;}
 .acc-header:hover{background:rgba(255,255,255,.06);color:#fff;}
 .acc-header.open{color:#fff;}
@@ -98,17 +90,52 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
 .acc-body.open{display:block;}
 .acc-body .nav-btn{padding-left:10px;font-size:11.5px;}
 .acc-body .nav-meta{color:rgba(255,255,255,.25);}
-
-/* フッター */
 .nav-footer{padding:12px 14px 20px;border-top:1px solid rgba(255,255,255,.07);font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);line-height:1.7;margin-top:8px;}
 
-/* コンテンツ */
+/* ── コンテンツ ── */
 .content{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;}
-.welcome{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;}
-.welcome-title{font-size:400%;font-weight:900;color:var(--p1);}
-.welcome-sub{font-size:13px;color:var(--sub);line-height:1.7;}
-.welcome-hint{font-family:var(--mono);font-size:10px;color:var(--label);margin-top:8px;letter-spacing:.08em;}
+
+/* ── ホーム：ダーク背景 ── */
+.welcome{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:10px;padding:40px 24px;text-align:center;
+  position:relative;overflow:hidden;
+  background:#0a1520;  /* ダーク */
+}
+.welcome-title{font-size:400%;font-weight:900;color:#e8f4ff;}
+.welcome-sub{font-size:13px;color:#7ab0d8;line-height:1.7;}
+.welcome-hint{font-family:var(--mono);font-size:10px;color:#2a5070;margin-top:8px;letter-spacing:.08em;}
 .welcome-bg-model{width:40vw;height:40vw;max-width:400px;min-width:200px;pointer-events:none;}
+
+/* ── ローディング ── */
+.loader{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:14px;
+  background:#0a1520;
+  z-index:10;
+  transition:opacity .5s;
+}
+.loader.hidden{opacity:0;pointer-events:none;}
+.loader-dots{display:flex;gap:8px;}
+.loader-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--p1a);
+  animation:ldot 1.2s ease-in-out infinite;
+}
+.loader-dot:nth-child(2){animation-delay:.2s;}
+.loader-dot:nth-child(3){animation-delay:.4s;}
+.loader-text{
+  font-family:var(--mono);font-size:10px;
+  color:#2a5070;letter-spacing:.12em;
+}
+@keyframes ldot{
+  0%,100%{opacity:.2;transform:scale(0.8);}
+  50%{opacity:1;transform:scale(1.2);}
+}
+
 .frame-view{display:none;flex:1;flex-direction:column;}
 .frame-view.active{display:flex;}
 .frame-view iframe{flex:1;border:none;width:100%;}
@@ -117,12 +144,10 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
 </head>
 <body class="on-home">
 
-<!-- 常時表示ハンバーガーボタン -->
 <button class="hamburger" onclick="toggleNav()" aria-label="メニュー">
   <span></span><span></span><span></span>
 </button>
 
-<!-- トリガー＋トップバー -->
 <div class="topbar-trigger"></div>
 <div class="topbar">
   <div>
@@ -132,10 +157,8 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
   <div class="topbar-current" id="topbar-current"></div>
 </div>
 
-<!-- オーバーレイ -->
 <div class="overlay" onclick="closeNav()"></div>
 
-<!-- 左ナビ -->
 <nav class="nav">
   <div style="padding:8px 0 4px;">
     <button class="nav-btn" id="btn-home" onclick="show_welcome()">
@@ -194,7 +217,7 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
     <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s02.html','講師プランシート S02')">
       <span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">S02</div><div class="nav-meta">4/12</div></div><span class="nav-tag gold">講師</span>
     </button>
-<button class="nav-btn" onclick="open_frame('instructor/plans/plan_stopmotion01.html','講師プランシート StopMotion01')">
+    <button class="nav-btn" onclick="open_frame('instructor/plans/plan_stopmotion01.html','講師プランシート StopMotion01')">
       <span class="nav-icon">📋</span><div class="nav-info"><div class="nav-label">SM</div><div class="nav-meta">4/12</div></div><span class="nav-tag gold">講師</span>
     </button>
     <button class="nav-btn" onclick="open_frame('instructor/plans/plan_s03.html','講師プランシート S03')">
@@ -223,14 +246,12 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
     <span class="nav-tag gold">講師</span>
   </button>
 
-  <!-- 印刷 -->
   <div class="big-sec">🖨️ 印刷</div>
   <button class="nav-btn" onclick="open_frame('print_view.html','🖨️ 印刷ビュー')">
     <span class="nav-icon">🖨️</span>
     <div class="nav-info"><div class="nav-label">印刷ビュー</div><div class="nav-meta">A4レイアウト</div></div>
   </button>
 
-  <!-- ギャラリー -->
   <div class="big-sec">🔮 ギャラリー</div>
   <button class="nav-btn disabled">
     <span class="nav-icon">🔮</span>
@@ -241,18 +262,30 @@ body.nav-open .nav{transform:translateX(0);top:var(--topbar-h);}
   <div class="nav-footer">OYAA 3DCG教室<br>浦添パルコ 2025.4–7</div>
 </nav>
 
-<!-- コンテンツ -->
 <div class="content">
   <div class="welcome" id="welcome">
+
+    <!-- ローディング -->
+    <div class="loader" id="loader">
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+      <div class="loader-text">Loading 3D Model...</div>
+    </div>
+
     <model-viewer
-  class="welcome-bg-model"
-  src="assets/models/Donut_03.glb"
-  auto-rotate
-  rotation-per-second="20deg"
-  camera-orbit="0deg 60deg 4m"
-  orientation="10deg 30deg 0deg"
-  tone-mapping="commerce" >
-</model-viewer> 
+      id="mv"
+      class="welcome-bg-model"
+      src="assets/models/Donut_03.glb"
+      auto-rotate
+      rotation-per-second="20deg"
+      camera-orbit="0deg 60deg 4m"
+      orientation="10deg 30deg 0deg"
+      tone-mapping="commerce">
+    </model-viewer>
+
     <!-- <img class="welcome-icon" src="assets/images/donut_giphy.gif" alt=""> -->
     <div class="welcome-title">OYAA 3DCG教室</div>
     <div class="welcome-sub">スカルプトモデリング × オリカ<br>全8回の冒険記録</div>
@@ -268,11 +301,11 @@ function toggleNav(){document.body.classList.toggle('nav-open');}
 function closeNav(){document.body.classList.remove('nav-open');}
 
 function toggle_acc(id){
-  const body = document.getElementById(id);
-  const header = body.previousElementSibling;
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  header.classList.toggle('open', !isOpen);
+  const body=document.getElementById(id);
+  const header=body.previousElementSibling;
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  header.classList.toggle('open',!isOpen);
 }
 
 function show_welcome(){
@@ -285,7 +318,7 @@ function show_welcome(){
   closeNav();
 }
 
-function open_frame(url, title){
+function open_frame(url,title){
   document.getElementById('welcome').style.display='none';
   document.getElementById('frame-view').classList.add('active');
   document.getElementById('main-frame').src=url;
@@ -295,6 +328,13 @@ function open_frame(url, title){
   document.body.classList.remove('on-home');
   closeNav();
 }
+
+// ローディング：モデル読み込み完了で非表示
+document.getElementById('mv').addEventListener('load',()=>{
+  const loader=document.getElementById('loader');
+  loader.classList.add('hidden');
+  setTimeout(()=>loader.style.display='none',500);
+});
 </script>
 </body>
 </html>
