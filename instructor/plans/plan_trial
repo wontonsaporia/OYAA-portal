@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 授業プランシート（体験回）— 講師用</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sans: 'Noto Sans JP', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --black: #111;
+    --dark:  #333;
+    --mid:   #666;
+    --gray:  #999;
+    --line:  #ccc;
+    --white: #fff;
+    --accent: #5f7fd4;
+  }
+
+  body {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--black);
+    background: #e8e8e4;
+    padding: 20px;
+  }
+
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--white);
+    margin: 0 auto;
+    padding: 12mm 11mm 10mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+
+  /* ── ヘッダー ── */
+  .hdr {
+    border-bottom: 2px solid var(--black);
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+  }
+  .hdr-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .hdr-code { font-family: var(--mono); font-size: 9px; color: var(--mid); letter-spacing: 0.1em; }
+  .hdr-meta { font-family: var(--mono); font-size: 9px; color: var(--mid); }
+  .hdr-title { font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+  .hdr-sub { font-size: 10px; color: var(--mid); }
+
+  /* ── セクション ── */
+  .section { margin-bottom: 10px; }
+  .sec-label {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px; margin-bottom: 6px;
+  }
+
+  /* ── 準備物 ── */
+  .checklist {
+    display: flex; flex-direction: column;
+    gap: 4px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; line-height: 1.4;
+  }
+  .chk {
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+  .chk-tag { font-family: var(--mono); font-size: 8.5px; color: var(--mid); min-width: 34px; }
+
+  /* ── タイムライン ── */
+  .tl-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .tl-table thead tr { border-bottom: 1.5px solid var(--black); }
+  .tl-table thead th {
+    font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray); padding: 3px 5px; text-align: left;
+  }
+  .tl-table tbody tr { border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tl-table tbody tr:last-child { border-bottom: none; }
+  .tl-table td { padding: 5px 5px; line-height: 1.55; }
+
+  .col-time  { width: 13mm; }
+  .col-dur   { width: 9mm; text-align: right; color: var(--gray); font-family: var(--mono); font-size: 9.5px; }
+  .col-block { width: 22mm; }
+  .col-slide { width: 14mm; text-align: center; }
+  .col-memo  { width: auto; }
+  .col-note  { width: 40mm; font-size: 10px; color: var(--mid); border-left: 1px solid var(--line); padding-left: 7px; }
+
+  .time-val { font-family: var(--mono); font-size: 10.5px; font-weight: 700; }
+  .block-name { font-weight: 700; font-size: 11.5px; }
+  .block-sub  { font-size: 9.5px; color: var(--mid); margin-top: 1px; }
+
+  /* ブロック色分け（左端のアクセントライン） */
+  .row-intro td:first-child    { border-left: 3px solid #555; }
+  .row-nomad td:first-child    { border-left: 3px solid #1d9e75; }
+  .row-rig td:first-child      { border-left: 3px solid #7f77dd; }
+  .row-buffer td:first-child   { border-left: 3px solid var(--line); }
+  .row-wrap td:first-child     { border-left: 3px solid #555; }
+  .row-nomad  { background: #f6fbf8; }
+  .row-rig    { background: #f8f7fe; }
+  .row-buffer { background: #fafaf6; }
+
+  .slide-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 8px;
+    background: #f0f0f0; border: 1px solid var(--line);
+    padding: 1px 4px; border-radius: 1px;
+    color: var(--mid);
+    white-space: nowrap;
+  }
+  .tool-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 8px;
+    padding: 1px 4px; border-radius: 1px;
+    white-space: nowrap; margin-top: 2px;
+  }
+  .tool-nomad { background: #e1f5ee; color: #0f6e56; border: 1px solid #9fe1cb; }
+  .tool-rig   { background: #eeedfe; color: #534ab7; border: 1px solid #cecbf6; }
+  .hl-mark {
+    display: inline-block; font-size: 8px; font-family: var(--mono);
+    background: var(--black); color: var(--white);
+    padding: 1px 4px; border-radius: 1px; margin-top: 3px;
+  }
+
+  .memo-main { color: var(--dark); }
+  .memo-sub  { font-size: 10px; color: var(--mid); margin-top: 2px; }
+  .note-head { font-size: 8.5px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+  .note-item { display: flex; gap: 3px; margin-bottom: 2px; font-size: 10px; }
+  .note-item::before { content: "▲"; font-size: 7.5px; color: var(--gray); flex-shrink: 0; margin-top: 2px; }
+
+  /* ── めあて・まとめ ── */
+  .aim-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .aim-block, .sum-block {
+    border: 1px solid var(--line);
+    border-radius: 2px; padding: 6px 9px;
+  }
+  .aim-block .sec-label, .sum-block .sec-label {
+    border-bottom: none; margin-bottom: 4px; padding-bottom: 0;
+  }
+  .aim-item, .sum-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11.5px; line-height: 1.5; margin-bottom: 3px;
+  }
+  .aim-item::before { content: "●"; font-size: 8px; color: var(--gray); flex-shrink: 0; margin-top: 3px; }
+  .sum-item .chk {
+    width: 11px; height: 11px; margin-top: 2px;
+    border: 1.5px solid var(--line); border-radius: 2px; flex-shrink: 0;
+  }
+
+  /* ── デッドライン ── */
+  .deadline-box {
+    border: 2px solid #d85a30;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    background: #fdf6f3;
+  }
+  .deadline-box .sec-label { color: #d85a30; border-bottom-color: #f0c4b3; }
+  .deadline-title { font-weight: 700; font-size: 12px; color: #993c1d; margin-bottom: 4px; }
+  .deadline-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11px; line-height: 1.5; margin-bottom: 3px;
+  }
+  .deadline-item .chk { border-color: #d85a30; }
+  .deadline-date {
+    font-family: var(--mono); font-size: 10px;
+    background: #d85a30; color: var(--white);
+    padding: 1px 5px; border-radius: 2px;
+    margin-right: 4px;
+  }
+
+  /* ── 次回・フッター ── */
+  .next-block { font-size: 11.5px; color: var(--dark); line-height: 1.8; }
+  .footer {
+    margin-top: 10px; padding-top: 5px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 8px; color: var(--gray);
+  }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .sheet { box-shadow: none; padding: 10mm 10mm 8mm; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ヘッダー -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <span class="hdr-code">T01 — 体験回 — 講師用プランシート</span>
+      <span class="hdr-meta">2026.4.26（日）　15:00–16:30　90分　想定4名</span>
+    </div>
+    <div class="hdr-title">自分だけのキャラを動かそう</div>
+    <div class="hdr-sub">はじめての 3D スカルプト × リギング × アニメーション　／　Nomad Sculpt（iPad）＋ Rigtester（ブラウザ）</div>
+  </div>
+
+  <!-- 準備物 -->
+  <div class="section">
+    <div class="sec-label">準備物チェックリスト</div>
+    <div class="checklist">
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">機材</span>講師用 iPad・Windows PC・プロジェクター/モニター・充電器</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">機材</span>生徒用 iPad ×4（Nomad Sculpt インストール済み）</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">データ</span>Rigtester 動作確認済み（GitHub Pages or ローカル）・アニメーションFBX 5種以上配置済み</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">データ</span>デモ用プリミティブ人体モデル（FBX）・Rigtester事前リグ済みデモ</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">配布物</span>体験回ログブック（簡易版パスポート）・講座案内チラシ</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">通信</span>会場Wi-Fi接続確認 or ローカルサーバー起動手順確認</div>
+      <div class="check-item"><div class="chk"></div><span class="chk-tag">予備</span>Plan B 用 S01 スライド・ドーナツ用プランシート</div>
+    </div>
+  </div>
+
+  <!-- めあて・まとめ -->
+  <div class="aim-wrap">
+    <div class="aim-block">
+      <div class="sec-label">今日のめあて</div>
+      <div class="aim-item">3Dモデリングの基本操作を体験する</div>
+      <div class="aim-item">プリミティブを組み合わせてTポーズの人体を組み立てる</div>
+      <div class="aim-item">自分が作ったモデルにボーンを入れてアニメーションさせる</div>
+    </div>
+    <div class="sum-block">
+      <div class="sec-label">今日のまとめ（授業後に確認）</div>
+      <div class="sum-item"><div class="chk"></div>3Dの基本操作（回転・ズーム・追加）ができた</div>
+      <div class="sum-item"><div class="chk"></div>プリミティブ人体を組み立て、FBXエクスポートできた</div>
+      <div class="sum-item"><div class="chk"></div>自分のモデルがアニメーションで動いた</div>
+    </div>
+  </div>
+
+  <!-- デッドライン -->
+  <div class="deadline-box">
+    <div class="sec-label">Plan A / Plan B 判断デッドライン</div>
+    <div class="deadline-item"><div class="chk"></div><span class="deadline-date">4/23 木</span>Rigtester プロトタイプ：FBX読込 → マーカー配置 → 1アニメ再生が動作するか</div>
+    <div class="deadline-item"><div class="chk"></div><span class="deadline-date">4/24 金</span><strong>最終判断日</strong> — iPad Safari 実機テスト通過 → Plan A 確定 ／ 未通過 → Plan B（S01 ドーナツ）に切替</div>
+    <div class="deadline-item"><div class="chk"></div><span class="deadline-date">4/25 土</span>確定プランのリハーサル・配布物最終印刷</div>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="section">
+    <div class="sec-label">タイムライン　／　導入 → Nomad制作 → Rigtester → バッファ → まとめ</div>
+    <table class="tl-table">
+      <thead>
+        <tr>
+          <th class="col-time">時刻</th>
+          <th class="col-dur">時間</th>
+          <th class="col-block">ブロック</th>
+          <th class="col-slide">ツール</th>
+          <th class="col-memo">講師メモ・説明ポイント</th>
+          <th class="col-note">詰まりポイント対応</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- 導入 -->
+        <tr class="row-intro">
+          <td><span class="time-val">15:00</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">導入</div>
+            <div class="block-sub">デモ＆つかみ</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-rig">Rigtester</span>
+          </td>
+          <td>
+            <div class="memo-main">事前作成済みモデルをRigtesterで踊らせてデモ。「今日はこれを自分で作って動かす」と宣言。</div>
+            <div class="memo-sub">3DCGの魅力を端的に：リアルタイムで回転できる、一瞬でアニメーションが変わる、ストップモーションとの違い（1コマずつ撮らなくていい）。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">iPad 未起動 → この時間に起動・Nomad確認</div>
+            <div class="note-item">デモが動かない → 事前録画を予備として用意</div>
+          </td>
+        </tr>
+
+        <!-- Nomad基本 -->
+        <tr class="row-nomad">
+          <td><span class="time-val">15:10</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">基本操作</div>
+            <div class="block-sub">Nomad入門</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-nomad">Nomad</span>
+          </td>
+          <td>
+            <div class="memo-main">Nomad Sculptの基本操作を全員一緒に実施。</div>
+            <div class="memo-sub">
+              ① 1本指＝回転、2本指＝ズーム・パン<br>
+              ② プリミティブの追加方法（Sphere, Cylinder, Tube）<br>
+              ③ 移動・回転・スケールのギズモ操作<br>
+              「色は今日は塗らない。形だけに集中しよう」と伝える。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">回転で迷子 → 2本指タップでビューリセット</div>
+            <div class="note-item">プリミティブが出ない → 左メニュー → Add確認</div>
+          </td>
+        </tr>
+
+        <!-- 人体組み立て -->
+        <tr class="row-nomad">
+          <td><span class="time-val">15:20</span></td>
+          <td class="col-dur">15分</td>
+          <td>
+            <div class="block-name">人体組立</div>
+            <div class="block-sub">プリミティブTポーズ</div>
+            <div class="hl-mark">★ メイン</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-nomad">Nomad</span>
+          </td>
+          <td>
+            <div class="memo-main">プリミティブを組み合わせてTポーズの人体を作る。講師が手順を見せながら全員同時に進行。</div>
+            <div class="memo-sub">
+              ① 球 → 頭（顔スキャンデータがあれば頭として配置）<br>
+              ② チューブ → 胴体（縦置き）<br>
+              ③ チューブ → 左腕・右腕（水平に配置）<br>
+              ④ チューブ → 左脚・右脚（下方向に配置）<br>
+              Tポーズ（両腕水平）を強調。「リギングに必要なポーズだよ」<br>
+              最後に全パーツを統合（マージ）。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">腕の位置がずれる → ギズモで水平に調整</div>
+            <div class="note-item">パーツが大きすぎ/小さすぎ → スケールで調整</div>
+            <div class="note-item">左右非対称 → ミラー機能を案内</div>
+            <div class="note-item">進みが遅い → 最低限の構成（頭+胴体+腕2+脚2）でOK</div>
+          </td>
+        </tr>
+
+        <!-- FBXエクスポート -->
+        <tr class="row-nomad">
+          <td><span class="time-val">15:35</span></td>
+          <td class="col-dur">5分</td>
+          <td>
+            <div class="block-name">エクスポート</div>
+            <div class="block-sub">FBX書き出し</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-nomad">Nomad</span>
+          </td>
+          <td>
+            <div class="memo-main">ファイル → エクスポート → FBX形式で「ファイル」アプリに保存。</div>
+            <div class="memo-sub">ファイル名は自分の名前で。保存先は「このiPad内」または「iCloud Drive」。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">FBXが選択肢にない → Nomadバージョン確認</div>
+            <div class="note-item">保存先がわからない → 「このiPad内」を指示</div>
+          </td>
+        </tr>
+
+        <!-- Rigtester: アップロード -->
+        <tr class="row-rig">
+          <td><span class="time-val">15:40</span></td>
+          <td class="col-dur">5分</td>
+          <td>
+            <div class="block-name">アップロード</div>
+            <div class="block-sub">Rigtester起動</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-rig">Rigtester</span>
+          </td>
+          <td>
+            <div class="memo-main">SafariでRigtesterを開く（QRコード or URL口頭指示）→ FBXファイルをアップロード。</div>
+            <div class="memo-sub">画面にモデルが表示されたら成功。全員の画面を確認してから次へ。</div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">URL入力ミス → QRコードを印刷して配布</div>
+            <div class="note-item">ファイルが見つからない → 「ファイル」アプリで検索</div>
+            <div class="note-item">読込エラー → 再エクスポートを案内</div>
+          </td>
+        </tr>
+
+        <!-- Rigtester: マーカー配置 -->
+        <tr class="row-rig">
+          <td><span class="time-val">15:45</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">マーカー配置</div>
+            <div class="block-sub">5箇所タップ</div>
+            <div class="hl-mark">⚡ 技術HL</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-rig">Rigtester</span>
+          </td>
+          <td>
+            <div class="memo-main"><strong>ステップバイステップで全員同時に進行。</strong>Use Symmetry ON（片側のみ配置）。</div>
+            <div class="memo-sub">
+              ① CHIN — あごをタップ<br>
+              ② WRISTS — 片方の手首をタップ（反対側は自動ミラー）<br>
+              ③ ELBOWS — 片方のひじをタップ（自動ミラー）<br>
+              ④ KNEES — 片方のひざをタップ（自動ミラー）<br>
+              ⑤ GROIN — 股間をタップ<br>
+              各ステップでプロジェクターに正解位置を表示。「ここをタップしてね」
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">タップ位置がずれる → やり直しボタンで再配置</div>
+            <div class="note-item">モデルが回転できない → ピンチ・ドラッグ操作を再案内</div>
+            <div class="note-item">マーカーが裏側に置かれる → モデルを回転してから配置</div>
+          </td>
+        </tr>
+
+        <!-- Rigtester: リグ生成＋アニメーション -->
+        <tr class="row-rig">
+          <td><span class="time-val">15:55</span></td>
+          <td class="col-dur">10分</td>
+          <td>
+            <div class="block-name">アニメーション</div>
+            <div class="block-sub">リグ生成＋自由閲覧</div>
+            <div class="hl-mark">★ クライマックス</div>
+          </td>
+          <td class="col-slide">
+            <span class="tool-tag tool-rig">Rigtester</span>
+          </td>
+          <td>
+            <div class="memo-main">「リグ生成」ボタン → ローディング演出 → アニメーション選択画面へ。自分のモデルが踊り出す瞬間を楽しむ。</div>
+            <div class="memo-sub">
+              5種以上のアニメーションボタンを自由にタップ。回転・ズームで好きな角度から眺める。<br>
+              「お互いの見せ合おう！」と促して盛り上げる。<br>
+              ここが体験のクライマックス — 十分に時間をとる。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">リグ生成失敗 → マーカー再配置からやり直し</div>
+            <div class="note-item">動きが変 → マーカー位置の微調整を案内</div>
+            <div class="note-item">画面がカクつく → ブラウザの他タブを閉じる</div>
+          </td>
+        </tr>
+
+        <!-- バッファ -->
+        <tr class="row-buffer">
+          <td><span class="time-val">16:05</span></td>
+          <td class="col-dur">20分</td>
+          <td>
+            <div class="block-name">バッファ</div>
+            <div class="block-sub">予備時間</div>
+          </td>
+          <td class="col-slide">—</td>
+          <td>
+            <div class="memo-main">状況に応じて柔軟に使用する予備時間。</div>
+            <div class="memo-sub">
+              <strong>順調な場合：</strong>色付けに挑戦 ／ 別のポーズで作り直し ／ アニメーションをもっと試す<br>
+              <strong>遅延の場合：</strong>遅れている生徒のサポート ／ エクスポートやり直し ／ Rigtesterトラブル対応<br>
+              <strong>トラブル時：</strong>講師PCでデモ操作に切替え、生徒は見る形で進行
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">バッファ使い切り目安</div>
+            <div class="note-item">16:20 を過ぎたらまとめに移行</div>
+          </td>
+        </tr>
+
+        <!-- まとめ -->
+        <tr class="row-wrap">
+          <td><span class="time-val">16:25</span></td>
+          <td class="col-dur">5分</td>
+          <td>
+            <div class="block-name">まとめ</div>
+            <div class="block-sub">ふりかえり・案内</div>
+          </td>
+          <td class="col-slide">—</td>
+          <td>
+            <div class="memo-main">今日やったことの振り返り。本講座全8回の冒険マップをチラ見せ。</div>
+            <div class="memo-sub">
+              「今日は3Dモデリング→リギング→アニメーションを90分で体験した。本講座ではここからさらに…」<br>
+              講座案内チラシ配布。入会方法を案内。質疑応答。
+            </div>
+          </td>
+          <td class="col-note">
+            <div class="note-head">詰まりポイント</div>
+            <div class="note-item">質問が止まらない → 個別対応は終了後に</div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次回引き継ぎ -->
+  <div class="section">
+    <div class="sec-label">本講座への引き継ぎ</div>
+    <div class="next-block">
+      体験回参加者が本講座に進んだ場合の S01 扱い：<strong>未定（要検討）</strong><br>
+      体験回で使用した iPad のデータ回収 ／ Rigtester の継続利用可否を確認<br>
+      体験回参加者の反応・進捗メモを残す（どこで詰まったか、何が盛り上がったか）
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <span>T01 — 体験回 講師プランシート</span>
+    <span>INSTRUCTOR ONLY　／　OYAA 浦添パルコ 3DCG教室　2026.4.26</span>
+  </div>
+
+</div>
+</body>
+</html>
